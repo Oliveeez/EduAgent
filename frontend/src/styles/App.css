@@ -1,0 +1,246 @@
+/**
+ * 主样式文件
+ */
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.app-layout {
+  min-height: 100vh;
+}
+
+.app-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px 50px;
+  color: white;
+}
+
+.header-content h1 {
+  margin: 0;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.header-content p {
+  margin: 5px 0 0 0;
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+.app-content {
+  padding: 40px 50px;
+  background: #f0f2f5;
+  min-height: calc(100vh - 200px);
+}
+
+.steps-container {
+  max-width: 1200px;
+  margin: 0 auto 40px;
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.step-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.step-container {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.step-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.upload-section {
+  padding: 20px 0;
+}
+
+.action-buttons {
+  margin-top: 30px;
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.progress-section {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.progress-text {
+  margin-top: 10px;
+  color: #666;
+  font-size: 14px;
+}
+
+.result-section {
+  margin-top: 40px;
+}
+
+.visualization-card {
+  margin: 30px 0;
+}
+
+.kg-visualization {
+  width: 100%;
+  overflow: auto;
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+}
+
+.knowledge-points-summary {
+  margin-top: 30px;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.knowledge-points-summary h3 {
+  margin-top: 0;
+}
+
+.knowledge-points-summary ul {
+  list-style: none;
+  padding: 0;
+}
+
+.knowledge-points-summary li {
+  padding: 10px 0;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.knowledge-points-summary li:last-child {
+  border-bottom: none;
+}
+
+.next-step-button {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.selection-section {
+  padding: 20px 0;
+}
+
+.style-section,
+.requirements-section {
+  margin-top: 30px;
+}
+
+.outline-result {
+  margin-top: 40px;
+}
+
+.outline-card h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #667eea;
+}
+
+.section-item {
+  margin: 20px 0;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  border-left: 4px solid #667eea;
+}
+
+.section-item h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.section-item ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.section-item li {
+  margin: 15px 0;
+  padding: 15px;
+  background: white;
+  border-radius: 4px;
+}
+
+.metadata {
+  margin-top: 30px;
+  padding: 15px;
+  background: #e6f7ff;
+  border-radius: 4px;
+  border: 1px solid #91d5ff;
+}
+
+.template-section {
+  padding: 20px 0;
+}
+
+.ppt-result {
+  margin-top: 40px;
+}
+
+.modify-section {
+  padding: 20px 0;
+}
+
+.hint-text {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.hint-text ul {
+  margin: 10px 0;
+  padding-left: 20px;
+}
+
+.hint-text li {
+  margin: 5px 0;
+}
+
+.modifications-history {
+  margin-top: 40px;
+}
+
+.current-ppt-info {
+  margin-top: 40px;
+}
+
+.app-footer {
+  text-align: center;
+  background: #001529;
+  color: rgba(255, 255, 255, 0.65);
+  padding: 20px 50px;
+}
+
+.app-footer p {
+  margin: 0;
+}
