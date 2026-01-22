@@ -4,8 +4,9 @@
 
 import React, { useState } from 'react';
 import { Card, Button, Select, Table, Radio, Input, message, Spin } from 'antd';
-import { ArrowLeftOutlined, ArrowRightOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, ArrowRightOutlined, EditOutlined } from '@ant-design/icons';
 import { generateOutline } from '../services/api';
+import Step2ScriptEdit from './Step2ScriptEdit';
 
 const { TextArea } = Input;
 
@@ -16,8 +17,20 @@ function Step2Outline({ sessionData, updateSessionData, onNext, onPrev }) {
   const [otherRequirements, setOtherRequirements] = useState('');
   const [generating, setGenerating] = useState(false);
   const [outlineData, setOutlineData] = useState(null);
+  const [isEditingScript, setIsEditingScript] = useState(false);
 
   const knowledgePoints = sessionData.kgData?.knowledge_points || [];
+
+  // 如果正在编辑讲稿，显示编辑界面
+  if (isEditingScript) {
+    return (
+      <Step2ScriptEdit
+        sessionData={sessionData}
+        updateSessionData={updateSessionData}
+        onBack={() => setIsEditingScript(false)}
+      />
+    );
+  }
 
   const columns = [
     {
@@ -191,6 +204,14 @@ function Step2Outline({ sessionData, updateSessionData, onNext, onPrev }) {
             </Card>
 
             <div className="next-step-button">
+              <Button
+                icon={<EditOutlined />}
+                size="large"
+                onClick={() => setIsEditingScript(true)}
+                style={{ marginRight: 12 }}
+              >
+                编辑讲稿
+              </Button>
               <Button
                 type="primary"
                 size="large"

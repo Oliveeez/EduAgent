@@ -24,6 +24,7 @@ from config.config import (
 from modules.knowledge_extractor import KnowledgeExtractor
 from modules.outline_generator import OutlineGenerator
 from modules.ppt_creator import PPTCreator
+from modules.script_editor import ScriptEditor
 
 # 配置日志
 logging.basicConfig(
@@ -74,6 +75,19 @@ class ModificationRequest(BaseModel):
     description: str  # 自然语言描述或结构化指令
 
 
+class ScriptEditRequest(BaseModel):
+    """讲稿编辑请求"""
+    outline_id: str  # 大纲ID
+    user_message: str  # 用户消息
+    context: Optional[Dict] = None  # 额外上下文
+
+
+class ScriptSaveRequest(BaseModel):
+    """讲稿保存请求"""
+    outline_id: str  # 大纲ID
+    updated_script: Dict  # 更新后的讲稿
+
+
 # ==================== 全局状态 ====================
 
 # 初始化模块（LLM客户端由用户在外部提供）
@@ -83,6 +97,9 @@ ppt_creator = None  # 需要在启动时初始化
 
 # 存储会话数据
 sessions = {}
+
+# 存储讲稿编辑会话
+script_edit_sessions = {}
 
 
 # ==================== 启动事件 ====================
@@ -327,6 +344,195 @@ async def generate_outline(request: OutlineRequest):
         raise
     except Exception as e:
         logger.error(f"❌ 生成大纲失败: {e}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ==================== Step 2.5: 讲稿编辑（新增） ====================
+
+@app.post("/api/step2/init-script-edit")
+async def init_script_edit_session(outline_id: str):
+    """
+    初始化讲稿编辑会话
+    
+    Args:
+        outline_id: 大纲ID
+        
+    Returns:
+        编辑会话信息
+    """
+    try:
+        # 加载大纲和讲稿
+        outline_path = OUTLINES_DIR / f"{outline_id}.json"
+        if not outline_path.exists():
+            raise HTTPException(status_code=404, detail="大纲不存在")
+        
+        import json
+        with open(outline_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        
+        outline = data.get('outline', {})
+        script = data.get('script', {})
+        
+        # 创建编辑器实例
+        try:
+            from utils.llm import CustomLLM
+            llm_client = CustomLLM()
+        except ImportError:
+            logger.warning("⚠️  未找到LLM客户端")
+            llm_client = None
+        
+        editor = ScriptEditor(llm_client)
+        editor.initialize_session(outline, script)
+        
+        # 存储编辑会话
+        script_edit_sessions[outline_id] = editor
+        
+        logger.info(f"✅ 讲稿编辑会话已初始化: {outline_id}")
+        
+        return {
+            "success": True,
+            "outline_id": outline_id,
+            "current_script": script,
+            "current_outline": outline,
+            "session_info": {
+                "initialized_at": datetime.now().isoformat(),
+                "sections_count": len(script.get('sections', []))
+            }
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"❌ 初始化编辑会话失败: {e}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/step2/edit-script")
+async def edit_script(request: ScriptEditRequest):
+    """
+    处理讲稿编辑请求（支持多轮对话）
+    
+    Args:
+        request: 编辑请求
+        
+    Returns:
+        LLM响应和更新后的讲稿
+    """
+    try:
+        outline_id = request.outline_id
+        
+        # 检查编辑会话是否存在
+        if outline_id not in script_edit_sessions:
+            # 如果不存在，尝试初始化
+            init_result = await init_script_edit_session(outline_id)
+            if not init_result['success']:
+                raise HTTPException(status_code=404, detail="无法初始化编辑会话")
+        
+        editor = script_edit_sessions[outline_id]
+        
+        # 处理用户消息
+        result = await editor.process_user_message(
+            request.user_message,
+            request.context
+        )
+        
+        if not result['success']:
+            raise HTTPException(status_code=500, detail=result.get('error', '处理失败'))
+        
+        return {
+            "success": True,
+            "assistant_message": result['assistant_message'],
+            "updated_script": result['updated_script'],
+            "modifications_applied": result['modifications_applied'],
+            "conversation_history": result['conversation_history']
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"❌ 编辑讲稿失败: {e}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/step2/script-conversation/{outline_id}")
+async def get_script_conversation(outline_id: str):
+    """获取讲稿编辑的对话历史"""
+    try:
+        if outline_id not in script_edit_sessions:
+            raise HTTPException(status_code=404, detail="编辑会话不存在")
+        
+        editor = script_edit_sessions[outline_id]
+        
+        return {
+            "success": True,
+            "conversation_history": editor.get_conversation_history(),
+            "modification_history": editor.get_modification_history(),
+            "current_script": editor.get_current_script()
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"❌ 获取对话历史失败: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/step2/save-script")
+async def save_edited_script(request: ScriptSaveRequest):
+    """
+    保存编辑后的讲稿
+    
+    Args:
+        request: 保存请求
+        
+    Returns:
+        保存结果
+    """
+    try:
+        outline_id = request.outline_id
+        
+        # 加载原始大纲数据
+        outline_path = OUTLINES_DIR / f"{outline_id}.json"
+        if not outline_path.exists():
+            raise HTTPException(status_code=404, detail="大纲不存在")
+        
+        import json
+        with open(outline_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        
+        # 更新讲稿
+        data['script'] = request.updated_script
+        data['metadata']['last_modified'] = datetime.now().isoformat()
+        
+        # 保存到原文件
+        with open(outline_path, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+        
+        # 如果存在编辑会话，也保存会话数据
+        if outline_id in script_edit_sessions:
+            editor = script_edit_sessions[outline_id]
+            session_path = OUTLINES_DIR / f"{outline_id}_session.json"
+            editor.save_session(str(session_path))
+        
+        logger.info(f"✅ 讲稿已保存: {outline_path}")
+        
+        return {
+            "success": True,
+            "outline_id": outline_id,
+            "saved_at": datetime.now().isoformat(),
+            "message": "讲稿已成功保存"
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"❌ 保存讲稿失败: {e}")
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))

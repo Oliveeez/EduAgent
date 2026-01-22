@@ -88,6 +88,44 @@ export const generateOutline = async (kgId, knowledgePoints, style, otherRequire
   return response.data;
 };
 
+// ========== Step 2.5: 讲稿编辑 ==========
+
+/**
+ * 初始化讲稿编辑会话
+ */
+export const initScriptEdit = async (outlineId) => {
+  const response = await api.post('/step2/init-script-edit', null, {
+    params: {
+      outline_id: outlineId,
+    },
+  });
+  return response.data;
+};
+
+/**
+ * 编辑讲稿（发送消息）
+ */
+export const editScript = async (data) => {
+  const response = await api.post('/step2/edit-script', data);
+  return response.data;
+};
+
+/**
+ * 获取讲稿编辑对话历史
+ */
+export const getScriptConversation = async (outlineId) => {
+  const response = await api.get(`/step2/script-conversation/${outlineId}`);
+  return response.data;
+};
+
+/**
+ * 保存编辑后的讲稿
+ */
+export const saveScript = async (data) => {
+  const response = await api.post('/step2/save-script', data);
+  return response.data;
+};
+
 // ========== Step 3: PPT创建 ==========
 
 /**

@@ -13,7 +13,7 @@ import re
 # 从环境变量读取配置，如果不存在则使用默认值
 LLM_API_URL = os.environ.get("LLM_API_URL", "https://api.nuwaapi.com/v1/chat/completions")
 LLM_API_KEY = os.environ.get("LLM_API_KEY", "sk-M9klOiXTFzzHqaryVg6B36XPIeKKVwNFU2wt4WkBlyqXYUk2")
-LLM_MODEL = os.environ.get("LLM_MODEL", "gemini-2.5-pro")
+LLM_MODEL = os.environ.get("LLM_MODEL", "gemini-3-pro-preview-thinking")
 
 class CustomLLM(LLM):
     """自定义LangChain LLM，适配你的API"""
