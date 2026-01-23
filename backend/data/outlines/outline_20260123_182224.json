@@ -1,0 +1,257 @@
+{
+  "success": true,
+  "outline": {
+    "title": "Coq形式化验证入门：整数运算与鸡兔同笼",
+    "sections": [
+      {
+        "title": "1. 课程引入：从生活到数学",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "算术的日常应用",
+            "content": "算术是描述世界的基本工具，用于量化物体、空间与时间。",
+            "examples": [
+              "计算几何图形面积",
+              "统计物体数量",
+              "记录年龄增长"
+            ],
+            "key_concepts": [
+              "数量关系",
+              "量化描述"
+            ]
+          },
+          {
+            "title": "历史趣题：鸡兔同笼",
+            "content": "引出《孙子算经》中的经典问题，作为本节课的验证目标。",
+            "examples": [
+              "上有三十五头",
+              "下有九十四足",
+              "问雉兔各几何"
+            ],
+            "key_concepts": [
+              "线性方程组",
+              "逻辑推理"
+            ]
+          },
+          {
+            "title": "从计算到验证",
+            "content": "介绍为什么要用Coq：不仅算出结果，更要严谨地证明结果的正确性。",
+            "examples": [
+              "传统算术：计算过程",
+              "Coq：形式化证明"
+            ],
+            "key_concepts": [
+              "Coq工具",
+              "形式化验证"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "2. Coq中的数值表达",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "自然数类型 (nat)",
+            "content": "Coq中基于皮亚诺算术(Peano Arithmetic)的自然数定义。",
+            "examples": [
+              "O (表示0)",
+              "S O (表示1)",
+              "S (S O) (表示2)"
+            ],
+            "key_concepts": [
+              "Inductive Type",
+              "Peano Axioms"
+            ]
+          },
+          {
+            "title": "整数类型 (Z)",
+            "content": "引入 Z 类型以支持更高效的数值计算和负数表达。",
+            "examples": [
+              "Open Scope Z_scope",
+              "Z.of_nat"
+            ],
+            "key_concepts": [
+              "Binary Integers",
+              "Scope"
+            ]
+          },
+          {
+            "title": "数值的查看与计算",
+            "content": "学习使用Coq命令查看数值类型和计算结果。",
+            "examples": [
+              "Check 35.",
+              "Compute (23 + 12)."
+            ],
+            "key_concepts": [
+              "Check命令",
+              "Compute命令"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "3. 算术运算与逻辑比较",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "基本算术运算符",
+            "content": "在Coq中定义加法、减法和乘法运算。",
+            "examples": [
+              "Compute 35 * 2.",
+              "Compute 94 - 70."
+            ],
+            "key_concepts": [
+              "Binary Operations",
+              "Notation"
+            ]
+          },
+          {
+            "title": "大小比较与命题 (Prop)",
+            "content": "理解Coq中数值比较返回的是命题(Prop)而非简单的布尔值。",
+            "examples": [
+              "Check 2 < 3.",
+              "23 + 12 = 35"
+            ],
+            "key_concepts": [
+              "Proposition",
+              "Equality (=)",
+              "Inequality (<, <=)"
+            ]
+          },
+          {
+            "title": "验证简单性质",
+            "content": "演示如何证明简单的算术等式。",
+            "examples": [
+              "Lemma sum_ok: 23 + 12 = 35.",
+              "Proof. reflexivity. Qed."
+            ],
+            "key_concepts": [
+              "Lemma",
+              "Reflexivity",
+              "Proof"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "4. 实战：验证“鸡兔同笼”",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "问题建模",
+            "content": "将自然语言描述的问题转化为Coq中的数学表达式。",
+            "examples": [
+              "定义 chicken := 23",
+              "定义 rabbit := 12"
+            ],
+            "key_concepts": [
+              "Modeling",
+              "Definitions"
+            ]
+          },
+          {
+            "title": "表达约束条件",
+            "content": "用Coq代码表达头和脚的数量关系。",
+            "examples": [
+              "heads = chicken + rabbit",
+              "feet = 2 * chicken + 4 * rabbit"
+            ],
+            "key_concepts": [
+              "Equation Construction",
+              "Substitution"
+            ]
+          },
+          {
+            "title": "形式化证明",
+            "content": "证明设定的鸡兔数量确实满足题目给出的头脚总数。",
+            "examples": [
+              "Theorem chicken_rabbit_solution",
+              "Proof. ... reflexivity. Qed."
+            ],
+            "key_concepts": [
+              "Theorem",
+              "Verification Goal"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "script": {
+    "sections": [
+      {
+        "title": "1. 课程引入：从生活到数学",
+        "opening": "大家好，欢迎来到Coq形式化验证的世界。在开始写代码之前，我想先和大家聊聊算术。算术不仅仅是数学课本上的符号，它是我们描述这个世界最基本的工具。不管是统计人数、计算时间，还是像今天我们要讨论的——解决一个古老的谜题，都离不开它。",
+        "points": [
+          {
+            "text": "大家想象一下，我们在日常生活中无时无刻不在进行“量化”。比如，我们要计算一个房间的面积，会用到乘法；我们要统计仓库里的货物，会用到加法；甚至我们记录年龄的增长，也是一种计数。这些生活场景，在数学中就被抽象成了“数量关系”。我们的目标，就是学会如何把这些现实中的关系，翻译成计算机能够理解和验证的语言。"
+          },
+          {
+            "text": "为了让大家更有实感，我们今天引入一个非常经典的案例——“鸡兔同笼”问题。这个问题最早出现在大约1500年前的《孙子算经》中。书里是这么说的：<code_start>“今有雉兔同笼，上有三十五头，下有九十四足，问雉兔各几何？”<code_end> 简单翻译过来就是：笼子里关着鸡和兔子，从上面数有35个头，从下面数有94只脚，问鸡和兔子各有多少只？这是一个典型的线性方程组问题，非常适合用来做验证入门。"
+          },
+          {
+            "text": "可能有人会问：“老师，这道题我手算都能算出来，为什么还要用Coq？” 这是一个非常关键的问题。传统的算术关注的是“计算过程”，也就是如何算出答案。而Coq关注的是“形式化验证”，也就是当我们得到一个答案后，如何用严密的逻辑证明它是绝对正确的。在软件工程和高安全性领域，这种“证明正确性”的能力比“算出结果”更为珍贵。今天，我们就用Coq来重新审视这个古老的问题。"
+          }
+        ],
+        "closing": "好了，既然目标明确了，那我们首先得解决一个问题：在这个纯逻辑的Coq世界里，我们该如何表示数字？让我们进入下一章。"
+      },
+      {
+        "title": "2. Coq中的数值表达",
+        "opening": "在Coq中，数字的定义方式可能和大家熟悉的编程语言不太一样。它不是简单的二进制存储，而是基于严谨的数学定义。我们首先来认识两个最基础的类型：自然数和整数。",
+        "points": [
+          {
+            "text": "首先是自然数类型，在Coq中写作 <code_start>nat<code_end>。它是基于皮亚诺算术（Peano Arithmetic）定义的。这是一个非常有意思的递归定义：它有一个起点 <code_start>O<code_end>，代表0；然后每一个数都是前一个数的“后继”，用 <code_start>S<code_end> 表示。比如1就是 <code_start>S O<code_end>，2就是 <code_start>S (S O)<code_end>。这种定义方式非常适合做数学归纳证明，但大家也能看出来，如果要表示像1000这样的大数，写起来会非常麻烦，计算效率也很低。"
+          },
+          {
+            "text": "为了解决计算效率和负数表示的问题，我们需要引入整数类型，写作 <code_start>Z<code_end>。它是基于二进制编码的，计算速度快得多。在实际工程中，我们通常会引入 <code_start>Z<code_end> 作用域。大家在代码中会看到 <code_start>Open Scope Z_scope.<code_end> 这行命令，它的作用就是告诉Coq：“接下来的数字，默认请当作整数 <code_start>Z<code_end> 来处理，而不是原本那个效率低下的自然数 <code_start>nat<code_end>。”"
+          },
+          {
+            "text": "那么，我们怎么确认Coq理解了我们的输入呢？这里有两个常用命令。第一个是 <code_start>Check<code_end>，用于查看类型。比如你输入 <code_start>Check 35.<code_end>，它会告诉你这是一个 <code_start>Z<code_end> 类型的数。第二个是 <code_start>Compute<code_end>，用于计算数值。比如输入 <code_start>Compute (23 + 12).<code_end>，Coq就会像计算器一样返回结果 <formula_start><formula_start>$35$<formula_end><formula_end>。掌握这两个命令，是我们进行实验的基础。"
+          }
+        ],
+        "closing": "现在我们已经能在Coq里“写”出数字了，接下来，我们要让这些数字“动”起来，看看如何进行运算以及比较大小。"
+      },
+      {
+        "title": "3. 算术运算与逻辑比较",
+        "opening": "有了数字，自然少不了加减乘除。但在Coq中，更重要的是“比较”。因为在形式化验证中，我们往往不是在算数，而是在判断一个性质是否成立。",
+        "points": [
+          {
+            "text": "Coq支持我们熟悉的四则运算。当我们开启了 <code_start>Z_scope<code_end> 后，你可以直接写加法、减法和乘法。比如，我们可以试着计算一下题目的数据：输入 <code_start>Compute 35 * 2.<code_end> 看看结果，或者计算 <code_start>Compute 94 - 70.<code_end>。这些符号在Coq中被称为“Notation”（记号），背后对应着严格定义的函数。"
+          },
+          {
+            "text": "接下来这个概念非常重要，请大家注意。在Python或C语言里，如果我们写 <code_start>2 < 3<code_end>，通常会得到一个布尔值 <code_start>true<code_end>。但在Coq中，<code_start>2 < 3<code_end> 或者 <code_start>23 + 12 = 35<code_end> 返回的类型是 <code_start>Prop<code_end>，也就是“命题”（Proposition）。它代表一个“待证明的陈述”。Coq不会直接告诉你它是不是对的，而是要求你提供一个“证明”来支撑这个命题。"
+          },
+          {
+            "text": "既然是命题，我们就来尝试证明第一个简单的算术等式。我们定义一个引理 <code_start>Lemma sum_ok: 23 + 12 = 35.<code_end>。这时候我们进入了证明模式。怎么证明呢？因为两边的值计算出来确实是相等的，我们可以使用一个强大的策略叫做 <code_start>reflexivity<code_end>（自反性）。它的含义是：“左右两边计算结果完全一致”。输入这个命令后，证明就完成了，最后别忘了用 <code_start>Qed.<code_end> 结束证明。"
+          }
+        ],
+        "closing": "恭喜大家，你们已经完成了第一个Coq证明！虽然它很简单，但原理是通用的。现在，我们要运用这些知识，去挑战那个“鸡兔同笼”的最终验证。"
+      },
+      {
+        "title": "4. 实战：验证“鸡兔同笼”",
+        "opening": "现在让我们回到《孙子算经》。我们要做的不是让Coq去“解方程”，而是验证“如果我们假设鸡有23只，兔子有12只，是否满足题目的所有条件”。这体现了验证系统的核心逻辑：Verify（验证）优于 Solve（求解）。",
+        "points": [
+          {
+            "text": "第一步是建模，也就是定义变量。我们已知一个解，把它定义出来。用 <code_start>Definition<code_end> 关键字，定义 <code_start>chicken<code_end> 为 <formula_start><formula_start>$23$<formula_end><formula_end>，定义 <code_start>rabbit<code_end> 为 <formula_start><formula_start>$12$<formula_end><formula_end>。这样，我们就把现实世界的物体映射到了Coq的变量中。"
+          },
+          {
+            "text": "第二步是表达约束条件。题目说了“上有三十五头，下有九十四足”。我们可以把这些文字描述转化为数学表达式。头的数量关系是 <formula_start><formula_start>$heads = chicken + rabbit$<formula_end><formula_end>，脚的数量关系是 <formula_start><formula_start>$feet = 2 * chicken + 4 * rabbit$<formula_end><formula_end>。注意，这里的乘号和加号就是我们上一节课学到的运算。"
+          },
+          {
+            "text": "最后一步，形式化证明。我们写下一个定理 <code_start>Theorem chicken_rabbit_solution<code_end>，内容是：当鸡是23、兔是12时，头等于35且脚等于94。在证明过程中，我们只需要让Coq去计算 <formula_start><formula_start>$23 + 12$<formula_end><formula_end> 是否等于 <formula_start><formula_start>$35$<formula_end><formula_end>，以及 <formula_start><formula_start>$2 \times 23 + 4 \times 12$<formula_end><formula_end> 是否等于 <formula_start><formula_start>$94$<formula_end><formula_end>。这里依然可以使用 <code_start>reflexivity<code_end> 策略。当屏幕上出现 <code_start>No more subgoals<code_end> 时，我们就严谨地证明了这个解是正确的。"
+          }
+        ],
+        "closing": "通过这个例子，我们不仅重温了经典的数学趣题，更重要的是，我们要学会了如何用Coq去定义数值、构建公式，并完成一个严谨的计算机证明。这就是形式化验证的魅力所在：将模糊的自然语言转化为精确的机器语言。感谢大家的聆听！"
+      }
+    ]
+  },
+  "metadata": {
+    "generated_at": "2026-01-23T18:22:24.334665",
+    "knowledge_points_count": 1,
+    "style": "简约",
+    "total_slides": 4,
+    "has_formula_markers": true,
+    "has_code_markers": true
+  }
+}

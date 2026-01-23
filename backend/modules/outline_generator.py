@@ -5,6 +5,7 @@ Step 2: 大纲和讲稿生成模块
 
 import json
 import logging
+import re
 from typing import Dict, List
 from datetime import datetime
 import asyncio
@@ -13,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 class OutlineGenerator:
-    """大纲生成器 - Step 2"""
+    """大纲生成器 - Step 2（优化版）"""
     
     def __init__(self, llm_client=None):
         """
@@ -59,7 +60,11 @@ class OutlineGenerator:
             logger.info("📖 Step 2.3: 使用AI生成讲稿...")
             script = await self._generate_script_with_llm(outline, context, user_requirements)
             
-            # 4. 组装结果
+            # 4. 为讲稿添加公式和代码标记（新增功能）
+            logger.info("🔖 Step 2.4: 为公式和代码添加标志符...")
+            script = self._add_formula_code_markers(script)
+            
+            # 5. 组装结果
             result = {
                 'success': True,
                 'outline': outline,
@@ -68,7 +73,9 @@ class OutlineGenerator:
                     'generated_at': datetime.now().isoformat(),
                     'knowledge_points_count': len(knowledge_points),
                     'style': user_requirements.get('style', '默认'),
-                    'total_slides': len(outline.get('sections', []))
+                    'total_slides': len(outline.get('sections', [])),
+                    'has_formula_markers': True,  # 标记已添加公式标志符
+                    'has_code_markers': True      # 标记已添加代码标志符
                 }
             }
             
@@ -76,6 +83,7 @@ class OutlineGenerator:
             logger.info("✅ Step 2: 大纲和讲稿生成完成")
             logger.info(f"   📊 章节数: {len(outline.get('sections', []))}")
             logger.info(f"   🎨 风格: {user_requirements.get('style', '默认')}")
+            logger.info(f"   🔖 已添加公式/代码标志符")
             logger.info("=" * 60)
             
             return result
@@ -164,7 +172,6 @@ class OutlineGenerator:
             response = response.replace("<br>", "\n").strip()
             
             # 移除可能的markdown标记
-            import re
             response = re.sub(r'^```json\s*', '', response)
             response = re.sub(r'^```\s*', '', response)
             response = re.sub(r'\s*```$', '', response)
@@ -185,7 +192,7 @@ class OutlineGenerator:
             logger.warning("⚠️  未提供LLM客户端，使用模板生成讲稿")
             return self._generate_script_template(outline)
         
-        # 构建提示词
+        # 构建提示词（不再要求LLM标记，改由后处理完成）
         prompt = f"""你是一位经验丰富的教师，请根据以下大纲生成详细的讲稿（演讲备注）。
 
 **课程大纲：**
@@ -200,6 +207,7 @@ class OutlineGenerator:
 3. 包含过渡语句，帮助串联内容
 4. 根据详细程度调整讲解深度
 5. 突出重点，适当举例说明
+6. 自然地使用LaTeX公式（用$...$或$$...$$包裹）和代码示例（用```...```或反引号包裹）
 
 请以JSON格式返回讲稿，格式如下：
 {{
@@ -209,7 +217,7 @@ class OutlineGenerator:
       "opening": "章节开场白",
       "points": [
         {{
-          "text": "这个知识点的讲解文本，包含解释、例子和重点..."
+          "text": "知识点的讲解文本，包含解释、例子和重点..."
         }}
       ],
       "closing": "章节总结"
@@ -228,7 +236,6 @@ class OutlineGenerator:
             response = response.replace("<br>", "\n").strip()
             
             # 移除可能的markdown标记
-            import re
             response = re.sub(r'^```json\s*', '', response)
             response = re.sub(r'^```\s*', '', response)
             response = re.sub(r'\s*```$', '', response)
@@ -241,6 +248,244 @@ class OutlineGenerator:
         except Exception as e:
             logger.error(f"LLM生成讲稿失败: {e}，使用模板生成")
             return self._generate_script_template(outline)
+    
+    def _add_formula_code_markers(self, script: Dict) -> Dict:
+        """
+        为讲稿中的公式和代码自动添加标志符（后处理）
+        
+        Args:
+            script: 讲稿数据
+            
+        Returns:
+            添加标记后的讲稿数据
+        """
+        logger.info("🔖 开始添加公式和代码标志符...")
+        
+        sections = script.get('sections', [])
+        formula_count = 0
+        code_count = 0
+        
+        for section in sections:
+            # 处理开场白
+            if 'opening' in section:
+                section['opening'], f_count, c_count = self._mark_text(section['opening'])
+                formula_count += f_count
+                code_count += c_count
+            
+            # 处理知识点
+            if 'points' in section:
+                for point in section['points']:
+                    if 'text' in point:
+                        point['text'], f_count, c_count = self._mark_text(point['text'])
+                        formula_count += f_count
+                        code_count += c_count
+            
+            # 处理总结
+            if 'closing' in section:
+                section['closing'], f_count, c_count = self._mark_text(section['closing'])
+                formula_count += f_count
+                code_count += c_count
+        
+        logger.info(f"✅ 标记完成：添加了 {formula_count} 个公式标记，{code_count} 个代码标记")
+        
+        return script
+    
+    def _should_mark_formula(self, content: str) -> bool:
+        """
+        判断公式是否需要标记
+        
+        标记规则：
+        - 纯数字：不标记（如 $35$, $94$）
+        - 单个字母：不标记（如 $x$, $n$）
+        - 过短内容：不标记（<5个字符）
+        - 简单表达式：不标记（如 $a+b$, $2x$）
+        - 复杂公式：标记（包含\frac, \lim等LaTeX命令或长度>15字符）
+        """
+        content = content.strip()
+        
+        # 1. 纯数字，不标记
+        if re.match(r'^-?\d+\.?\d*$', content):
+            return False
+        
+        # 2. 单个字母或单个变量，不标记
+        if re.match(r'^[a-zA-Z]$', content):
+            return False
+        
+        # 3. 太短（少于5个字符），不标记
+        if len(content) < 5:
+            return False
+        
+        # 4. 包含复杂LaTeX命令，一定标记
+        complex_commands = [
+            r'\\frac', r'\\sum', r'\\int', r'\\lim', r'\\prod',
+            r'\\sqrt', r'\\partial', r'\\nabla', r'\\infty',
+            r'\\alpha', r'\\beta', r'\\gamma', r'\\theta', r'\\delta',
+            r'\\lambda', r'\\mu', r'\\sigma', r'\\phi', r'\\psi',
+            r'\\matrix', r'\\begin', r'\\end', r'\\left', r'\\right',
+            r'\\cdot', r'\\times', r'\\div'
+        ]
+        for cmd in complex_commands:
+            if cmd in content:
+                return True
+        
+        # 5. 较长的表达式（超过15个字符），标记
+        if len(content) > 15:
+            return True
+        
+        # 默认不标记简单表达式
+        return False
+    
+    def _should_mark_code(self, content: str) -> bool:
+        """
+        判断行内代码是否需要标记
+        
+        标记规则：
+        - 简单变量名：不标记（如 variable, count, x）
+        - 纯英文单词：不标记（如 reflexivity, Theorem）
+        - 较长代码：标记（>30字符）
+        - 包含特殊字符：标记（括号、运算符等）
+        """
+        content = content.strip()
+        
+        # 1. 纯英文字母、数字、下划线的简短标识符，不标记
+        if re.match(r'^[a-zA-Z_][a-zA-Z0-9_]*$', content):
+            # 如果长度合理（<30字符），认为是变量名或关键字，不标记
+            if len(content) < 30:
+                return False
+        
+        # 2. 包含空格、括号、运算符等，标记
+        if re.search(r'[\s()\[\]{}<>+\-*/=.,;:]', content):
+            return True
+        
+        # 3. 较长的内容，标记
+        if len(content) > 30:
+            return True
+        
+        # 默认不标记
+        return False
+    
+    def _mark_text(self, text: str) -> tuple:
+        """
+        为单个文本字段添加标记
+        
+        Args:
+            text: 原始文本
+            
+        Returns:
+            (标记后的文本, 公式数量, 代码数量)
+        """
+        if not text or not isinstance(text, str):
+            return text, 0, 0
+        
+        formula_count = 0
+        code_count = 0
+        
+        # ===== 第一步：标记代码块（```...```）- 始终标记 =====
+        def mark_code_block(match):
+            nonlocal code_count
+            code = match.group(0)
+            # 检查是否已经有标记（避免重复）
+            before_text = text[max(0, match.start()-20):match.start()]
+            after_text = text[match.end():min(len(text), match.end()+20)]
+            
+            if '<code_start>' in before_text or '<code_end>' in after_text:
+                return code
+            
+            code_count += 1
+            return f'<code_start>{code}<code_end>'
+        
+        text = re.sub(r'```[\s\S]*?```', mark_code_block, text)
+        
+        # ===== 第二步：标记行内代码 - 根据规则选择性标记 =====
+        def mark_inline_code(match):
+            nonlocal code_count
+            code = match.group(0)  # 包含反引号，如 `variable`
+            content = match.group(1)  # 反引号内的内容
+            
+            # 检查是否已标记
+            before_text = text[max(0, match.start()-20):match.start()]
+            after_text = text[match.end():min(len(text), match.end()+20)]
+            
+            if '<code_start>' in before_text or '<code_end>' in after_text:
+                return code
+            
+            # 判断是否需要标记
+            if self._should_mark_code(content):
+                code_count += 1
+                return f'<code_start>{code}<code_end>'
+            
+            return code  # 不标记简单变量名
+        
+        text = re.sub(r'`([^`]+?)`', mark_inline_code, text)
+        
+        # ===== 第三步：标记公式 - 根据规则选择性标记 =====
+        
+        # 3.1 行间公式 $$...$$
+        def mark_display_formula(match):
+            nonlocal formula_count
+            formula = match.group(0)  # 包含 $$
+            content = match.group(1)  # $$ 之间的内容
+            
+            # 检查是否已标记
+            before_text = text[max(0, match.start()-20):match.start()]
+            after_text = text[match.end():min(len(text), match.end()+20)]
+            
+            if '<formula_start>' in before_text or '<formula_end>' in after_text:
+                return formula
+            
+            # 判断是否需要标记
+            if self._should_mark_formula(content):
+                formula_count += 1
+                return f'<formula_start>{formula}<formula_end>'
+            
+            return formula
+        
+        text = re.sub(r'\$\$(.*?)\$\$', mark_display_formula, text)
+        
+        # 3.2 行内公式 $...$
+        def mark_inline_formula(match):
+            nonlocal formula_count
+            formula = match.group(0)
+            content = match.group(1)  # $ 之间的内容
+            
+            # 检查是否已标记
+            before_text = text[max(0, match.start()-20):match.start()]
+            after_text = text[match.end():min(len(text), match.end()+20)]
+            
+            if '<formula_start>' in before_text or '<formula_end>' in after_text:
+                return formula
+            
+            if self._should_mark_formula(content):
+                formula_count += 1
+                return f'<formula_start>{formula}<formula_end>'
+            
+            return formula
+        
+        text = re.sub(r'(?<!\$)\$([^\$]+?)\$(?!\$)', mark_inline_formula, text)
+        
+        # 3.3 LaTeX 括号格式 \(...\) 和 \[...\]
+        def mark_latex_paren(match):
+            nonlocal formula_count
+            formula = match.group(0)
+            content = match.group(1)
+            
+            # 检查是否已标记
+            before_text = text[max(0, match.start()-20):match.start()]
+            after_text = text[match.end():min(len(text), match.end()+20)]
+            
+            if '<formula_start>' in before_text or '<formula_end>' in after_text:
+                return formula
+            
+            if self._should_mark_formula(content):
+                formula_count += 1
+                return f'<formula_start>{formula}<formula_end>'
+            
+            return formula
+        
+        text = re.sub(r'\\\((.*?)\\\)', mark_latex_paren, text)
+        text = re.sub(r'\\\[(.*?)\\\]', mark_latex_paren, text)
+        
+        return text, formula_count, code_count
     
     def _generate_outline_template(self, context: str, user_requirements: Dict) -> Dict:
         """使用模板生成大纲（不使用LLM的降级方案）"""
@@ -288,3 +533,49 @@ class OutlineGenerator:
             logger.info(f"💾 大纲已保存: {output_path}")
         except Exception as e:
             logger.error(f"❌ 保存失败: {e}")
+    
+    def remove_formula_code_markers(self, script: Dict) -> Dict:
+        """
+        移除讲稿中的公式和代码标志符（如果需要的话）
+        
+        这个函数用于在某些场景下移除标记，比如导出为纯文本时。
+        
+        Args:
+            script: 包含标记的讲稿数据
+            
+        Returns:
+            移除标记后的讲稿数据
+        """
+        sections = script.get('sections', [])
+        
+        for section in sections:
+            # 处理开场白
+            if 'opening' in section:
+                section['opening'] = self._remove_markers(section['opening'])
+            
+            # 处理知识点
+            if 'points' in section:
+                for point in section['points']:
+                    if 'text' in point:
+                        point['text'] = self._remove_markers(point['text'])
+            
+            # 处理总结
+            if 'closing' in section:
+                section['closing'] = self._remove_markers(section['closing'])
+        
+        return script
+    
+    def _remove_markers(self, text: str) -> str:
+        """移除单个文本中的所有标记"""
+        if not text or not isinstance(text, str):
+            return text
+        
+        # 移除公式标记
+        text = text.replace('<formula_start>', '')
+        text = text.replace('<formula_end>', '')
+        
+        # 移除代码标记
+        text = text.replace('<code_start>', '')
+        text = text.replace('<code_end>', '')
+        
+        return text

@@ -1,0 +1,295 @@
+{
+  "success": true,
+  "outline": {
+    "title": "Coq验证入门：整数算术与大小比较",
+    "sections": [
+      {
+        "title": "1. 课程引入：生活中的数量关系",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "数量关系的普遍性",
+            "content": "数学语言用于描述客观世界的数量、形状与逻辑关系，是形式化验证的基础。",
+            "examples": [
+              "几何：图形的周长与面积",
+              "统计：人口普查与年龄分布"
+            ],
+            "key_concepts": [
+              "数量描述",
+              "形式化思维"
+            ]
+          },
+          {
+            "title": "历史趣题回顾",
+            "content": "引入《孙子算经》中的经典问题，作为从自然语言向形式化语言转化的案例。",
+            "examples": [
+              "《孙子算经》约成书于1500年前",
+              "今有雉兔同笼，上有三十五头，下有九十四足"
+            ],
+            "key_concepts": [
+              "数学史",
+              "问题背景"
+            ]
+          },
+          {
+            "title": "问题的数学本质",
+            "content": "解析“鸡兔同笼”问题中的核心变量与约束条件。",
+            "examples": [
+              "变量：鸡的数量、兔的数量",
+              "约束：头总数=35，脚总数=94"
+            ],
+            "key_concepts": [
+              "线性方程",
+              "整数约束"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "2. 数学建模：从算术到方程",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "传统代数解法",
+            "content": "回顾传统的数学解题思路，为Coq的形式化描述做铺垫。",
+            "examples": [
+              "设鸡为x，兔为y",
+              "x + y = 35",
+              "2x + 4y = 94"
+            ],
+            "key_concepts": [
+              "代数建模",
+              "方程组求解"
+            ]
+          },
+          {
+            "title": "算术运算的逻辑",
+            "content": "分析基本算术运算（加法、乘法）在逻辑验证中的地位。",
+            "examples": [
+              "加法：集合的合并",
+              "乘法：重复的加法"
+            ],
+            "key_concepts": [
+              "运算定义",
+              "算术性质"
+            ]
+          },
+          {
+            "title": "大小比较与等式",
+            "content": "理解“等于”(=)与“不等”(<, >)在数学命题中的严格含义。",
+            "examples": [
+              "35 = 35 (Reflexivity)",
+              "94 > 0 (Positivity)"
+            ],
+            "key_concepts": [
+              "等价关系",
+              "序关系"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "3. Coq实战：整数与运算的表达",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "Coq中的自然数类型",
+            "content": "介绍Coq标准库中的`nat`类型及其构造方式。",
+            "examples": [
+              "类型定义：Inductive nat",
+              "数值表示：0, S 0, 1, 2..."
+            ],
+            "key_concepts": [
+              "Type System",
+              "Inductive Types"
+            ]
+          },
+          {
+            "title": "算术操作符的定义",
+            "content": "演示如何在Coq中表示加法、乘法及其符号。",
+            "examples": [
+              "加法：Nat.add 或 +",
+              "乘法：Nat.mul 或 *"
+            ],
+            "key_concepts": [
+              "Notation",
+              "Standard Library"
+            ]
+          },
+          {
+            "title": "简单的计算指令",
+            "content": "学习使用`Compute`指令验证简单的算术结果。",
+            "examples": [
+              "Compute 1 + 1.",
+              "Compute 2 * 35."
+            ],
+            "key_concepts": [
+              "Evaluation",
+              "Normalization"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "4. 命题验证：鸡兔同笼的机器证明",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "形式化命题陈述",
+            "content": "将鸡兔同笼问题转化为Coq中的Theorem（定理）。",
+            "examples": [
+              "Theorem chicken_rabbit :",
+              "exists c r : nat, c + r = 35 /\\ 2*c + 4*r = 94"
+            ],
+            "key_concepts": [
+              "Theorem",
+              "Existential Quantifier"
+            ]
+          },
+          {
+            "title": "证明策略基础",
+            "content": "介绍用于解决整数算术问题的基本策略。",
+            "examples": [
+              "exists 23 12 (给出具体解)",
+              "lia (Linear Integer Arithmetic 自动化策略)"
+            ],
+            "key_concepts": [
+              "Tactics",
+              "Proof Automation"
+            ]
+          },
+          {
+            "title": "验证过程解析",
+            "content": "逐步拆解证明过程，确认算术逻辑的正确性。",
+            "examples": [
+              "验证 23 + 12 = 35",
+              "验证 2*23 + 4*12 = 94"
+            ],
+            "key_concepts": [
+              "reflexivity",
+              "Qed"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "5. 总结与延伸",
+        "detail_level": "标准",
+        "points": [
+          {
+            "title": "课程回顾",
+            "content": "总结从自然语言问题到机器验证的完整流程。",
+            "examples": [
+              "问题 -> 模型 -> 代码 -> 证明"
+            ],
+            "key_concepts": [
+              "形式化流程",
+              "Coq工作流"
+            ]
+          },
+          {
+            "title": "思考与作业",
+            "content": "布置练习，鼓励学生尝试修改条件进行新的验证。",
+            "examples": [
+              "练习：尝试验证“上有36头”是否有整数解？",
+              "思考：Coq如何处理负数(Z类型)？"
+            ],
+            "key_concepts": [
+              "举一反三",
+              "批判性思维"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "script": {
+    "sections": [
+      {
+        "title": "1. 课程引入：生活中的数量关系",
+        "opening": "现在我们来学习1. 课程引入：生活中的数量关系。",
+        "points": [
+          {
+            "text": "关于数量关系的普遍性的讲解..."
+          },
+          {
+            "text": "关于历史趣题回顾的讲解..."
+          },
+          {
+            "text": "关于问题的数学本质的讲解..."
+          }
+        ],
+        "closing": "以上就是本章节的主要内容。"
+      },
+      {
+        "title": "2. 数学建模：从算术到方程",
+        "opening": "现在我们来学习2. 数学建模：从算术到方程。",
+        "points": [
+          {
+            "text": "关于传统代数解法的讲解..."
+          },
+          {
+            "text": "关于算术运算的逻辑的讲解..."
+          },
+          {
+            "text": "关于大小比较与等式的讲解..."
+          }
+        ],
+        "closing": "以上就是本章节的主要内容。"
+      },
+      {
+        "title": "3. Coq实战：整数与运算的表达",
+        "opening": "现在我们来学习3. Coq实战：整数与运算的表达。",
+        "points": [
+          {
+            "text": "关于Coq中的自然数类型的讲解..."
+          },
+          {
+            "text": "关于算术操作符的定义的讲解..."
+          },
+          {
+            "text": "关于简单的计算指令的讲解..."
+          }
+        ],
+        "closing": "以上就是本章节的主要内容。"
+      },
+      {
+        "title": "4. 命题验证：鸡兔同笼的机器证明",
+        "opening": "现在我们来学习4. 命题验证：鸡兔同笼的机器证明。",
+        "points": [
+          {
+            "text": "关于形式化命题陈述的讲解..."
+          },
+          {
+            "text": "关于证明策略基础的讲解..."
+          },
+          {
+            "text": "关于验证过程解析的讲解..."
+          }
+        ],
+        "closing": "以上就是本章节的主要内容。"
+      },
+      {
+        "title": "5. 总结与延伸",
+        "opening": "现在我们来学习5. 总结与延伸。",
+        "points": [
+          {
+            "text": "关于课程回顾的讲解..."
+          },
+          {
+            "text": "关于思考与作业的讲解..."
+          }
+        ],
+        "closing": "以上就是本章节的主要内容。"
+      }
+    ]
+  },
+  "metadata": {
+    "generated_at": "2026-01-23T18:43:22.610383",
+    "knowledge_points_count": 1,
+    "style": "简约",
+    "total_slides": 5,
+    "has_formula_markers": true,
+    "has_code_markers": true
+  }
+}

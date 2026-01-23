@@ -51,7 +51,7 @@ KG_CONFIG = {
 API_CONFIG = {
     "host": "0.0.0.0",
     "port": 8000,
-    "cors_origins": ["http://localhost:3000"],
+    "cors_origins": ["http://localhost:3000","http://localhost:3001"],
 }
 
 # 日志配置

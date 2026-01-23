@@ -1,0 +1,314 @@
+{
+  "success": true,
+  "outline": {
+    "title": "Coq验证入门：从鸡兔同笼看整数算数",
+    "sections": [
+      {
+        "title": "1. 课程引入：古老的数学谜题",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "《孙子算经》中的挑战",
+            "content": "回顾1500年前的经典问题，引出数量关系描述的需求。",
+            "examples": [
+              "上有三十五头",
+              "下有九十四足"
+            ],
+            "key_concepts": [
+              "鸡兔同笼",
+              "线性方程组原型"
+            ]
+          },
+          {
+            "title": "从自然语言到数学语言",
+            "content": "分析日常生活中如何用数字描述物体与属性。",
+            "examples": [
+              "数量：雉兔只数",
+              "几何：长度与面积",
+              "属性：年龄"
+            ],
+            "key_concepts": [
+              "抽象化",
+              "量化描述"
+            ]
+          },
+          {
+            "title": "为什么使用Coq？",
+            "content": "介绍Coq作为验证工具，如何严谨地表达并证明这些关系。",
+            "examples": [
+              "消除歧义",
+              "机器辅助证明"
+            ],
+            "key_concepts": [
+              "形式化验证",
+              "严谨性"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "2. Coq中的数字表达：自然数",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "自然数的归纳定义",
+            "content": "讲解Coq中通过构造函数定义自然数（Peano Arithmetic）的方式。",
+            "examples": [
+              "O (零)",
+              "S n (n的后继)"
+            ],
+            "key_concepts": [
+              "Inductive type",
+              "nat",
+              "Constructors"
+            ]
+          },
+          {
+            "title": "直观理解与代码映射",
+            "content": "演示十进制数字与Coq内部表示的对应关系。",
+            "examples": [
+              "0 -> O",
+              "1 -> S O",
+              "2 -> S (S O)"
+            ],
+            "key_concepts": [
+              "递归结构",
+              "符号映射"
+            ]
+          },
+          {
+            "title": "在Coq中查看数据类型",
+            "content": "使用Check命令验证数字的类型。",
+            "examples": [
+              "Check 0.",
+              "Check (S (S O))."
+            ],
+            "key_concepts": [
+              "Check命令",
+              "类型检查"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "3. 整数算数运算",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "加法运算 (+)",
+            "content": "解析加法在Coq中的递归定义及其使用。",
+            "examples": [
+              "Definition plus (n m : nat) ...",
+              "Compute 3 + 5."
+            ],
+            "key_concepts": [
+              "Fixpoint",
+              "递归函数",
+              "中缀符号"
+            ]
+          },
+          {
+            "title": "乘法运算 (*)",
+            "content": "基于加法定义乘法，理解足数计算的基础（兔有4足）。",
+            "examples": [
+              "2 * c (鸡的脚)",
+              "4 * r (兔的脚)"
+            ],
+            "key_concepts": [
+              "嵌套递归",
+              "运算优先级"
+            ]
+          },
+          {
+            "title": "运算性质初探",
+            "content": "简要介绍算数运算满足的交换律与结合律。",
+            "examples": [
+              "a + b = b + a",
+              "(a + b) + c = a + (b + c)"
+            ],
+            "key_concepts": [
+              "Rewrite",
+              "Reflexivity"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "4. 大小比较与逻辑关系",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "相等关系 (=)",
+            "content": "如何在Coq中表达两个数量相等，这是构建方程的基础。",
+            "examples": [
+              "c + r = 35",
+              "Prop类型"
+            ],
+            "key_concepts": [
+              "Equality",
+              "Proposition"
+            ]
+          },
+          {
+            "title": "不等关系 (<=, <)",
+            "content": "定义与理解小于等于、小于关系。",
+            "examples": [
+              "2 <= 4",
+              "Check 3 < 5."
+            ],
+            "key_concepts": [
+              "leb (boolean)",
+              "le (Prop)",
+              "Total order"
+            ]
+          },
+          {
+            "title": "布尔值 vs 命题",
+            "content": "区分计算结果（bool）与逻辑陈述（Prop）的微妙差别。",
+            "examples": [
+              "true / false",
+              "Provable / Unprovable"
+            ],
+            "key_concepts": [
+              "Bool vs Prop",
+              "Decidability"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "5. 实战：形式化“鸡兔同笼”",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "定义变量与参数",
+            "content": "在Coq中声明鸡（c）和兔（r）作为自然数变量。",
+            "examples": [
+              "Variables c r : nat."
+            ],
+            "key_concepts": [
+              "Context",
+              "Hypothesis"
+            ]
+          },
+          {
+            "title": "构建方程组",
+            "content": "将自然语言的约束条件翻译为Coq命题。",
+            "examples": [
+              "H1: c + r = 35",
+              "H2: 2*c + 4*r = 94"
+            ],
+            "key_concepts": [
+              "Formal Specification",
+              "Modeling"
+            ]
+          },
+          {
+            "title": "验证简单性质",
+            "content": "演示如何证明一个基于上述假设的简单推论。",
+            "examples": [
+              "Goal: 2*r = 24.",
+              "使用简单算术策略 (lia/omega)"
+            ],
+            "key_concepts": [
+              "Proof Goal",
+              "Automation"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "script": {
+    "sections": [
+      {
+        "title": "1. 课程引入：古老的数学谜题",
+        "opening": "现在我们来学习1. 课程引入：古老的数学谜题。",
+        "points": [
+          {
+            "text": "关于《孙子算经》中的挑战的讲解..."
+          },
+          {
+            "text": "关于从自然语言到数学语言的讲解..."
+          },
+          {
+            "text": "关于为什么使用Coq？的讲解..."
+          }
+        ],
+        "closing": "以上就是本章节的主要内容。"
+      },
+      {
+        "title": "2. Coq中的数字表达：自然数",
+        "opening": "现在我们来学习2. Coq中的数字表达：自然数。",
+        "points": [
+          {
+            "text": "关于自然数的归纳定义的讲解..."
+          },
+          {
+            "text": "关于直观理解与代码映射的讲解..."
+          },
+          {
+            "text": "关于在Coq中查看数据类型的讲解..."
+          }
+        ],
+        "closing": "以上就是本章节的主要内容。"
+      },
+      {
+        "title": "3. 整数算数运算",
+        "opening": "现在我们来学习3. 整数算数运算。",
+        "points": [
+          {
+            "text": "关于加法运算 (+)的讲解..."
+          },
+          {
+            "text": "关于乘法运算 (*)的讲解..."
+          },
+          {
+            "text": "关于运算性质初探的讲解..."
+          }
+        ],
+        "closing": "以上就是本章节的主要内容。"
+      },
+      {
+        "title": "4. 大小比较与逻辑关系",
+        "opening": "现在我们来学习4. 大小比较与逻辑关系。",
+        "points": [
+          {
+            "text": "关于相等关系 (=)的讲解..."
+          },
+          {
+            "text": "关于不等关系 (<=, <)的讲解..."
+          },
+          {
+            "text": "关于布尔值 vs 命题的讲解..."
+          }
+        ],
+        "closing": "以上就是本章节的主要内容。"
+      },
+      {
+        "title": "5. 实战：形式化“鸡兔同笼”",
+        "opening": "现在我们来学习5. 实战：形式化“鸡兔同笼”。",
+        "points": [
+          {
+            "text": "关于定义变量与参数的讲解..."
+          },
+          {
+            "text": "关于构建方程组的讲解..."
+          },
+          {
+            "text": "关于验证简单性质的讲解..."
+          }
+        ],
+        "closing": "以上就是本章节的主要内容。"
+      }
+    ]
+  },
+  "metadata": {
+    "generated_at": "2026-01-23T19:03:58.314042",
+    "knowledge_points_count": 1,
+    "style": "简约",
+    "total_slides": 5,
+    "has_formula_markers": true,
+    "has_code_markers": true
+  }
+}

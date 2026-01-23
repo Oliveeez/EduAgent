@@ -1,0 +1,310 @@
+{
+  "success": true,
+  "outline": {
+    "title": "Coq形式化验证入门：整数算术与大小比较",
+    "sections": [
+      {
+        "title": "1. 课程引入：数学与现实世界的映射",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "数量关系的普遍性",
+            "content": "从日常生活中提取数学概念，理解数字在描述客观世界时的作用。",
+            "examples": [
+              "几何图形的长度与面积",
+              "年龄增长与时间计算"
+            ],
+            "key_concepts": [
+              "抽象化",
+              "数量模型"
+            ]
+          },
+          {
+            "title": "经典案例：鸡兔同笼",
+            "content": "通过《孙子算经》中的经典问题，引出线性方程组与算术逻辑的思考。",
+            "examples": [
+              "上有三十五头，下有九十四足",
+              "雉兔各几何？"
+            ],
+            "key_concepts": [
+              "约束条件",
+              "逻辑推理"
+            ]
+          },
+          {
+            "title": "为何使用Coq验证",
+            "content": "对比传统笔算与机器验证的区别，强调形式化验证的严谨性。",
+            "examples": [
+              "避免人工计算疏漏",
+              "计算机辅助证明"
+            ],
+            "key_concepts": [
+              "形式化验证",
+              "机器证明"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "2. Coq基础：整数类型与基本运算",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "Coq中的数字类型",
+            "content": "介绍Coq中表示整数的两种主要方式：自然数(nat)与整数(Z)。",
+            "examples": [
+              "nat: 0, S 0, S (S 0)...",
+              "Z: ..., -1, 0, 1, ..."
+            ],
+            "key_concepts": [
+              "Inductive Types",
+              "ZArith库"
+            ]
+          },
+          {
+            "title": "基本算术运算符",
+            "content": "演示如何在Coq中编写加减乘除及取模运算。",
+            "examples": [
+              "Check (3 + 4).",
+              "Compute (35 * 2)."
+            ],
+            "key_concepts": [
+              "Compute命令",
+              "Infix Notation"
+            ]
+          },
+          {
+            "title": "大小比较与布尔逻辑",
+            "content": "如何在Coq中表达大于、小于、等于等关系。",
+            "examples": [
+              "x < y",
+              "x >= y",
+              "x =? y"
+            ],
+            "key_concepts": [
+              "Prop (命题)",
+              "bool (布尔值)"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "3. 描述数量关系：命题的构建",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "将文字转换为Coq命题",
+            "content": "学习如何将自然语言描述的数学关系转化为Coq代码。",
+            "examples": [
+              "“x是偶数” -> exists k, x = 2 * k",
+              "“a比b大5” -> a = b + 5"
+            ],
+            "key_concepts": [
+              "Definition",
+              "Exists"
+            ]
+          },
+          {
+            "title": "逻辑连接词的使用",
+            "content": "使用逻辑与(/\\)、或(\\/)、蕴含(->)构建复杂条件。",
+            "examples": [
+              "头总数 constraint: C + R = 35",
+              "足总数 constraint: 2*C + 4*R = 94"
+            ],
+            "key_concepts": [
+              "Conjunction",
+              "Implication"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "4. 核心证明策略：自动化算术证明",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "证明环境初探",
+            "content": "介绍Coq证明模式的基本界面与工作流。",
+            "examples": [
+              "Proof.",
+              "Qed."
+            ],
+            "key_concepts": [
+              "Goal",
+              "Context"
+            ]
+          },
+          {
+            "title": "基础策略：simpl与reflexivity",
+            "content": "处理计算相等性的最简单策略。",
+            "examples": [
+              "证明 1 + 1 = 2",
+              "化简表达式"
+            ],
+            "key_concepts": [
+              "simpl",
+              "reflexivity"
+            ]
+          },
+          {
+            "title": "算术神技：lia策略",
+            "content": "详细讲解Linear Integer Arithmetic (lia) 策略，用于自动解决整数线性规划问题。",
+            "examples": [
+              "Require Import Lia.",
+              "证明 x > 10 -> x + 5 > 15"
+            ],
+            "key_concepts": [
+              "lia",
+              "自动化战术"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "5. 综合实战：鸡兔同笼问题的Coq求解",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "问题建模",
+            "content": "在Coq中正式定义鸡兔同笼的变量与约束。",
+            "examples": [
+              "Variable c r : Z. (鸡与兔的数量)",
+              "Hypothesis heads : c + r = 35."
+            ],
+            "key_concepts": [
+              "Section",
+              "Variable/Hypothesis"
+            ]
+          },
+          {
+            "title": "编写定理",
+            "content": "提出需要证明的目标：鸡23只，兔12只。",
+            "examples": [
+              "Theorem solve_puzzle : c = 23 /\\ r = 12."
+            ],
+            "key_concepts": [
+              "Theorem",
+              "Goal Statement"
+            ]
+          },
+          {
+            "title": "执行证明",
+            "content": "运用lia策略一步完成证明，并展示手动推导过程对比。",
+            "examples": [
+              "intros.",
+              "lia."
+            ],
+            "key_concepts": [
+              "Proof Script",
+              "Qed"
+            ]
+          },
+          {
+            "title": "扩展思考",
+            "content": "如果脚的数量是奇数怎么办？利用Coq发现矛盾。",
+            "examples": [
+              "93只脚的情况",
+              "证明 False"
+            ],
+            "key_concepts": [
+              "无解证明",
+              "Contradiction"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "script": {
+    "sections": [
+      {
+        "title": "1. 课程引入：数学与现实世界的映射",
+        "opening": "大家好，欢迎来到Coq形式化验证的世界。在开始写代码之前，我想先和大家聊聊数学与我们所处现实世界的关系。我们常说数学是抽象的，但这种抽象其实是为了更精准地描述现实。",
+        "points": [
+          {
+            "text": "大家环顾四周，数学其实无处不在。我们会用数字来标记年龄的增长，用几何参数来计算房间的面积。这种将客观事物转化为“数量模型”的过程，就是我们认识世界的第一步。在编程语言中，我们处理的是数据；而在形式化验证中，我们处理的是这些数据背后的逻辑真理。"
+          },
+          {
+            "text": "为了让今天的课程更有趣，我们穿越回1500年前，看看《孙子算经》里那个著名的难题——“鸡兔同笼”。书里说：“今有雉兔同笼，上有三十五头，下有九十四足，问雉兔各几何？”\n这其实就是一个典型的线性约束问题。如果我们用数学语言表达，设鸡为 $C$，兔为 $R$，那么就有两个约束条件：\n1. 头数总和：$C + R = 35$\n2. 脚数总和：$2C + 4R = 94$\n我们的目标就是找到满足这两个方程的整数解。"
+          },
+          {
+            "text": "你们可能会问：“老师，这道题我手算两分钟就出来了，为什么要用Coq？”\n问得好。对于简单的算术，人脑确实很快。但是，当约束条件变成几百个，或者逻辑链条变得极其复杂时，人脑就会犯错。Coq的作用，就是提供一个绝对严谨的验证环境。我们不仅仅是在“算”出一个结果，更是在从逻辑上“证明”这个结果是唯一且正确的。这就是形式化验证的核心价值。"
+          }
+        ],
+        "closing": "明确了这一点，接下来让我们打开Coq IDE，看看如何在计算机的逻辑世界里重构这些算术概念。"
+      },
+      {
+        "title": "2. Coq基础：整数类型与基本运算",
+        "opening": "工欲善其事，必先利其器。要在Coq里解决数学问题，我们首先得知道Coq怎么“说话”，也就是它的基本数据类型。",
+        "points": [
+          {
+            "text": "在Coq中，表示数字主要有两种方式。一种是自然数 `nat`，它像多米诺骨牌一样，从0开始，用 <code_start>`S 0`<code_end> 表示1，<code_start>`S (S 0)`<code_end> 表示2，适合做归纳证明。但对于今天的代数问题，我推荐大家使用整数类型 `Z`，它包含正负数，更符合我们对代数的直觉。\n我们需要先引入标准库：\n<code_start>```coq\nRequire Import ZArith.\nOpen Scope Z_scope.\n```<code_end>"
+          },
+          {
+            "text": "接下来是基本运算。加减乘除在Coq里的写法和普通编程语言差不多。我们可以用 `Check` 命令查看类型，用 `Compute` 命令让Coq帮我们计算结果。\n比如，我们要算35乘以2：\n<code_start>```coq\nCompute (35 * 2).\n(* 输出: = 70 : Z *)\n```<code_end>\n非常直观，对吧？"
+          },
+          {
+            "text": "除了计算，更重要的是“比较”。我们需要表达“大于”、“小于”或“等于”。在Coq里，像 <code_start>`x < y`<code_end> 这样的表达式，它代表的是一个“命题”（Prop）。命题是对某种客观事实的陈述，它可能是真的，也可能是假的，这和布尔值（bool）的true/false在概念上是有区别的，大家在后续的学习中要慢慢体会这种差异。"
+          }
+        ],
+        "closing": "掌握了这些基本的积木块，下一节我们就可以开始搭建“句子”，也就是构建数学命题了。"
+      },
+      {
+        "title": "3. 描述数量关系：命题的构建",
+        "opening": "学会了单词，现在我们来学习造句。在形式化验证中，这一步叫作“形式化规范”，也就是把人类语言翻译成Coq能听懂的逻辑公式。",
+        "points": [
+          {
+            "text": "举个简单的例子，如果我想说“x是偶数”，在数学上意味着存在一个整数k，使得x等于2k。在Coq里，我们这样写：\n<code_start>```coq\nexists k : Z, x = 2 * k\n``<code_start>`<code_end>\n如果我说“a比b大5”，那就是 `<code_end>a = b + 5`。这种转化的能力非常关键。"
+          },
+          {
+            "text": "回到鸡兔同笼问题，我们需要同时满足“头”和“脚”两个条件。这时就需要用到逻辑连接词。我们用 <code_start>`/\\`<code_end> 表示“并且”（AND），用 <code_start>`->`<code_end> 表示“蕴含”（Implication）。\n我们可以把问题的约束写成这样一个逻辑表达式：\n<code_start>```coq\n(c + r = 35) /\\ (2 * c + 4 * r = 94)\n```<code_end>\n这一行代码，就精确地描述了“鸡兔同笼”的核心规则。"
+          }
+        ],
+        "closing": "好，现在规则制定好了。但这只是摆出了问题，还没有解决问题。接下来，我要教大家使用Coq最强大的武器——自动化证明策略。"
+      },
+      {
+        "title": "4. 核心证明策略：自动化算术证明",
+        "opening": "在Coq中，我们通过进入“证明模式”来解题。这就像是你在黑板上一步步写推导过程，Coq会在旁边盯着你，确保你每一步都没写错。",
+        "points": [
+          {
+            "text": "基本的证明流程是以 <code_start>`Proof.`<code_end> 开始，以 <code_start>`Qed.`<code_end> 结束。如果是证明像 $1+1=2$ 这样简单的计算相等性，我们可以使用 `simpl`（化简）策略，或者直接用 `reflexivity`（自反性），告诉Coq：“这左右两边显然是一样的，别算了。”"
+          },
+          {
+            "text": "但是，面对代数方程组，手动推导太累了。比如证明 <code_start>`x > 10 -> x + 5 > 15`<code_end>，我们要用到加法的单调性等性质。幸运的是，Coq提供了一个针对整数线性算术的神级策略，叫做 `lia` (Linear Integer Arithmetic)。"
+          },
+          {
+            "text": "请大家记住这个策略：`lia`。\n它能自动处理加法、减法、乘常数以及大小比较。只要你的问题属于线性整数规划的范畴，敲入 <code_start>`lia.`<code_end>，Coq就会自动在后台搜索证明路径，直接告诉你“得证”。这比我们自己在草稿纸上解方程要快得多，也稳得多。"
+          }
+        ],
+        "closing": "有了 `lia` 这个神器，我们终于可以向“鸡兔同笼”发起总攻了。"
+      },
+      {
+        "title": "5. 综合实战：鸡兔同笼问题的Coq求解",
+        "opening": "现在，让我们把前面学到的所有内容整合起来，用一段完整的Coq代码来终结这个问题。",
+        "points": [
+          {
+            "text": "首先，我们建立一个 `Section`，这相当于划定了一个变量的作用域。我们声明两个整数变量 `c` 和 `r`，分别代表鸡和兔的数量。\n<code_start>```coq\nSection Puzzle.\n  Variables c r : Z.\n```<code_end>"
+          },
+          {
+            "text": "然后，我们把题目中的已知条件作为“假设”（Hypothesis）列出来：\n<code_start>```coq\n  Hypothesis heads : c + r = 35.\n  Hypothesis feet : 2 * c + 4 * r = 94.\n``<code_start>`<code_end>\n这里 `<code_end>heads` 和 `feet` 是我们给这两个条件起的名字，以后可以用它们来引用这些事实。"
+          },
+          {
+            "text": "接下来是我们要证明的目标（Theorem）。根据心算，我们知道鸡是23只，兔是12只。我们来验证这个结论：\n<code_start>```coq\n  Theorem solve_puzzle : c = 23 /\\ r = 12.\n  Proof.\n    lia. \n  Qed.\n``<code_start>`<code_end>\n大家看，见证奇迹的时刻！只要输入 `<code_end>lia.`，Coq立即提示证明完成。它在底层自动完成了解方程组的所有步骤。"
+          },
+          {
+            "text": "最后，我们来做一个更有趣的思维拓展。如果我把脚的数量改成93只，会发生什么？\n我们知道93是奇数，而鸡和兔的脚都是偶数，这显然无解。在Coq里，我们可以证明这会导致矛盾：\n<code_start>```coq\n  Hypothesis bad_feet : 2 * c + 4 * r = 93.\n  Theorem impossible : False.\n  Proof. lia. Qed.\n``<code_start>`<code_end>\n这里的 `<code_end>False` 代表逻辑上的谬误。`lia` 能够识别出 $2c+4r$ 必须是偶数，从而发现 $93$ 是不可能存在的，进而证明了前提条件的荒谬性。"
+          }
+        ],
+        "closing": "通过这个案例，我们不仅解决了一个古老的数学题，更重要的是，我们体验了从“自然语言建模”到“形式化描述”，再到“自动化证明”的完整流程。这就是Coq验证的魅力所在。希望大家课后能自己动手试一试，去验证更多有趣的数学规律！"
+      }
+    ]
+  },
+  "metadata": {
+    "generated_at": "2026-01-23T18:52:13.344272",
+    "knowledge_points_count": 1,
+    "style": "简约",
+    "total_slides": 5,
+    "has_formula_markers": true,
+    "has_code_markers": true
+  }
+}

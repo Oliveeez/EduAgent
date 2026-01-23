@@ -1,0 +1,363 @@
+{
+  "success": true,
+  "outline": {
+    "title": "Coq形式化验证入门：整数算数与逻辑",
+    "sections": [
+      {
+        "title": "1. 引言：从生活到形式化",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "数学无处不在",
+            "content": "日常生活中的数量关系是数学的基础，也是形式化验证的起点。",
+            "examples": [
+              "几何图形的长度与面积",
+              "人的年龄增长"
+            ],
+            "key_concepts": [
+              "数量",
+              "度量"
+            ]
+          },
+          {
+            "title": "为什么要用Coq？",
+            "content": "不仅进行计算，更重要的是确保逻辑的正确性和无歧义性。",
+            "examples": [
+              "软件安全性验证",
+              "数学定理证明"
+            ],
+            "key_concepts": [
+              "形式化验证",
+              "Coq工具"
+            ]
+          },
+          {
+            "title": "本章目标",
+            "content": "学会用Coq语言描述简单的整数运算及大小关系，并尝试解决经典数学问题。",
+            "examples": [
+              "定义自然数",
+              "解决鸡兔同笼"
+            ],
+            "key_concepts": [
+              "建模",
+              "证明"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "2. Coq中的自然数定义",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "皮亚诺公理 (Peano Axioms)",
+            "content": "在Coq中，自然数是通过归纳类型定义的，而非计算机底层的二进制。",
+            "examples": [
+              "0 是自然数 (O)",
+              "n 是自然数，则 n 的后继 (S n) 也是自然数"
+            ],
+            "key_concepts": [
+              "Inductive type",
+              "nat"
+            ]
+          },
+          {
+            "title": "数值的表示",
+            "content": "理解Coq内部如何构造数字。",
+            "examples": [
+              "0 -> O",
+              "1 -> S O",
+              "2 -> S (S O)"
+            ],
+            "key_concepts": [
+              "Constructor",
+              "Successor"
+            ]
+          },
+          {
+            "title": "代码演示",
+            "content": "Coq标准库中 `nat` 的定义代码解析。",
+            "examples": [
+              "Inductive nat : Set := O | S (n : nat)."
+            ],
+            "key_concepts": [
+              "Set",
+              "Type System"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "3. 基本算数运算",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "加法与乘法",
+            "content": "基于递归函数定义的运算逻辑。",
+            "examples": [
+              "Fixpoint plus (n m : nat) ...",
+              "Fixpoint mult (n m : nat) ..."
+            ],
+            "key_concepts": [
+              "Fixpoint",
+              "Recursion"
+            ]
+          },
+          {
+            "title": "符号表示 (Notation)",
+            "content": "为了书写方便，将函数映射为常见数学符号。",
+            "examples": [
+              "x + y 对应 plus x y",
+              "x * y 对应 mult x y"
+            ],
+            "key_concepts": [
+              "Notation",
+              "Syntactic sugar"
+            ]
+          },
+          {
+            "title": "计算指令",
+            "content": "使用Coq命令验证计算结果。",
+            "examples": [
+              "Compute 1 + 1.",
+              "Compute 5 * 3."
+            ],
+            "key_concepts": [
+              "Compute",
+              "Evaluation"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "4. 大小比较与逻辑命题",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "比较关系",
+            "content": "在Coq中，大小比较不仅是计算，更是一种命题 (Proposition)。",
+            "examples": [
+              "Equals: =",
+              "Less than or equal: <="
+            ],
+            "key_concepts": [
+              "Prop",
+              "Relation"
+            ]
+          },
+          {
+            "title": "布尔值 vs 命题",
+            "content": "区分计算视角的 bool (true/false) 与逻辑视角的 Prop (可证明/不可证明)。",
+            "examples": [
+              "bool: (3 < 5) = true",
+              "Prop: 3 <= 5"
+            ],
+            "key_concepts": [
+              "Reflection",
+              "Truth"
+            ]
+          },
+          {
+            "title": "简单性质描述",
+            "content": "如何用代码描述“对于所有n，n小于n+1”。",
+            "examples": [
+              "forall n : nat, n <= n + 1"
+            ],
+            "key_concepts": [
+              "Quantifier (forall)",
+              "Theorem"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "5. 实战：鸡兔同笼问题建模",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "问题重述",
+            "content": "《孙子算经》经典问题：35头，94足，求雉兔几何？",
+            "examples": [
+              "雉(c) + 兔(r) = 35",
+              "2*c + 4*r = 94"
+            ],
+            "key_concepts": [
+              "Problem Statement",
+              "Constraints"
+            ]
+          },
+          {
+            "title": "Coq形式化建模",
+            "content": "定义一个定理，陈述存在满足条件的雉和兔的数量。",
+            "examples": [
+              "Definition heads (c r : nat) := c + r",
+              "Definition feet (c r : nat) := 2*c + 4*r"
+            ],
+            "key_concepts": [
+              "Modeling",
+              "Definitions"
+            ]
+          },
+          {
+            "title": "验证解的正确性",
+            "content": "验证 雉=23, 兔=12 是否满足上述定义。",
+            "examples": [
+              "Goal heads 23 12 = 35 /\\ feet 23 12 = 94."
+            ],
+            "key_concepts": [
+              "Goal",
+              "Conjunction (/\\)"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "6. 证明演示与总结",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "基础策略 (Tactics)",
+            "content": "介绍最基础的证明指令，完成验证过程。",
+            "examples": [
+              "simpl. (化简计算)",
+              "reflexivity. (利用相等性结束证明)"
+            ],
+            "key_concepts": [
+              "Tactics",
+              "Proof Script"
+            ]
+          },
+          {
+            "title": "Qed. 完成",
+            "content": "证明结束的标志与意义。",
+            "examples": [
+              "No more subgoals.",
+              "Qed."
+            ],
+            "key_concepts": [
+              "Verification Complete"
+            ]
+          },
+          {
+            "title": "课程总结",
+            "content": "回顾从自然数定义到解决实际问题的完整形式化流程。",
+            "examples": [
+              "定义 -> 运算 -> 命题 -> 证明"
+            ],
+            "key_concepts": [
+              "Formalization Workflow"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "script": {
+    "sections": [
+      {
+        "title": "1. 引言：从生活到形式化",
+        "opening": "现在我们来学习1. 引言：从生活到形式化。",
+        "points": [
+          {
+            "text": "关于数学无处不在的讲解..."
+          },
+          {
+            "text": "关于为什么要用Coq？的讲解..."
+          },
+          {
+            "text": "关于本章目标的讲解..."
+          }
+        ],
+        "closing": "以上就是本章节的主要内容。"
+      },
+      {
+        "title": "2. Coq中的自然数定义",
+        "opening": "现在我们来学习2. Coq中的自然数定义。",
+        "points": [
+          {
+            "text": "关于皮亚诺公理 (Peano Axioms)的讲解..."
+          },
+          {
+            "text": "关于数值的表示的讲解..."
+          },
+          {
+            "text": "关于代码演示的讲解..."
+          }
+        ],
+        "closing": "以上就是本章节的主要内容。"
+      },
+      {
+        "title": "3. 基本算数运算",
+        "opening": "现在我们来学习3. 基本算数运算。",
+        "points": [
+          {
+            "text": "关于加法与乘法的讲解..."
+          },
+          {
+            "text": "关于符号表示 (Notation)的讲解..."
+          },
+          {
+            "text": "关于计算指令的讲解..."
+          }
+        ],
+        "closing": "以上就是本章节的主要内容。"
+      },
+      {
+        "title": "4. 大小比较与逻辑命题",
+        "opening": "现在我们来学习4. 大小比较与逻辑命题。",
+        "points": [
+          {
+            "text": "关于比较关系的讲解..."
+          },
+          {
+            "text": "关于布尔值 vs 命题的讲解..."
+          },
+          {
+            "text": "关于简单性质描述的讲解..."
+          }
+        ],
+        "closing": "以上就是本章节的主要内容。"
+      },
+      {
+        "title": "5. 实战：鸡兔同笼问题建模",
+        "opening": "现在我们来学习5. 实战：鸡兔同笼问题建模。",
+        "points": [
+          {
+            "text": "关于问题重述的讲解..."
+          },
+          {
+            "text": "关于Coq形式化建模的讲解..."
+          },
+          {
+            "text": "关于验证解的正确性的讲解..."
+          }
+        ],
+        "closing": "以上就是本章节的主要内容。"
+      },
+      {
+        "title": "6. 证明演示与总结",
+        "opening": "现在我们来学习6. 证明演示与总结。",
+        "points": [
+          {
+            "text": "关于基础策略 (Tactics)的讲解..."
+          },
+          {
+            "text": "关于Qed. 完成的讲解..."
+          },
+          {
+            "text": "关于课程总结的讲解..."
+          }
+        ],
+        "closing": "以上就是本章节的主要内容。"
+      }
+    ]
+  },
+  "metadata": {
+    "generated_at": "2026-01-23T18:45:53.561154",
+    "knowledge_points_count": 1,
+    "style": "简约",
+    "total_slides": 6,
+    "has_formula_markers": true,
+    "has_code_markers": true
+  }
+}

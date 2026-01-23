@@ -1,0 +1,294 @@
+{
+  "success": true,
+  "outline": {
+    "title": "形式化验证入门：用Coq解构“鸡兔同笼”",
+    "sections": [
+      {
+        "title": "1. 课程引入：数与现实世界",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "生活中的数量关系",
+            "content": "从具象物体到抽象数字，数学语言如何描述世界。",
+            "examples": [
+              "物体数量与几何长度",
+              "人的年龄增长"
+            ],
+            "key_concepts": [
+              "抽象化",
+              "数量描述"
+            ]
+          },
+          {
+            "title": "历史趣题：鸡兔同笼",
+            "content": "引出《孙子算经》经典问题，建立直观的算术模型。",
+            "examples": [
+              "上有三十五头",
+              "下有九十四足"
+            ],
+            "key_concepts": [
+              "线性方程",
+              "约束条件"
+            ]
+          },
+          {
+            "title": "为什么要用Coq？",
+            "content": "介绍Coq工具的意义：从“算出来”进阶到“证出来”，确保逻辑无误。",
+            "examples": [
+              "避免计算错误",
+              "严谨的逻辑推导"
+            ],
+            "key_concepts": [
+              "Coq",
+              "形式化验证"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "2. Coq中的整数与运算基础",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "自然数的表达 (nat)",
+            "content": "在Coq中如何定义和表示自然数（Natural Numbers）。",
+            "examples": [
+              "Type: nat",
+              "0, 1, 2..."
+            ],
+            "key_concepts": [
+              "Inductive type",
+              "nat"
+            ]
+          },
+          {
+            "title": "算术运算符号",
+            "content": "映射日常加法与乘法到Coq的标准库函数。",
+            "examples": [
+              "加法: + (plus)",
+              "乘法: * (mult)"
+            ],
+            "key_concepts": [
+              "Binary operations",
+              "Notation"
+            ]
+          },
+          {
+            "title": "大小比较与命题",
+            "content": "如何构建比较关系的命题（Proposition），判断真伪。",
+            "examples": [
+              "相等: =",
+              "小于等于: <="
+            ],
+            "key_concepts": [
+              "Prop",
+              "Boolean vs Prop"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "3. 实战演练：形式化“鸡兔同笼”",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "问题建模",
+            "content": "将自然语言问题转化为数学表达式。",
+            "examples": [
+              "设鸡为 c, 兔为 r",
+              "c + r = 35",
+              "2c + 4r = 94"
+            ],
+            "key_concepts": [
+              "变量定义",
+              "方程组"
+            ]
+          },
+          {
+            "title": "Coq代码实现",
+            "content": "编写Coq代码来描述上述约束条件。",
+            "examples": [
+              "Definition heads (c r : nat) := c + r.",
+              "Definition feet (c r : nat) := 2*c + 4*r."
+            ],
+            "key_concepts": [
+              "Definition",
+              "Function"
+            ]
+          },
+          {
+            "title": "验证目标设定",
+            "content": "明确我们需要证明的定理（Theorem）。",
+            "examples": [
+              "Theorem chicken_rabbit_solution :",
+              "heads 23 12 = 35 /\\ feet 23 12 = 94."
+            ],
+            "key_concepts": [
+              "Theorem",
+              "Goal"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "4. 证明过程与策略",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "证明环境初探",
+            "content": "进入Coq证明模式，观察目标状态。",
+            "examples": [
+              "Proof mode",
+              "1 subgoal"
+            ],
+            "key_concepts": [
+              "Proof",
+              "Context"
+            ]
+          },
+          {
+            "title": "化简策略 (simpl)",
+            "content": "使用 simpl 策略进行算术计算与表达式化简。",
+            "examples": [
+              "simpl.",
+              "将 2*23 + 4*12 化简为 94"
+            ],
+            "key_concepts": [
+              "Tactic",
+              "Reduction"
+            ]
+          },
+          {
+            "title": "完成证明 (reflexivity)",
+            "content": "利用自反性证明等式成立，结束证明。",
+            "examples": [
+              "reflexivity.",
+              "Qed."
+            ],
+            "key_concepts": [
+              "Equality",
+              "Completeness"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "5. 总结与延伸",
+        "detail_level": "标准",
+        "points": [
+          {
+            "title": "课程回顾",
+            "content": "从算术直觉到机器验证的完整路径。",
+            "examples": [
+              "建模 -> 编码 -> 证明"
+            ],
+            "key_concepts": [
+              "思维转变"
+            ]
+          },
+          {
+            "title": "更多算术性质",
+            "content": "Coq不仅能计算具体数值，还能证明交换律、结合律等通用性质。",
+            "examples": [
+              "a + b = b + a",
+              "n + 0 = n"
+            ],
+            "key_concepts": [
+              "Universal Quantifier",
+              "forall"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "script": {
+    "sections": [
+      {
+        "title": "1. 课程引入：数与现实世界",
+        "opening": "现在我们来学习1. 课程引入：数与现实世界。",
+        "points": [
+          {
+            "text": "关于生活中的数量关系的讲解..."
+          },
+          {
+            "text": "关于历史趣题：鸡兔同笼的讲解..."
+          },
+          {
+            "text": "关于为什么要用Coq？的讲解..."
+          }
+        ],
+        "closing": "以上就是本章节的主要内容。"
+      },
+      {
+        "title": "2. Coq中的整数与运算基础",
+        "opening": "现在我们来学习2. Coq中的整数与运算基础。",
+        "points": [
+          {
+            "text": "关于自然数的表达 (nat)的讲解..."
+          },
+          {
+            "text": "关于算术运算符号的讲解..."
+          },
+          {
+            "text": "关于大小比较与命题的讲解..."
+          }
+        ],
+        "closing": "以上就是本章节的主要内容。"
+      },
+      {
+        "title": "3. 实战演练：形式化“鸡兔同笼”",
+        "opening": "现在我们来学习3. 实战演练：形式化“鸡兔同笼”。",
+        "points": [
+          {
+            "text": "关于问题建模的讲解..."
+          },
+          {
+            "text": "关于Coq代码实现的讲解..."
+          },
+          {
+            "text": "关于验证目标设定的讲解..."
+          }
+        ],
+        "closing": "以上就是本章节的主要内容。"
+      },
+      {
+        "title": "4. 证明过程与策略",
+        "opening": "现在我们来学习4. 证明过程与策略。",
+        "points": [
+          {
+            "text": "关于证明环境初探的讲解..."
+          },
+          {
+            "text": "关于化简策略 (simpl)的讲解..."
+          },
+          {
+            "text": "关于完成证明 (reflexivity)的讲解..."
+          }
+        ],
+        "closing": "以上就是本章节的主要内容。"
+      },
+      {
+        "title": "5. 总结与延伸",
+        "opening": "现在我们来学习5. 总结与延伸。",
+        "points": [
+          {
+            "text": "关于课程回顾的讲解..."
+          },
+          {
+            "text": "关于更多算术性质的讲解..."
+          }
+        ],
+        "closing": "以上就是本章节的主要内容。"
+      }
+    ]
+  },
+  "metadata": {
+    "generated_at": "2026-01-23T18:37:15.110221",
+    "knowledge_points_count": 1,
+    "style": "简约",
+    "total_slides": 5,
+    "has_formula_markers": true,
+    "has_code_markers": true
+  }
+}
