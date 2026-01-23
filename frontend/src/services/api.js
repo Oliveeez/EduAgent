@@ -8,7 +8,7 @@ const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api
 
 const api = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 300000, // 5分钟超时（某些操作可能很耗时）
+  timeout: 1800000, // 5分钟超时（某些操作可能很耗时）
   headers: {
     'Content-Type': 'application/json',
   },
@@ -70,6 +70,58 @@ export const extractKnowledgeGraph = async (fileId) => {
  */
 export const getKnowledgeGraph = async (kgId) => {
   const response = await api.get(`/step1/kg/${kgId}`);
+  return response.data;
+};
+
+/**
+ * 获取可视化知识图谱（nodes/links）
+ */
+export const getKnowledgeGraphViz = async (kgId) => {
+  const response = await api.get(`/step1/kg/${kgId}/viz`);
+  return response.data;
+};
+
+export const listKnowledgeGraphVizFiles = async () => {
+  const response = await api.get('/step1/kg-viz-list');
+  return response.data;
+};
+
+// ========== Visual Graph API ==========
+
+export const getVisualGraphStats = async (kgId) => {
+  const response = await api.get('/stats', {
+    params: kgId ? { kg_id: kgId } : {},
+  });
+  return response.data;
+};
+
+export const getVisualGraphData = async (maxLevel, kgId) => {
+  const params = {};
+  if (maxLevel === null) {
+    params.max_level = 'all';
+  } else if (maxLevel !== undefined) {
+    params.max_level = maxLevel;
+  }
+  if (kgId) {
+    params.kg_id = kgId;
+  }
+  const response = await api.get('/graph', { params });
+  return response.data;
+};
+
+export const getVisualNodeDetail = async (nodeId, kgId) => {
+  const response = await api.get(`/node/${nodeId}`, {
+    params: kgId ? { kg_id: kgId } : {},
+  });
+  return response.data;
+};
+
+export const searchVisualNodes = async (query, kgId) => {
+  const params = { q: query };
+  if (kgId) {
+    params.kg_id = kgId;
+  }
+  const response = await api.get('/search', { params });
   return response.data;
 };
 

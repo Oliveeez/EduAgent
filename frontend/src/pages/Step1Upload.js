@@ -2,11 +2,11 @@
  * Step 1: 上传LaTeX文件并提取知识图谱
  */
 
-import React, { useState } from 'react';
-import { Upload, Button, Card, Spin, message, Progress, Result } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Upload, Button, Card, Spin, message, Progress, Result, Select } from 'antd';
 import { InboxOutlined, ArrowRightOutlined } from '@ant-design/icons';
-import { uploadLatex, extractKnowledgeGraph } from '../services/api';
-import KnowledgeGraphVisualization from '../components/KnowledgeGraphVisualization';
+import { uploadLatex, extractKnowledgeGraph, listKnowledgeGraphVizFiles } from '../services/api';
+import VisualGraphDashboard from '../components/visual/VisualGraphDashboard';
 
 const { Dragger } = Upload;
 
@@ -16,6 +16,24 @@ function Step1Upload({ sessionData, updateSessionData, onNext }) {
   const [extracting, setExtracting] = useState(false);
   const [progress, setProgress] = useState(0);
   const [kgData, setKgData] = useState(null);
+  const [vizOptions, setVizOptions] = useState([]);
+  const [existingKgId, setExistingKgId] = useState(null);
+
+  useEffect(() => {
+    const fetchVizList = async () => {
+      try {
+        const data = await listKnowledgeGraphVizFiles();
+        const items = data.items || [];
+        setVizOptions(items);
+        if (items.length > 0) {
+          setExistingKgId(items[0].kg_id);
+        }
+      } catch (error) {
+        console.error('Failed to fetch viz list:', error);
+      }
+    };
+    fetchVizList();
+  }, []);
 
   const handleFileChange = (info) => {
     // 当beforeUpload返回false时，直接从fileList获取文件
@@ -81,6 +99,23 @@ function Step1Upload({ sessionData, updateSessionData, onNext }) {
     onNext();
   };
 
+  const handleUseExisting = () => {
+    if (!existingKgId) {
+      message.warning('暂无可用的可视化图谱');
+      return;
+    }
+    setKgData({
+      kg_id: existingKgId,
+      knowledge_points: [],
+      statistics: {},
+    });
+    updateSessionData({
+      kgId: existingKgId,
+      kgData: { kg_id: existingKgId },
+    });
+    message.success('已加载已有知识图谱');
+  };
+
   return (
     <div className="step-container">
       <Card title="📖 Step 1: 上传LaTeX文档并提取知识图谱" className="step-card">
@@ -114,6 +149,24 @@ function Step1Upload({ sessionData, updateSessionData, onNext }) {
             >
               {uploading ? '上传中...' : extracting ? '提取知识图谱中...' : '上传并提取知识图谱'}
             </Button>
+            <Button
+              size="large"
+              onClick={handleUseExisting}
+              disabled={uploading || extracting}
+            >
+              使用已有图谱
+            </Button>
+            <Select
+              style={{ minWidth: 260 }}
+              value={existingKgId}
+              onChange={setExistingKgId}
+              placeholder="选择已有图谱"
+              options={vizOptions.map((item) => ({
+                value: item.kg_id,
+                label: item.filename,
+              }))}
+              disabled={uploading || extracting}
+            />
           </div>
 
           {(uploading || extracting) && (
@@ -141,7 +194,7 @@ function Step1Upload({ sessionData, updateSessionData, onNext }) {
             />
 
             <Card title="🔍 知识图谱可视化" className="visualization-card">
-              <KnowledgeGraphVisualization data={kgData.visualization} />
+              <VisualGraphDashboard kgId={kgData?.kg_id || existingKgId} />
             </Card>
 
             <div className="knowledge-points-summary">
