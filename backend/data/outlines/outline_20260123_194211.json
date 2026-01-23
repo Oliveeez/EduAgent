@@ -1,0 +1,325 @@
+{
+  "success": true,
+  "outline": {
+    "title": "Coq形式化验证入门：整数算数与大小比较",
+    "sections": [
+      {
+        "title": "1. 课程引入：从生活到形式化",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "数学概念的日常映射",
+            "content": "算术与数量关系是描述世界的基石，将自然语言转化为数学语言是验证的第一步。",
+            "examples": [
+              "物体数量与几何长度",
+              "年龄增长与时间计算"
+            ],
+            "key_concepts": [
+              "抽象化",
+              "数量关系"
+            ]
+          },
+          {
+            "title": "经典案例：鸡兔同笼",
+            "content": "引自《孙子算经》，通过经典代数问题引出形式化建模的需求。",
+            "examples": [
+              "今有雉兔同笼",
+              "上有三十五头，下有九十四足"
+            ],
+            "key_concepts": [
+              "《孙子算经》",
+              "约束条件"
+            ]
+          },
+          {
+            "title": "为什么使用Coq？",
+            "content": "超越传统计算，使用计算机辅助证明确保逻辑的绝对正确性。",
+            "examples": [
+              "避免人工推导错误",
+              "形式化验证的严谨性"
+            ],
+            "key_concepts": [
+              "Coq Proof Assistant",
+              "形式化验证"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "2. Coq中的整数定义与表达",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "自然数与整数类型",
+            "content": "介绍Coq标准库中的数据类型，区分自然数(nat)与整数(Z)。",
+            "examples": [
+              "nat: 0, S 0, S (S 0)...",
+              "Z: ..., -1, 0, 1, ..."
+            ],
+            "key_concepts": [
+              "Inductive Type",
+              "nat vs Z"
+            ]
+          },
+          {
+            "title": "基本数值定义语法",
+            "content": "学习如何使用Definition关键字在Coq中定义具体数值。",
+            "examples": [
+              "Definition heads : nat := 35.",
+              "Definition feet : nat := 94."
+            ],
+            "key_concepts": [
+              "Definition",
+              ":="
+            ]
+          },
+          {
+            "title": "环境检查命令",
+            "content": "使用Check与Compute命令验证定义类型及计算结果。",
+            "examples": [
+              "Check 35.",
+              "Compute (1 + 1)."
+            ],
+            "key_concepts": [
+              "Check",
+              "Compute"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "3. 算术运算的实现",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "基础二元运算",
+            "content": "深入解析加法、减法与乘法在Coq中的符号表示与优先级。",
+            "examples": [
+              "x + y",
+              "x - y (注意nat减法的截断特性)",
+              "x * y"
+            ],
+            "key_concepts": [
+              "Binary Operations",
+              "Truncated Substraction"
+            ]
+          },
+          {
+            "title": "函数式定义初探",
+            "content": "简要说明加法是如何通过递归(Fixpoint)定义的（Peano算术视角）。",
+            "examples": [
+              "0 + m = m",
+              "S n + m = S (n + m)"
+            ],
+            "key_concepts": [
+              "Fixpoint",
+              "Pattern Matching"
+            ]
+          },
+          {
+            "title": "复杂表达式构建",
+            "content": "组合简单的运算构建描述“鸡兔同笼”腿数的表达式。",
+            "examples": [
+              "Definition calc_feet (c r : nat) := 2 * c + 4 * r."
+            ],
+            "key_concepts": [
+              "Function Definition",
+              "Argument Binding"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "4. 大小比较与命题逻辑",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "比较运算符",
+            "content": "区分布尔比较(Boolean)与命题比较(Proposition)的差异。",
+            "examples": [
+              "x =? y (bool)",
+              "x = y (Prop)",
+              "x <= y"
+            ],
+            "key_concepts": [
+              "Boolean vs Prop",
+              "Equality"
+            ]
+          },
+          {
+            "title": "构建数学命题",
+            "content": "如何用Coq语言陈述一个待证明的事实。",
+            "examples": [
+              "Theorem simple_math: 1 + 1 = 2.",
+              "Lemma chicken_rabbit_check: ..."
+            ],
+            "key_concepts": [
+              "Theorem",
+              "Lemma"
+            ]
+          },
+          {
+            "title": "比较关系的性质",
+            "content": "简述自反性、对称性与传递性在Coq库中的体现。",
+            "examples": [
+              "forall n, n <= n",
+              "n <= m -> m <= k -> n <= k"
+            ],
+            "key_concepts": [
+              "Reflexivity",
+              "Transitivity"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "5. 基础证明策略与实战",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "进入证明模式",
+            "content": "理解Proof script的结构，从Goal到Qed的过程。",
+            "examples": [
+              "Proof.",
+              "...",
+              "Qed."
+            ],
+            "key_concepts": [
+              "Proof Mode",
+              "Goals"
+            ]
+          },
+          {
+            "title": "核心策略：simpl 与 reflexivity",
+            "content": "学习最基本的计算化简与等值判断策略。",
+            "examples": [
+              "simpl. (化简计算)",
+              "reflexivity. (证明左右相等)"
+            ],
+            "key_concepts": [
+              "Reduction",
+              "Reflexivity"
+            ]
+          },
+          {
+            "title": "解决鸡兔同笼问题",
+            "content": "定义解（鸡23，兔12）并验证其符合头数和脚数的约束。",
+            "examples": [
+              "Definition c := 23. Definition r := 12.",
+              "Example check_heads: c + r = 35.",
+              "Example check_feet: 2*c + 4*r = 94."
+            ],
+            "key_concepts": [
+              "Verification",
+              "Exact Proof"
+            ]
+          },
+          {
+            "title": "回顾与总结",
+            "content": "回顾从自然语言问题到Coq代码实现并验证的全过程。",
+            "examples": [
+              "建模 -> 定义 -> 验证",
+              "Coq不仅计算，更在于'确认'"
+            ],
+            "key_concepts": [
+              "Formal Workflow",
+              "Reliability"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "script": {
+    "sections": [
+      {
+        "title": "1. 课程引入：从生活到形式化",
+        "opening": "同学们大家好，欢迎来到Coq形式化验证的世界。我们常说数学是描述宇宙的语言，但在进入复杂的证明之前，我们需要先学会如何像计算机一样思考，把我们习以为常的生活概念翻译成严谨的代码。今天这节课，我们就从最基础的“数”开始。",
+        "points": [
+          {
+            "text": "首先，我们来谈谈**数学概念的日常映射**。算术与数量关系可以说是我们感知世界的第一步。无论是数桌子上有几个苹果，测量一个房间的长度，还是计算一个人的年龄，这本质上都是一种**抽象化**的过程。我们将具体的物体剥离出来，只保留其“数量”属性。在形式化验证中，这一步至关重要：我们需要将自然语言描述的需求，转化为机器可读的数学语言。"
+          },
+          {
+            "text": "为了让大家更有实感，我们引入一个经典的中国古代数学案例——**鸡兔同笼**。大约1500年前的《孙子算经》中有云：‘今有雉兔同笼，上有三十五头，下有九十四足，问雉兔各几何？’\n\n这个问题非常适合作为我们的入门案例，因为它包含了一组明确的**约束条件**：\n1. 头的总数是 $35$。\n2. 脚的总数是 $94$。\n我们要做的，就是在Coq中建立模型来描述这些约束。"
+          },
+          {
+            "text": "大家可能会问：**为什么我们要用Coq来做小学数学题？** 难道拿纸笔算不出来吗？\n\n当然算得出来。但Coq的意义不在于“计算结果”，而在于**验证逻辑**。人工推导容易犯错，尤其是在系统复杂的时候。而Coq作为一个**交互式定理证明助手 (Proof Assistant)**，它能提供一种绝对的严谨性——如果你的证明通过了Coq的检查，那就意味着在逻辑上是无懈可击的。我们今天用简单的算术做练习，就是为了熟悉这套“绝对正确”的思维方式。"
+          }
+        ],
+        "closing": "好，既然明确了目标，接下来我们就打开Coq的交互界面，看看如何告诉计算机什么是“整数”。"
+      },
+      {
+        "title": "2. Coq中的整数定义与表达",
+        "opening": "在Coq的标准库中，数并不是只有一种类型。就像我们在编程中区分`int`和<code_start>`unsigned int`<code_end>一样，Coq区分得更细致。我们先来了解两种最基础的类型。",
+        "points": [
+          {
+            "text": "第一种是**自然数 (nat)**，这是Coq中最基础的归纳类型。它的定义非常有趣，是基于皮亚诺算术公理的：\n* $0$ 是自然数。\n* 如果 $n$ 是自然数，那么 $S\\ n$ (即 $n$ 的后继) 也是自然数。\n所以，$1$ 就是 <code_start>`S 0`<code_end>，$2$ 就是 <code_start>`S (S 0)`<code_end>。虽然看起来很繁琐，但Coq允许我们直接写阿拉伯数字。\n\n第二种是**整数 (Z)**，它包含负数。对于鸡兔同笼这种计数问题，我们通常使用 `nat` 就足够了，因为它天然保证了数量非负。"
+          },
+          {
+            "text": "接下来是**基本数值定义语法**。在Coq中，我们使用 `Definition` 关键字来给一个数值起名字。比如我们要定义题目中的已知条件：\n\n<code_start>```coq\nDefinition heads : nat := 35.\nDefinition feet : nat := 94.\n```<code_end>\n\n请注意这里的语法结构：`Definition 名字 : 类型 := 值.` 最后别忘了那个英文句号，它表示语句的结束。"
+          },
+          {
+            "text": "定义写好了，我们怎么知道对不对呢？这时候就需要用到**环境检查命令**。\n\n我们可以使用 `Check` 命令来查看一个标识符的类型：\n<code_start>```coq\nCheck heads.\n(* 输出: heads : nat *)\n```<code_end>\n\n如果我们想看计算结果，可以使用 `Compute`：\n<code_start>```coq\nCompute (1 + 1).\n(* 输出: = 2 : nat *)\n```<code_end>\n这两个命令是大家在编写证明脚本时最常用的调试工具。"
+          }
+        ],
+        "closing": "学会了定义数字，下一步我们需要让这些数字“动”起来，也就是进行算术运算。"
+      },
+      {
+        "title": "3. 算术运算的实现",
+        "opening": "有了数字，自然少不了加减乘除。在Coq中，这些运算符号大家应该很眼熟，但它们背后的一些细节需要特别注意。",
+        "points": [
+          {
+            "text": "首先看**基础二元运算**。加法 <code_start>`+`<code_end> 和乘法 <code_start>`*`<code_end> 的行为和大家预期的完全一致。但是，**减法 <code_start>`-`<code_end> 在 `nat` 类型下是特殊的**。\n\n由于自然数不能是负数，Coq中的自然数减法是**截断减法 (Truncated Subtraction)**。也就是说，如果你计算 $3 - 5$，结果不是 $-2$，而是 $0$。\n<code_start>```coq\nCompute (3 - 5).\n(* 结果是 0 *)\n```<code_end>\n这一点在处理方程变换时必须格外小心，这也是为什么形式化验证要求我们对数据类型特性极其敏感。"
+          },
+          {
+            "text": "从**函数式定义**的角度来看，这些运算符本质上都是递归函数 (`Fixpoint`)。比如加法是如何定义的？\n* $0 + m = m$\n* <formula_start>$(S\\ n) + m = S\\ (n + m)$<formula_end>\n\n这其实就是把左边的数一层层剥开（Pattern Matching），加到右边去。理解这一点有助于我们理解后续的证明策略 `simpl` 是如何在底层工作的。"
+          },
+          {
+            "text": "现在，让我们回到鸡兔同笼问题，尝试**构建复杂表达式**。假设我们知道鸡的数量是 `c`，兔的数量是 `r`，如何计算脚的总数？我们可以定义一个简单的函数：\n\n<code_start>```coq\nDefinition calc_feet (c r : nat) := 2 * c + 4 * r.\n```<code_end>\n\n这里 `c` 和 `r` 是参数，我们将它们绑定起来，用算术运算符连接，这就完成了一个简单的数学建模。"
+          }
+        ],
+        "closing": "模型建好了，我们怎么判断这个模型计算出的结果是否符合题目要求呢？这就涉及到了大小比较和逻辑命题。"
+      },
+      {
+        "title": "4. 大小比较与命题逻辑",
+        "opening": "在编程语言中，<code_start>`x == y`<code_end> 通常返回 `true` 或 `false`。但在Coq这种逻辑系统中，我们需要区分“计算上的相等”和“逻辑上的相等”。这是一个非常重要的概念转折。",
+        "points": [
+          {
+            "text": "我们要区分**布尔比较 (Boolean) 与 命题比较 (Proposition)**。\n\n* <code_start>`x =? y`<code_end> 是布尔比较，它是一个计算过程，结果是 `bool` 类型 (true/false)。\n* <code_start>`x = y`<code_end> 是命题，它是一个逻辑声明，类型是 `Prop`。\n\n当我们做验证时，我们关注的是 `Prop`。比如 <code_start>`2 + 2 = 4`<code_end> 是一个类型为 `Prop` 的对象，我们需要提供一个“证据”来证明它是成立的。此外还有不等关系，如 <code_start>`x <= y`<code_end>。"
+          },
+          {
+            "text": "学会了比较，我们就可以**构建数学命题**了。在Coq中，我们用 `Theorem`（定理）、`Lemma`（引理）或 `Example`（示例）来声明我们要证明的事实。\n\n比如，我们要证明 $1+1=2$：\n<code_start>```coq\nTheorem simple_math: 1 + 1 = 2.\n```<code_end>\n写下这句话，Coq并不会直接告诉你对错，而是会把这当成一个待证明的目标（Goal），等待你去解决。"
+          },
+          {
+            "text": "关于**比较关系的性质**，Coq的标准库已经为我们证明了很多基础性质，比如：\n* **自反性**：<code_start>`forall n, n = n`<code_end>\n* **传递性**：如果 <code_start>`n <= m`<code_end> 且 <code_start>`m <= k`<code_end>，则 <code_start>`n <= k`<code_end>。\n\n这些性质是我们后续进行复杂逻辑推演的基石。"
+          }
+        ],
+        "closing": "声明了命题之后，最激动人心的时刻到了——我们要像解谜游戏一样，一步步证明它是真的。"
+      },
+      {
+        "title": "5. 基础证明策略与实战",
+        "opening": "欢迎来到“证明模式”。当我们在Coq中输入 <code_start>`Proof.`<code_end> 之后，交互界面会发生变化，你会看到当前的“目标” (Goal) 和“上下文” (Context)。我们的任务就是消除所有目标。",
+        "points": [
+          {
+            "text": "首先介绍两个最核心的**证明策略 (Tactic)**，它们能解决80%的入门级算术证明。\n\n1.  **<code_start>`simpl.`<code_end>**：它的作用是“化简”。它会根据函数的定义进行计算。比如把 <code_start>`1 + 1`<code_end> 变成 `2`。\n2.  **<code_start>`reflexivity.`<code_end>**：它的含义是“自反性”。如果等号两边长得一模一样（或者经过计算后一模一样），用这个策略就可以直接完成证明。\n\n简单来说：先用 `simpl` 算一算，再用 `reflexivity` 告诉Coq“你看，两边是一样的”。"
+          },
+          {
+            "text": "现在我们来**实战解决鸡兔同笼问题**。假设我们要验证：**鸡23只，兔12只** 是不是这个问题的解。\n\n首先定义解：\n<code_start>```coq\nDefinition c := 23.\nDefinition r := 12.\n```<code_end>\n\n然后验证头数：\n<code_start>```coq\nExample check_heads: c + r = 35.\nProof.\n  simpl.       (* Coq计算 23+12 得到 35，目标变成 35 = 35 *)\n  reflexivity. (* 左右相等，证明完成 *)\nQed.\n```<code_end>\n\n接着验证脚数：\n<code_start>```coq\nExample check_feet: 2 * c + 4 * r = 94.\nProof.\n  simpl.       (* Coq计算 2*23 + 4*12，结果是 94 *)\n  reflexivity. (* 94 = 94，证明通过 *)\nQed.\n```<code_end>"
+          },
+          {
+            "text": "让我们**回顾与总结**一下今天的流程。我们从自然语言的“鸡兔同笼”出发，经历了：\n1.  **建模**：用 `nat` 表达数量。\n2.  **定义**：用函数表达脚的计算逻辑。\n3.  **验证**：提出具体的解，并用 `Proof` 证明它满足约束。\n\n这就是形式化验证的基本范式：**Coq不仅是在计算，更是在“确认”每一个逻辑步骤的可靠性。**"
+          }
+        ],
+        "closing": "这节课我们通过简单的整数运算，敲开了Coq形式化验证的大门。希望大家下去后多动手尝试 `Definition` 和 `Proof`，感受这种逻辑严丝合缝的美感。下节课见！"
+      }
+    ]
+  },
+  "metadata": {
+    "generated_at": "2026-01-23T19:42:11.059566",
+    "knowledge_points_count": 1,
+    "style": "简约",
+    "total_slides": 5,
+    "has_formula_markers": true,
+    "has_code_markers": true
+  }
+}

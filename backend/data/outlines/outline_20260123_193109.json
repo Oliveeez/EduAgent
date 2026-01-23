@@ -1,0 +1,327 @@
+{
+  "success": true,
+  "outline": {
+    "title": "Coq验证入门：整数算数运算与大小比较",
+    "sections": [
+      {
+        "title": "1. 课程引入：从生活直觉到形式化数学",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "数学与现实世界的映射",
+            "content": "探讨数字如何描述客观世界，建立从具象事物到抽象符号的认知。",
+            "examples": [
+              "描述物体数量",
+              "几何图形的长度与面积",
+              "人的年龄增长"
+            ],
+            "key_concepts": [
+              "抽象化",
+              "数量关系"
+            ]
+          },
+          {
+            "title": "初识Coq验证工具",
+            "content": "简述Coq作为交互式定理证明辅助工具的作用，强调其在保证数学严谨性上的价值。",
+            "examples": [
+              "代码正确性验证",
+              "数学定理证明"
+            ],
+            "key_concepts": [
+              "Coq",
+              "形式化验证"
+            ]
+          },
+          {
+            "title": "本章核心目标",
+            "content": "明确学习路径：从简单的算术表达入手，最终解决经典的逻辑问题。",
+            "examples": [
+              "掌握基本语法",
+              "解决鸡兔同笼问题"
+            ],
+            "key_concepts": [
+              "学习路线",
+              "目标设定"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "2. Coq中的整数表达基础",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "自然数的归纳定义",
+            "content": "详解Coq中自然数（nat）的构造方式，理解皮亚诺公理在代码中的体现。",
+            "examples": [
+              "O (零)",
+              "S n (后继)"
+            ],
+            "key_concepts": [
+              "Inductive type",
+              "nat",
+              "Constructors"
+            ]
+          },
+          {
+            "title": "代码中的数值表示",
+            "content": "演示如何在Coq环境中书写和查看整数，区分十进制记法与内部构造。",
+            "examples": [
+              "Check 0.",
+              "Check 35."
+            ],
+            "key_concepts": [
+              "Notation",
+              "Check命令"
+            ]
+          },
+          {
+            "title": "类型检查与环境配置",
+            "content": "介绍基础交互命令，确保开发环境正确识别数值类型。",
+            "examples": [
+              "Import Nat.",
+              "Print nat."
+            ],
+            "key_concepts": [
+              "Module导入",
+              "类型系统"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "3. 算术运算与函数定义",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "基本二元运算",
+            "content": "深入讲解加法与乘法在Coq中的定义逻辑（递归定义）。",
+            "examples": [
+              "Fixpoint plus",
+              "a + b",
+              "a * b"
+            ],
+            "key_concepts": [
+              "递归函数",
+              "中缀符号"
+            ]
+          },
+          {
+            "title": "运算的优先级与结合律",
+            "content": "分析复杂算式中的运算顺序，避免常见的括号歧义。",
+            "examples": [
+              "a + b * c",
+              "(a + b) * c"
+            ],
+            "key_concepts": [
+              "优先级",
+              "结合性"
+            ]
+          },
+          {
+            "title": "简单的算术性质验证",
+            "content": "通过Example或Lemma演示简单的计算相等性证明。",
+            "examples": [
+              "Example test: 1 + 1 = 2.",
+              "Proof. reflexivity. Qed."
+            ],
+            "key_concepts": [
+              "Example",
+              "reflexivity"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "4. 大小比较与逻辑命题",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "比较运算符的使用",
+            "content": "讲解如何在Coq中表达大于、小于、等于等关系。",
+            "examples": [
+              "x < y",
+              "x >= y",
+              "x =? y"
+            ],
+            "key_concepts": [
+              "Comparison",
+              "Boolean vs Prop"
+            ]
+          },
+          {
+            "title": "布尔值与命题的区别",
+            "content": "辨析计算结果（bool）与逻辑断言（Prop）的本质不同，这是初学者的重难点。",
+            "examples": [
+              "true/false",
+              "Prop类型"
+            ],
+            "key_concepts": [
+              "bool",
+              "Prop"
+            ]
+          },
+          {
+            "title": "构建简单的比较引理",
+            "content": "练习书写包含不等式的简单证明目标。",
+            "examples": [
+              "Lemma simple_le: 3 <= 5."
+            ],
+            "key_concepts": [
+              "Lemma",
+              "Inequality"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "5. 实战演练：鸡兔同笼问题",
+        "detail_level": "精讲",
+        "points": [
+          {
+            "title": "历史名题背景介绍",
+            "content": "引述《孙子算经》原文，增加课程趣味性并提取关键数学信息。",
+            "examples": [
+              "上有三十五头",
+              "下有九十四足"
+            ],
+            "key_concepts": [
+              "孙子算经",
+              "数学建模"
+            ]
+          },
+          {
+            "title": "问题的形式化建模",
+            "content": "使用Coq语言将自然语言问题转化为逻辑表达式。",
+            "examples": [
+              "Definition heads (c r : nat) := c + r",
+              "Definition feet (c r : nat) := 2*c + 4*r"
+            ],
+            "key_concepts": [
+              "Definition",
+              "参数化"
+            ]
+          },
+          {
+            "title": "提出猜想与验证",
+            "content": "在Coq中定义正确的雉兔数量，并编写定理验证其符合头足总数。",
+            "examples": [
+              "Example solution: heads 23 12 = 35 /\\ feet 23 12 = 94."
+            ],
+            "key_concepts": [
+              "Conjunction (/\\)",
+              "验证过程"
+            ]
+          },
+          {
+            "title": "证明过程详解",
+            "content": "逐步演示如何使用simpl和reflexivity策略完成证明。",
+            "examples": [
+              "Proof script walkthrough",
+              "Compute命令辅助验证"
+            ],
+            "key_concepts": [
+              "simpl",
+              "自动化策略"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "script": {
+    "sections": [
+      {
+        "title": "1. 课程引入：从生活直觉到形式化数学",
+        "opening": "大家好，欢迎来到Coq验证入门课程。今天我们将开始一段有趣的旅程，从最基础的算术出发，去探索如何用严谨的代码来描述这个世界。",
+        "points": [
+          {
+            "text": "首先，让我们聊聊数学与现实世界的关系。在我们日常生活中，算术和数量关系无处不在。当你数桌上有几个苹果时，你在通过数字描述物体的**数量**；当你测量房间大小时，你用到的是**长度与面积**；甚至我们每个人岁数的增长，本质上也是一种数学累加。数学，其实就是我们将具象的客观世界，通过抽象符号进行映射的过程。"
+          },
+          {
+            "text": "既然数学如此重要，我们如何确保我们的计算和逻辑推理是绝对正确的呢？这就引出了我们要学习的主角——**Coq**。Coq不仅仅是一个计算器，它更像是一个拥有无穷智慧的“验算官”。它是一个交互式定理证明辅助工具，主要作用就是帮助我们进行**形式化验证**。简单来说，无论是数学定理的证明，还是关键代码的正确性验证，Coq都能提供机器级别的严谨性保障。"
+          },
+          {
+            "text": "本章作为入门篇，我们的目标非常明确。我们将不急于接触深奥的类型论，而是从大家最熟悉的**整数算术运算**入手。我们将学习如何在Coq中表达数字、定义运算，最终利用这些基础知识，去解决一个流传了1500年的经典逻辑趣题——**鸡兔同笼**问题。"
+          }
+        ],
+        "closing": "好，既然目标已经明确，那让我们先来看看，在Coq的逻辑世界里，究竟什么是“数字”。"
+      },
+      {
+        "title": "2. Coq中的整数表达基础",
+        "opening": "在计算机的底层，数字通常是二进制的0和1，但在Coq的逻辑层面，我们需要从数学公理的角度来重新认识整数。",
+        "points": [
+          {
+            "text": "在Coq中，自然数（`nat`）是通过**归纳法**定义的，这源于著名的皮亚诺公理。我们可以把自然数看作一种数据结构，它只有两个构造器：\n第一是 `O`（大写的字母O），代表零；\n第二是 `S`，代表“后继”（Successor）。\n\n这意味着什么呢？意味着数字 $1$ 其实是 $S(O)$，数字 $2$ 是 $S(S(O))$，以此类推。这种定义方式虽然看起来繁琐，但它在逻辑推导上非常强大，因为它定义了数字产生的“基因”。"
+          },
+          {
+            "text": "当然，在实际写代码时，如果我们每次写数字100都要写100个 `S`，那简直是灾难。Coq非常贴心地为我们提供了语法糖。我们可以直接使用十进制的数字。\n大家可以在编辑器中输入 <code_start>```Check 0.``<code_start>`<code_end> 或者 <code_start>`<code_end>``Check 35.``<code_start>`<code_end>，Coq会告诉我们这些是 `<code_end>nat` 类型的对象。这里的 `Check` 命令就像是一个探测器，用来检查任何表达式的类型。"
+          },
+          {
+            "text": "在开始正式编写证明之前，我们需要确保环境配置正确。Coq通过模块（Module）来组织功能，关于自然数的标准定义和性质通常包含在标准库中。我们通常会使用 <code_start>```Import Nat.``<code_start>`<code_end> 来导入相关的定义，并可以用 <code_start>`<code_end>``Print nat.```<code_end> 来查看我刚才提到的那个归纳定义结构。这是我们与Coq沟通的第一步，确认我们都在谈论同一种“自然数”。"
+          }
+        ],
+        "closing": "现在我们已经能在Coq中“写”出数字了，接下来，我们要让这些数字“动”起来，看看如何进行加减乘除。"
+      },
+      {
+        "title": "3. 算术运算与函数定义",
+        "opening": "数字本身是静止的，只有通过运算，它们才能描述变化。在这一节，我们将学习如何在Coq中定义和使用算术运算。",
+        "points": [
+          {
+            "text": "在Coq中，加法和乘法本质上是**递归函数**。比如加法 <code_start>`plus a b`<code_end>，它的逻辑是：如果 `a` 是 0，结果就是 `b`；如果 `a` 是 <code_start>`S n`<code_end>，结果就是 <code_start>`S (plus n b)`<code_end>。也就是把 `a` 的“洋葱皮”一层层剥下来加到 `b` 上。\n我们在代码中可以直接使用中缀符号，比如 <code_start>```a + b```<code_end> 或 <code_start>```a * b```<code_end>，这符合我们的数学直觉。"
+          },
+          {
+            "text": "当我们将多个运算组合在一起时，比如 <code_start>```a + b * c``<code_start>`<code_end>，必须要注意**优先级**和**结合律**。和我们在小学数学学到的一样，乘法优先级高于加法。但在Coq中，如果你不确定某个自定义符号的优先级，或者为了代码的可读性，我强烈建议大家多使用圆括号，例如写作 <code_start>`<code_end>``a + (b * c)```<code_end>，这样可以避免很多不必要的歧义错误。"
+          },
+          {
+            "text": "有了运算，我们就可以通过Coq来验证一些简单的算术事实了。比如，要证明“1加1等于2”，我们可以写：\n<code_start>```Example test: 1 + 1 = 2.``<code_start>`<code_end>\n这里的 `<code_end>Example<code_start>` 关键字用于声明一个简单的命题。证明过程通常只需要一步：\n<code_start>`<code_end>``Proof. reflexivity. Qed.``<code_start>`<code_end>\n这里的 `<code_end>reflexivity` 策略告诉Coq：“请你计算一下两边的值，看看它们是不是长得一模一样。”显然，计算结果两边都是2，证明通过。"
+          }
+        ],
+        "closing": "能够进行计算和验证相等性只是第一步，在解决实际问题时，我们往往还需要比较谁大谁小。这就涉及到了比较运算。"
+      },
+      {
+        "title": "4. 大小比较与逻辑命题",
+        "opening": "在这一节，我们将深入一个初学者最容易混淆的领域：在Coq中，“计算结果”与“逻辑命题”的区别。",
+        "points": [
+          {
+            "text": "首先，我们来看看比较运算符。在Coq中，我们可以表达 $x < y$（小于），$x >= y$（大于等于），甚至 $x =? y$（测试是否相等）。这些符号帮助我们建立数值之间的大小关系。"
+          },
+          {
+            "text": "这里有一个核心难点：**布尔值（bool）与命题（Prop）的区别**。\n\n当我们写 <code_start>```Compute (3 <? 5).``<code_start>`<code_end> 时，我们会得到 `<code_end>true<code_start>`，这这是一个布尔值，代表一次**计算的结果**，就像程序里的 `<code_end>if` 判断。\n\n但是，当我们写 <code_start>```3 < 5``<code_start>`<code_end> 时，这在Coq中是一个 `<code_end>Prop<code_start>`（命题），它代表一个**逻辑断言**。它不是用来“算”的，而是用来“证”的。在验证工作中，我们主要处理的是 `<code_end>Prop`，因为我们需要证明某种关系“确实成立”，而不仅仅是计算它。"
+          },
+          {
+            "text": "让我们试着写一个简单的比较引理（Lemma）。比如我们要断言3小于等于5，可以写：\n<code_start>```Lemma simple_le: 3 <= 5.```<code_end>\n这不再是一个计算任务，而是一个证明目标。虽然对于具体的数字，证明过程可能很简单，但理解它是作为一个“待证命题”存在是非常重要的，这为后续处理抽象变量的证明打下了基础。"
+          }
+        ],
+        "closing": "掌握了数值表达、算术运算和大小比较，我们现在的工具箱已经足够丰富了。是时候挑战那个著名的历史难题了。"
+      },
+      {
+        "title": "5. 实战演练：鸡兔同笼问题",
+        "opening": "大约在1500年前，中国古代数学著作《孙子算经》中记载了这样一个有趣的问题。让我们穿越时空，用现代的Coq工具来重新审视它。",
+        "points": [
+          {
+            "text": "原文是这样说的：“今有雉兔同笼，上有三十五头，下有九十四足，问雉兔各几何？”\n意思非常直白：鸡和兔子关在一个笼子里，数头共有35个，数脚共有94只。我们要把这个自然语言描述的问题，转化为Coq能理解的数学模型。"
+          },
+          {
+            "text": "首先进行**建模**。我们需要定义怎么算头，怎么算脚。\n我们可以定义两个函数：\n<code_start>```Definition heads (c r : nat) := c + r.``<code_start>`<code_end>\n这里 `<code_end>c<code_start>` 代表鸡(chicken)，`<code_end>r<code_start>` 代表兔(rabbit)。头数就是简单的相加。\n\n接下来定义脚：\n<code_start>`<code_end>``Definition feet (c r : nat) := 2 * c + 4 * r.```<code_end>\n鸡有2只脚，兔有4只脚，这是常识，但必须显式地告诉Coq。"
+          },
+          {
+            "text": "现在，假设我们要验证一个猜想。如果我们认为答案是23只鸡和12只兔，我们该如何表述这个定理呢？\n我们可以写：\n<code_start>```Example solution: heads 23 12 = 35 /\\ feet 23 12 = 94.```<code_end>\n注意这里的 <code_start>```/\\```<code_end> 符号，它表示逻辑“与”（AND）。这意味着我们需要同时证明头数对上了，且脚数也对上了。"
+          },
+          {
+            "text": "最后是**证明过程**。\n当我们进入 `Proof` 模式后，目标变得非常具体。我们可以使用 `simpl` 策略，让Coq把 <code_start>```heads 23 12```<code_end> 自动计算成 <code_start>```35```<code_end>，把 <code_start>```feet 23 12```<code_end> 计算成 <code_start>```94```<code_end>。\n此时，证明目标就变成了 <code_start>```35 = 35 /\\ 94 = 94``<code_start>`<code_end>。\n接着，使用 `<code_end>split` 将逻辑与拆分为两个子目标，再分别用 `reflexivity` 证明左右两边的相等性。这样，我们就严谨地验证了这个古老问题的解。"
+          }
+        ],
+        "closing": "通过这个例子，大家可以看到，Coq不仅仅是处理抽象符号的工具，它完全可以用来描述和解决具体的实际问题。希望这节课能帮助大家建立起“用逻辑代码描述世界”的信心。下节课，我们将深入更复杂的证明策略。谢谢大家！"
+      }
+    ]
+  },
+  "metadata": {
+    "generated_at": "2026-01-23T19:31:09.859462",
+    "knowledge_points_count": 1,
+    "style": "简约",
+    "total_slides": 5,
+    "has_formula_markers": true,
+    "has_code_markers": true
+  }
+}

@@ -6,7 +6,7 @@ Step 2: 大纲和讲稿生成模块
 import json
 import logging
 import re
-from typing import Dict, List
+from typing import Dict, List, Tuple
 from datetime import datetime
 import asyncio
 
@@ -364,9 +364,86 @@ class OutlineGenerator:
         # 默认不标记
         return False
     
-    def _mark_text(self, text: str) -> tuple:
+    def _find_all_regions(self, text: str) -> List[Tuple[int, int, str, str, bool]]:
+        """
+        找出文本中所有需要处理的区域（代码块、行内代码、公式等）
+        
+        Args:
+            text: 原始文本
+            
+        Returns:
+            区域列表，每个元素为 (start, end, type, content, should_mark)
+        """
+        regions = []
+        
+        # 1. 查找代码块 ```...```（优先级最高，始终标记）
+        # 使用更宽松的匹配：至少3个反引号开始，至少3个反引号结束
+        for match in re.finditer(r'(`{3,})([^`][\s\S]*?)\1', text):
+            regions.append((match.start(), match.end(), 'code_block', match.group(0), True))
+        
+        # 2. 查找行内代码 `...`（单个反引号，不在代码块内）
+        for match in re.finditer(r'`([^`]+)`', text):
+            # 检查是否在已有区域内
+            if not self._is_inside_regions(match.start(), match.end(), regions):
+                content = match.group(1)
+                should_mark = self._should_mark_code(content)
+                regions.append((match.start(), match.end(), 'inline_code', match.group(0), should_mark))
+        
+        # 3. 查找行间公式 $$...$$
+        for match in re.finditer(r'\$\$(.+?)\$\$', text, re.DOTALL):
+            if not self._is_inside_regions(match.start(), match.end(), regions):
+                content = match.group(1)
+                should_mark = self._should_mark_formula(content)
+                regions.append((match.start(), match.end(), 'display_formula', match.group(0), should_mark))
+        
+        # 4. 查找行内公式 $...$（确保不是$$的一部分）
+        for match in re.finditer(r'(?<!\$)\$([^\$]+?)\$(?!\$)', text):
+            if not self._is_inside_regions(match.start(), match.end(), regions):
+                content = match.group(1)
+                should_mark = self._should_mark_formula(content)
+                regions.append((match.start(), match.end(), 'inline_formula', match.group(0), should_mark))
+        
+        # 5. 查找 \(...\) 格式的行内公式
+        for match in re.finditer(r'\\\((.+?)\\\)', text, re.DOTALL):
+            if not self._is_inside_regions(match.start(), match.end(), regions):
+                content = match.group(1)
+                should_mark = self._should_mark_formula(content)
+                regions.append((match.start(), match.end(), 'latex_inline', match.group(0), should_mark))
+        
+        # 6. 查找 \[...\] 格式的行间公式
+        for match in re.finditer(r'\\\[(.+?)\\\]', text, re.DOTALL):
+            if not self._is_inside_regions(match.start(), match.end(), regions):
+                content = match.group(1)
+                should_mark = self._should_mark_formula(content)
+                regions.append((match.start(), match.end(), 'latex_display', match.group(0), should_mark))
+        
+        return regions
+    
+    def _is_inside_regions(self, start: int, end: int, regions: List[Tuple]) -> bool:
+        """
+        检查给定区间是否在已有区域内或与已有区域重叠
+        
+        Args:
+            start: 区间起始位置
+            end: 区间结束位置
+            regions: 已有区域列表
+            
+        Returns:
+            是否在已有区域内或重叠
+        """
+        for r_start, r_end, _, _, _ in regions:
+            # 检查是否有任何重叠
+            if not (end <= r_start or start >= r_end):
+                return True
+        return False
+    
+    def _mark_text(self, text: str) -> Tuple[str, int, int]:
         """
         为单个文本字段添加标记
+        
+        使用两阶段方法：
+        1. 先找出所有需要处理的区域
+        2. 从后往前添加标记（避免位置偏移问题）
         
         Args:
             text: 原始文本
@@ -377,113 +454,33 @@ class OutlineGenerator:
         if not text or not isinstance(text, str):
             return text, 0, 0
         
+        # 先移除可能已存在的标记（防止重复标记）
+        text = self._remove_markers(text)
+        
         formula_count = 0
         code_count = 0
         
-        # ===== 第一步：标记代码块（```...```）- 始终标记 =====
-        def mark_code_block(match):
-            nonlocal code_count
-            code = match.group(0)
-            # 检查是否已经有标记（避免重复）
-            before_text = text[max(0, match.start()-20):match.start()]
-            after_text = text[match.end():min(len(text), match.end()+20)]
-            
-            if '<code_start>' in before_text or '<code_end>' in after_text:
-                return code
-            
-            code_count += 1
-            return f'<code_start>{code}<code_end>'
+        # 第一阶段：找出所有区域
+        regions = self._find_all_regions(text)
         
-        text = re.sub(r'```[\s\S]*?```', mark_code_block, text)
+        # 按起始位置降序排序（从后往前处理，避免位置偏移）
+        regions.sort(key=lambda x: x[0], reverse=True)
         
-        # ===== 第二步：标记行内代码 - 根据规则选择性标记 =====
-        def mark_inline_code(match):
-            nonlocal code_count
-            code = match.group(0)  # 包含反引号，如 `variable`
-            content = match.group(1)  # 反引号内的内容
+        # 第二阶段：添加标记
+        for start, end, region_type, content, should_mark in regions:
+            if not should_mark:
+                continue
             
-            # 检查是否已标记
-            before_text = text[max(0, match.start()-20):match.start()]
-            after_text = text[match.end():min(len(text), match.end()+20)]
-            
-            if '<code_start>' in before_text or '<code_end>' in after_text:
-                return code
-            
-            # 判断是否需要标记
-            if self._should_mark_code(content):
+            if region_type in ('code_block', 'inline_code'):
+                # 代码标记
+                marked_content = f'<code_start>{content}<code_end>'
+                text = text[:start] + marked_content + text[end:]
                 code_count += 1
-                return f'<code_start>{code}<code_end>'
-            
-            return code  # 不标记简单变量名
-        
-        text = re.sub(r'`([^`]+?)`', mark_inline_code, text)
-        
-        # ===== 第三步：标记公式 - 根据规则选择性标记 =====
-        
-        # 3.1 行间公式 $$...$$
-        def mark_display_formula(match):
-            nonlocal formula_count
-            formula = match.group(0)  # 包含 $$
-            content = match.group(1)  # $$ 之间的内容
-            
-            # 检查是否已标记
-            before_text = text[max(0, match.start()-20):match.start()]
-            after_text = text[match.end():min(len(text), match.end()+20)]
-            
-            if '<formula_start>' in before_text or '<formula_end>' in after_text:
-                return formula
-            
-            # 判断是否需要标记
-            if self._should_mark_formula(content):
+            elif region_type in ('display_formula', 'inline_formula', 'latex_inline', 'latex_display'):
+                # 公式标记
+                marked_content = f'<formula_start>{content}<formula_end>'
+                text = text[:start] + marked_content + text[end:]
                 formula_count += 1
-                return f'<formula_start>{formula}<formula_end>'
-            
-            return formula
-        
-        text = re.sub(r'\$\$(.*?)\$\$', mark_display_formula, text)
-        
-        # 3.2 行内公式 $...$
-        def mark_inline_formula(match):
-            nonlocal formula_count
-            formula = match.group(0)
-            content = match.group(1)  # $ 之间的内容
-            
-            # 检查是否已标记
-            before_text = text[max(0, match.start()-20):match.start()]
-            after_text = text[match.end():min(len(text), match.end()+20)]
-            
-            if '<formula_start>' in before_text or '<formula_end>' in after_text:
-                return formula
-            
-            if self._should_mark_formula(content):
-                formula_count += 1
-                return f'<formula_start>{formula}<formula_end>'
-            
-            return formula
-        
-        text = re.sub(r'(?<!\$)\$([^\$]+?)\$(?!\$)', mark_inline_formula, text)
-        
-        # 3.3 LaTeX 括号格式 \(...\) 和 \[...\]
-        def mark_latex_paren(match):
-            nonlocal formula_count
-            formula = match.group(0)
-            content = match.group(1)
-            
-            # 检查是否已标记
-            before_text = text[max(0, match.start()-20):match.start()]
-            after_text = text[match.end():min(len(text), match.end()+20)]
-            
-            if '<formula_start>' in before_text or '<formula_end>' in after_text:
-                return formula
-            
-            if self._should_mark_formula(content):
-                formula_count += 1
-                return f'<formula_start>{formula}<formula_end>'
-            
-            return formula
-        
-        text = re.sub(r'\\\((.*?)\\\)', mark_latex_paren, text)
-        text = re.sub(r'\\\[(.*?)\\\]', mark_latex_paren, text)
         
         return text, formula_count, code_count
     
