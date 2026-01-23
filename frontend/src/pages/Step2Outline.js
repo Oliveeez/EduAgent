@@ -28,6 +28,7 @@ function Step2Outline({ sessionData, updateSessionData, onNext, onPrev }) {
         sessionData={sessionData}
         updateSessionData={updateSessionData}
         onBack={() => setIsEditingScript(false)}
+        onNext={onNext}
       />
     );
   }

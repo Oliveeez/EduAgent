@@ -1,5 +1,4 @@
 # utils/llm.py
-# LangChain LLM 封装
 
 from langchain_core.language_models.llms import LLM
 from typing import List, Optional, Any
@@ -10,7 +9,7 @@ import numpy as np
 import json
 import re
 
-# 从环境变量读取配置，如果不存在则使用默认值
+
 LLM_API_URL = os.environ.get("LLM_API_URL", "https://api.nuwaapi.com/v1/chat/completions")
 LLM_API_KEY = os.environ.get("LLM_API_KEY", "sk-M9klOiXTFzzHqaryVg6B36XPIeKKVwNFU2wt4WkBlyqXYUk2")
 LLM_MODEL = os.environ.get("LLM_MODEL", "gemini-3-pro-preview-thinking")
@@ -23,7 +22,6 @@ class CustomLLM(LLM):
         return "custom"
 
     def _call(self, prompt: str, stop: Optional[List[str]] = None) -> str:
-        """LangChain 标准调用方法"""
         headers = {
             "Authorization": f"Bearer {LLM_API_KEY}",
             "Content-Type": "application/json"
@@ -53,10 +51,6 @@ class CustomLLM(LLM):
             return f"请求大模型失败: {str(e)}"
     
     def __call__(self, prompt: str, stop: Optional[List[str]] = None) -> str:
-        """
-        使对象可以像函数一样被调用
-        这样就可以使用 llm(prompt) 的方式
-        """
         return self._call(prompt, stop)
 
 
@@ -222,12 +216,4 @@ def main():
 
 
 if __name__ == "__main__":
-    """
-    当直接运行此文件时执行测试
-    使用方法:
-        python backend/utils/llm.py
-    或
-        cd backend
-        python -m utils.llm
-    """
     main()

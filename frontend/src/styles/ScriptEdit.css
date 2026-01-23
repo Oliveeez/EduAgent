@@ -33,6 +33,15 @@
   flex: 1;
   overflow-y: auto;
   padding: 16px;
+  max-height: calc(100vh - 300px); /* 确保不超过底部组件 */
+}
+
+.script-text {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  line-height: 1.8;
+  color: #262626;
+  font-size: 14px;
 }
 
 .script-preview .ant-collapse {
@@ -56,12 +65,20 @@
 }
 
 .script-point {
-  padding: 8px 0;
+  padding: 12px;
   border-bottom: 1px dashed #e8e8e8;
+  background: #fafafa;
+  border-radius: 4px;
+  margin-bottom: 8px;
 }
 
 .script-point:last-child {
   border-bottom: none;
+  margin-bottom: 0;
+}
+
+.script-point .script-text {
+  margin-top: 8px;
 }
 
 .empty-state {

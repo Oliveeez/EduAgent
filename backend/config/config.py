@@ -1,5 +1,5 @@
 """
-配置文件 - 课堂视频生成Agent
+配置文件
 """
 
 import os
@@ -11,11 +11,9 @@ DATA_DIR = BASE_DIR / "data"
 TEMPLATES_DIR = BASE_DIR / "templates"
 STATIC_DIR = BASE_DIR / "static"
 
-# 创建必要的目录
 for dir_path in [DATA_DIR, TEMPLATES_DIR, STATIC_DIR]:
     dir_path.mkdir(exist_ok=True, parents=True)
 
-# 子目录
 KNOWLEDGE_GRAPHS_DIR = DATA_DIR / "knowledge_graphs"
 OUTLINES_DIR = DATA_DIR / "outlines"
 PPT_OUTPUT_DIR = DATA_DIR / "ppt_outputs"
@@ -24,7 +22,6 @@ LATEX_UPLOADS_DIR = DATA_DIR / "latex_uploads"
 for dir_path in [KNOWLEDGE_GRAPHS_DIR, OUTLINES_DIR, PPT_OUTPUT_DIR, LATEX_UPLOADS_DIR]:
     dir_path.mkdir(exist_ok=True, parents=True)
 
-# LLM配置（用户会提供utils.llm）
 LLM_CONFIG = {
     "model": "claude-sonnet-4-20250514",
     "temperature": 0.7,
@@ -34,7 +31,7 @@ LLM_CONFIG = {
 # PPT配置
 PPT_CONFIG = {
     "default_template": None,  # 用户指定的模板路径
-    "slide_width": 10,  # inches
+    "slide_width": 10,    # inches
     "slide_height": 7.5,  # inches
     "default_font": "Arial",
     "title_font_size": 44,
@@ -45,7 +42,7 @@ PPT_CONFIG = {
 
 # 知识图谱配置
 KG_CONFIG = {
-    "max_depth": 3,  # 层级深度：章节-知识点-概念
+    "max_depth": 3,         # 层级深度：章节-知识点-概念
     "min_confidence": 0.7,  # 最小置信度
     "enable_visualization": True,
 }

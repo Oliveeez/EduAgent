@@ -28,6 +28,7 @@ import {
   HistoryOutlined,
   CheckCircleOutlined,
   ArrowLeftOutlined,
+  ArrowRightOutlined,
 } from '@ant-design/icons';
 import { editScript, saveScript, getScriptConversation, initScriptEdit } from '../services/api';
 import '../styles/ScriptEdit.css';
@@ -37,7 +38,7 @@ const { TextArea } = Input;
 const { Title, Text, Paragraph } = Typography;
 const { Panel } = Collapse;
 
-function Step2ScriptEdit({ sessionData, updateSessionData, onBack }) {
+function Step2ScriptEdit({ sessionData, updateSessionData, onBack, onNext }) {
   const [loading, setLoading] = useState(false);
   const [sending, setSending] = useState(false);
   const [initialized, setInitialized] = useState(false);
@@ -180,6 +181,36 @@ function Step2ScriptEdit({ sessionData, updateSessionData, onBack }) {
     }
   };
 
+  const handleCompleteEditing = async () => {
+    if (!currentScript) {
+      message.warning('没有可保存的讲稿');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // 先保存讲稿
+      const response = await saveScript({
+        outline_id: sessionData.outlineId,
+        updated_script: currentScript,
+      });
+
+      if (response.success) {
+        message.success('讲稿已保存，进入下一步');
+        updateSessionData({ script: currentScript });
+        
+        // 进入下一步
+        if (onNext) {
+          onNext();
+        }
+      }
+    } catch (error) {
+      message.error('保存失败：' + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleKeyPress = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -247,7 +278,7 @@ function Step2ScriptEdit({ sessionData, updateSessionData, onBack }) {
           >
             {section.opening && (
               <Card size="small" className="script-section" title="开场白">
-                <Paragraph>{section.opening}</Paragraph>
+                <div className="script-text">{section.opening}</div>
               </Card>
             )}
 
@@ -257,7 +288,7 @@ function Step2ScriptEdit({ sessionData, updateSessionData, onBack }) {
                   {section.points.map((point, pIndex) => (
                     <div key={pIndex} className="script-point">
                       <Tag color="blue">知识点 {pIndex + 1}</Tag>
-                      <Paragraph>{point.text}</Paragraph>
+                      <div className="script-text">{point.text}</div>
                     </div>
                   ))}
                 </Space>
@@ -266,7 +297,7 @@ function Step2ScriptEdit({ sessionData, updateSessionData, onBack }) {
 
             {section.closing && (
               <Card size="small" className="script-section" title="总结">
-                <Paragraph>{section.closing}</Paragraph>
+                <div className="script-text">{section.closing}</div>
               </Card>
             )}
           </Panel>
@@ -302,15 +333,26 @@ function Step2ScriptEdit({ sessionData, updateSessionData, onBack }) {
                 <RobotOutlined /> 讲稿编辑助手
               </Title>
             </Space>
-            <Button
-              type="primary"
-              icon={<SaveOutlined />}
-              onClick={handleSaveScript}
-              loading={loading}
-              disabled={!currentScript}
-            >
-              保存讲稿
-            </Button>
+            <Space>
+              <Button
+                icon={<SaveOutlined />}
+                onClick={handleSaveScript}
+                loading={loading}
+                disabled={!currentScript}
+              >
+                保存讲稿
+              </Button>
+              <Button
+                type="primary"
+                icon={<ArrowRightOutlined />}
+                onClick={handleCompleteEditing}
+                loading={loading}
+                disabled={!currentScript}
+                size="large"
+              >
+                完成编辑，进入 Step 3
+              </Button>
+            </Space>
           </div>
 
           {/* 对话消息列表 */}

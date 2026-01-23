@@ -111,8 +111,13 @@ function App() {
     <Layout className="app-layout">
       <Header className="app-header">
         <div className="header-content">
-          <h1>📚 课堂视频生成Agent</h1>
-          <p>智能PPT生成系统 - 让教学更高效</p>
+          <div className="header-left">
+            <img src="/logo_white.png" alt="SJTU Logo" className="header-logo" />
+          </div>
+          <div className="header-right">
+            <h1>📚 课堂视频生成Agent</h1>
+            <p>智能教学视频生成系统 - 让教学更高效</p>
+          </div>
         </div>
       </Header>
 
@@ -132,7 +137,7 @@ function App() {
       </Content>
 
       <Footer className="app-footer">
-        <p>Classroom Video Agent © 2024 | Powered by Claude AI</p>
+        <p>Classroom Video Agent © 2026 | Powered by Gemini3-pro | Shanghai Jiao Tong University</p>
       </Footer>
     </Layout>
   );
