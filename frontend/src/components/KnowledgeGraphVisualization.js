@@ -10,7 +10,7 @@ function KnowledgeGraphVisualization({ data }) {
   const svgRef = useRef();
 
   useEffect(() => {
-    if (!data || !data.nodes || !data.edges) {
+    if (!data || !data.nodes || (!data.edges && !data.links)) {
       return;
     }
 
@@ -27,9 +27,10 @@ function KnowledgeGraphVisualization({ data }) {
     svg.attr('width', width).attr('height', height);
 
     // 创建力导向图
+    const links = data.edges || data.links || [];
     const simulation = d3
       .forceSimulation(data.nodes)
-      .force('link', d3.forceLink(data.edges).id((d) => d.id).distance(100))
+      .force('link', d3.forceLink(links).id((d) => d.id).distance(100))
       .force('charge', d3.forceManyBody().strength(-300))
       .force('center', d3.forceCenter(width / 2, height / 2));
 
@@ -37,7 +38,7 @@ function KnowledgeGraphVisualization({ data }) {
     const link = svg
       .append('g')
       .selectAll('line')
-      .data(data.edges)
+      .data(links)
       .enter()
       .append('line')
       .attr('stroke', '#999')
@@ -62,7 +63,7 @@ function KnowledgeGraphVisualization({ data }) {
       .data(data.nodes)
       .enter()
       .append('text')
-      .text((d) => d.label)
+      .text((d) => d.label || d.title || d.id)
       .attr('font-size', 12)
       .attr('dx', 15)
       .attr('dy', 4);

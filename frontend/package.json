@@ -3,14 +3,18 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "@ant-design/icons": "^5.2.6",
+    "ajv": "^6.12.6",
+    "ajv-keywords": "^3.5.2",
+    "antd": "^5.11.5",
+    "axios": "^1.6.2",
+    "d3": "^7.8.5",
+    "lucide-react": "^0.294.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
-    "antd": "^5.11.5",
-    "@ant-design/icons": "^5.2.6",
-    "axios": "^1.6.2",
+    "react-force-graph-2d": "^1.25.3",
     "react-router-dom": "^6.20.0",
-    "d3": "^7.8.5",
+    "react-scripts": "5.0.1",
     "recharts": "^2.10.3"
   },
   "scripts": {

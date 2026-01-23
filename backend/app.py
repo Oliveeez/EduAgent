@@ -13,6 +13,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
+from dotenv import load_dotenv
 
 # 导入配置
 from config.config import (
@@ -32,6 +33,9 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
+# 加载环境变量
+load_dotenv(dotenv_path=Path(__file__).resolve().parent / ".env")
 
 # 创建FastAPI应用
 app = FastAPI(
@@ -213,6 +217,10 @@ async def extract_knowledge_graph(file_id: str, background_tasks: BackgroundTask
         kg_id = f"kg_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
         kg_path = KNOWLEDGE_GRAPHS_DIR / f"{kg_id}.json"
         knowledge_extractor.save_knowledge_graph(result, str(kg_path))
+
+        # 保存可视化JSON（前端直接使用）
+        viz_path = KNOWLEDGE_GRAPHS_DIR / f"{kg_id}.viz.json"
+        knowledge_extractor.save_visualization_graph(result, str(viz_path))
         
         # 提取知识点摘要（用于前端选择）
         knowledge_points = knowledge_extractor.get_knowledge_points_summary(result)
@@ -229,7 +237,8 @@ async def extract_knowledge_graph(file_id: str, background_tasks: BackgroundTask
             "kg_id": kg_id,
             "knowledge_points": knowledge_points,
             "statistics": result['statistics'],
-            "visualization": result['visualization']
+            "visualization": result['visualization'],
+            "viz_file": str(viz_path)
         }
         
     except HTTPException:
@@ -260,6 +269,196 @@ async def get_knowledge_graph(kg_id: str):
     except Exception as e:
         logger.error(f"❌ 获取知识图谱失败: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/step1/kg/{kg_id}/viz")
+async def get_knowledge_graph_viz(kg_id: str):
+    """获取可视化JSON（nodes/links + 虚拟根）"""
+    try:
+        viz_path = KNOWLEDGE_GRAPHS_DIR / f"{kg_id}.viz.json"
+        if not viz_path.exists():
+            raise HTTPException(status_code=404, detail="可视化文件不存在")
+
+        import json
+        with open(viz_path, 'r', encoding='utf-8') as f:
+            viz_data = json.load(f)
+
+        return viz_data
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"❌ 获取可视化JSON失败: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/step1/kg-viz-list")
+async def list_knowledge_graph_viz_files():
+    """列出可用的可视化图谱文件（按时间倒序）"""
+    try:
+        items = []
+        for path in sorted(
+            KNOWLEDGE_GRAPHS_DIR.glob("kg_*.viz.json"),
+            key=lambda p: p.stat().st_mtime,
+            reverse=True,
+        ):
+            kg_id = path.stem.replace(".viz", "")
+            items.append(
+                {
+                    "kg_id": kg_id,
+                    "filename": path.name,
+                }
+            )
+        return {"items": items}
+    except Exception as e:
+        logger.error(f"❌ 获取可视化文件列表失败: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+def _resolve_viz_path(kg_id: Optional[str]) -> Path:
+    if kg_id:
+        viz_path = KNOWLEDGE_GRAPHS_DIR / f"{kg_id}.viz.json"
+        return viz_path
+
+    candidates = sorted(
+        KNOWLEDGE_GRAPHS_DIR.glob("kg_*.viz.json"),
+        key=lambda p: p.stat().st_mtime,
+        reverse=True,
+    )
+    if not candidates:
+        return None
+    return candidates[0]
+
+
+def _load_viz_data(kg_id: Optional[str]) -> Dict:
+    viz_path = _resolve_viz_path(kg_id)
+    if not viz_path or not viz_path.exists():
+        raise HTTPException(status_code=404, detail="可视化文件不存在")
+    import json
+    with open(viz_path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def _index_nodes(nodes: List[Dict]) -> Dict[str, Dict]:
+    return {n.get("id"): n for n in nodes if n.get("id")}
+
+
+@app.get("/api/stats")
+async def get_graph_stats(kg_id: Optional[str] = None):
+    """可视化统计信息（兼容 visual 前端）"""
+    data = _load_viz_data(kg_id)
+    nodes = data.get("nodes", [])
+    stats = {
+        "total_nodes": len(nodes),
+        "level_0": 0,
+        "level_1": 0,
+        "level_2": 0,
+        "level_3": 0,
+        "level_4_plus": 0,
+        "type_count": {},
+        "categories": ["Root", "Section", "Block", "Nested"],
+        "has_formulas": 0,
+        "has_key_points": 0,
+        "total_folders": 0,
+    }
+    for n in nodes:
+        try:
+            lvl = int(n.get("level", 5))
+        except Exception:
+            lvl = 5
+        if lvl == 0:
+            stats["level_0"] += 1
+        elif lvl == 1:
+            stats["level_1"] += 1
+        elif lvl == 2:
+            stats["level_2"] += 1
+        elif lvl == 3:
+            stats["level_3"] += 1
+        else:
+            stats["level_4_plus"] += 1
+
+        ntype = n.get("type", "unknown") or "unknown"
+        stats["type_count"][ntype] = stats["type_count"].get(ntype, 0) + 1
+
+        if n.get("formulas"):
+            stats["has_formulas"] += 1
+        if n.get("key_points"):
+            stats["has_key_points"] += 1
+        if n.get("is_folder"):
+            stats["total_folders"] += 1
+
+    return stats
+
+
+@app.get("/api/graph")
+async def get_graph(max_level: Optional[str] = "10", kg_id: Optional[str] = None):
+    """获取可视化图谱数据（nodes/links）"""
+    data = _load_viz_data(kg_id)
+    nodes = data.get("nodes", [])
+    links = data.get("links", [])
+
+    if max_level is None or str(max_level).lower() == "all":
+        return {"nodes": nodes, "links": links}
+
+    try:
+        max_level_int = int(max_level)
+    except Exception:
+        max_level_int = 10
+
+    filtered_nodes = []
+    filtered_ids = set()
+    for n in nodes:
+        try:
+            lvl = int(n.get("level", 999))
+        except Exception:
+            lvl = 999
+        if lvl <= max_level_int:
+            filtered_nodes.append(n)
+            filtered_ids.add(n.get("id"))
+
+    filtered_links = [
+        l
+        for l in links
+        if l.get("source") in filtered_ids and l.get("target") in filtered_ids
+    ]
+    return {"nodes": filtered_nodes, "links": filtered_links}
+
+
+@app.get("/api/search")
+async def search_nodes(q: Optional[str] = "", kg_id: Optional[str] = None):
+    """搜索节点"""
+    query = (q or "").strip().lower()
+    if not query:
+        return []
+
+    data = _load_viz_data(kg_id)
+    nodes = data.get("nodes", [])
+    results = []
+    for n in nodes:
+        title = (n.get("title", "") or "").lower()
+        desc = (n.get("description", "") or "").lower()
+        if query in title or query in desc:
+            results.append(n)
+            if len(results) >= 20:
+                break
+    return results
+
+
+@app.get("/api/node/{node_id}")
+async def get_node_detail(node_id: str, kg_id: Optional[str] = None):
+    """获取节点详情"""
+    data = _load_viz_data(kg_id)
+    nodes = data.get("nodes", [])
+    node_map = _index_nodes(nodes)
+    node = node_map.get(node_id)
+    if not node:
+        raise HTTPException(status_code=404, detail="节点不存在")
+
+    pid = node.get("parent_id")
+    parent = node_map.get(pid) if pid else None
+    children = [n for n in nodes if n.get("parent_id") == node_id]
+
+    return {"node": node, "parent": parent, "children": children}
 
 
 # ==================== Step 2: 大纲和讲稿生成 ====================
