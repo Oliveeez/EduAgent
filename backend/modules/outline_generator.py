@@ -1,5 +1,5 @@
 """
-Step 2: 大纲和讲稿生成模块
+Step 2: 大纲和讲稿生成模块（修复版）
 根据用户选择的知识点，生成PPT大纲和讲稿
 """
 
@@ -292,7 +292,7 @@ class OutlineGenerator:
     
     def _should_mark_formula(self, content: str) -> bool:
         """
-        判断公式是否需要标记
+        判断公式是否需要标记（优化版）
         
         标记规则：
         - 纯数字：不标记（如 $35$, $94$）
@@ -303,16 +303,16 @@ class OutlineGenerator:
         """
         content = content.strip()
         
-        # 1. 纯数字，不标记
+        # 1. 过短（少于5个字符），不标记
+        if len(content) < 5:
+            return False
+        
+        # 2. 纯数字（可能带小数点或负号），不标记
         if re.match(r'^-?\d+\.?\d*$', content):
             return False
         
-        # 2. 单个字母或单个变量，不标记
+        # 3. 单个字母或单个变量，不标记
         if re.match(r'^[a-zA-Z]$', content):
-            return False
-        
-        # 3. 太短（少于5个字符），不标记
-        if len(content) < 5:
             return False
         
         # 4. 包含复杂LaTeX命令，一定标记
@@ -337,28 +337,65 @@ class OutlineGenerator:
     
     def _should_mark_code(self, content: str) -> bool:
         """
-        判断行内代码是否需要标记
+        判断行内代码是否需要标记（优化版 - 修复过度标记问题）
         
         标记规则：
-        - 简单变量名：不标记（如 variable, count, x）
-        - 纯英文单词：不标记（如 reflexivity, Theorem）
-        - 较长代码：标记（>30字符）
-        - 包含特殊字符：标记（括号、运算符等）
+        - 单个字符/符号：不标记（如 `+`, `*`, `x`）
+        - 纯运算符：不标记（如 `==`, `!=`, `>=`）
+        - 简单变量名：不标记（如 `variable`, `count`, `x`）
+        - 简单表达式：不标记（如 `x == y`, `a + b`, `n > 0`）
+        - 包含函数调用：标记（如 `func()`, `obj.method()`）
+        - 多个运算符/较长：标记（如 `x == y && z > 0`, 长度>40字符）
         """
         content = content.strip()
         
-        # 1. 纯英文字母、数字、下划线的简短标识符，不标记
+        # 1. 单个字符，不标记
+        if len(content) <= 1:
+            return False
+        
+        # 2. 纯运算符或分隔符组合，不标记（如 ==, !=, <=, >=, &&, ||, ++, --, *, +）
+        if re.match(r'^[+\-*/=<>!&|%^~.,:;]+$', content):
+            return False
+        
+        # 3. 纯英文字母、数字、下划线的简短标识符，不标记（变量名、关键字）
         if re.match(r'^[a-zA-Z_][a-zA-Z0-9_]*$', content):
-            # 如果长度合理（<30字符），认为是变量名或关键字，不标记
-            if len(content) < 30:
+            if len(content) < 40:  # 适度提高阈值，大部分标识符都不标记
                 return False
         
-        # 2. 包含空格、括号、运算符等，标记
-        if re.search(r'[\s()\[\]{}<>+\-*/=.,;:]', content):
+        # 4. 简单的二元表达式，不标记（如 x == y, a + b, n > 0, i < len）
+        # 移除空格后判断
+        no_space = content.replace(' ', '')
+        
+        # 检查是否是简单的 "变量 运算符 变量/数字" 格式
+        # 例如：x==y, a+b, n>0, i<10
+        if len(no_space) <= 20:  # 简短表达式
+            # 匹配模式：标识符 + 运算符 + 标识符/数字
+            simple_binary = re.match(
+                r'^[a-zA-Z_]\w*[+\-*/=<>!&|%]+[a-zA-Z_0-9]\w*$', 
+                no_space
+            )
+            if simple_binary:
+                # 进一步检查：如果运算符数量很少（<=2个字符的运算符），不标记
+                operators = re.findall(r'[+\-*/=<>!&|%]+', no_space)
+                if operators and len(operators[0]) <= 2:  # 如 +, ==, !=, >=
+                    return False
+        
+        # 5. 包含函数调用括号，标记
+        if '(' in content and ')' in content:
             return True
         
-        # 3. 较长的内容，标记
-        if len(content) > 30:
+        # 6. 包含多个运算符（复杂表达式），标记
+        # 统计运算符出现次数
+        operator_matches = re.findall(r'[+\-*/=<>!&|%^~]+', content)
+        if len(operator_matches) >= 3:  # 多个运算符，说明比较复杂
+            return True
+        
+        # 7. 包含点号访问（对象属性/方法），且较长，标记
+        if '.' in content and len(content) > 20:
+            return True
+        
+        # 8. 较长的内容（>40字符），标记
+        if len(content) > 40:
             return True
         
         # 默认不标记
