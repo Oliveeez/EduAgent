@@ -11,13 +11,6 @@ ENV/
 dist/
 build/
 
-# Node
-node_modules/
-npm-debug.log
-yarn-error.log
-package-lock.json
-.pnpm-debug.log
-
 # IDE
 .vscode/
 .idea/
@@ -36,24 +29,17 @@ logs/
 .env
 .env.local
 
-# ===== Python =====
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-venv/
-.env
-
-# ===== Node =====
+# Node
 node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+.pnpm-debug.log
 
 # ===== Runtime data (DO NOT COMMIT) =====
-backend/data/knowledge_graphs/
 backend/data/latex_uploads/
 
 # ===== Generated visualization / debug =====
-visual/
-*.viz.json
 *.ipynb
 
 # ===== OS =====
