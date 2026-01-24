@@ -31,3 +31,7 @@ python-dotenv==1.0.0
 openai==1.63.2
 requests==2.32.3
 langchain-core==0.3.15
+
+# 前端可视化
+react-force-graph-2d==1.25.3
+lucide-react==0.294.0
