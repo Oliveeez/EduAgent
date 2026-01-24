@@ -187,6 +187,11 @@ Compiled successfully!
 You can now view classroom-video-agent-frontend in the browser.
 ```
 
+如果之前配置过HOST/ALLOWED_HOSTS值，需要在命令行中覆盖掉
+```
+HOST=localhost DANGEROUSLY_DISABLE_HOST_CHECK=true npm start
+```
+
 #### 3. 访问系统
 
 打开浏览器访问：**http://localhost:3000**
