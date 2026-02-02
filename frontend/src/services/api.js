@@ -206,6 +206,27 @@ export const modifyPPT = async (pptPath, description) => {
   return response.data;
 };
 
+// ========== Step 5: 视频生成 ==========
+
+/**
+ * 生成视频
+ */
+export const generateVideo = async (outlineId, useLLM = true) => {
+  const response = await api.post('/step5/generate-video', {
+    outline_id: outlineId,
+    use_llm: useLLM,
+  });
+  return response.data;
+};
+
+/**
+ * 查询视频生成状态
+ */
+export const getVideoStatus = async (taskId) => {
+  const response = await api.get(`/step5/video-status/${taskId}`);
+  return response.data;
+};
+
 // ========== 辅助接口 ==========
 
 /**

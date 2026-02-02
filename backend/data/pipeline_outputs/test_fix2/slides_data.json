@@ -1,0 +1,82 @@
+{
+  "slides": [
+    {
+      "slide_id": 1,
+      "slide_type": "intro",
+      "title": "从《孙子算经》说起",
+      "text": "欢迎来到Coq验证入门的第一课\n在正式开始敲代码之前，自己写的程序绝对没有Bug\n习惯了写单元测试，但这就像是用网捞鱼，总会有漏网之鱼\n在航空航天、金融交易这些容不得半点差错的领域，需要一种'终极武器'——形式化验证\nCoq就是这样一把神兵利器，它能从数学逻辑的底层担保系统的绝对正确",
+      "coq_code": null,
+      "formula": null,
+      "gif_path": null,
+      "audio_path": null,
+      "duration": null,
+      "section_title": "1. 课程引入：从《孙子算经》说起",
+      "estimated_duration": 30.0
+    },
+    {
+      "slide_id": 2,
+      "slide_type": "formula",
+      "title": "1. 课程引入：从《孙子算经》说起",
+      "text": "听过'鸡兔同笼'的故事\n书中记载：'今有雉兔同笼，上有三十五头，下有九十四足，问雉兔各几何\n在中学数学课上，通常会设未知数，比如设鸡为x，兔为y，然后列出方程组：，\n这就是一种最朴素的'数学建模'——把现实问题转化为数学符号\n在Coq这门课中，要做的，就是更进一步：把数学符号转化为机器可以理解并验证的形式化语言",
+      "coq_code": null,
+      "formula": "x + y = 35\n2x + 4y = 94",
+      "gif_path": null,
+      "audio_path": null,
+      "duration": null,
+      "section_title": "1. 课程引入：从《孙子算经》说起",
+      "estimated_duration": 30.0
+    },
+    {
+      "slide_id": 3,
+      "slide_type": "intro",
+      "title": "大家可能会问：'我都算出答案了",
+      "text": "可能会问：'我都算出答案了，为什么还要用Coq\n' 确实，对于这种简单问题，人脑很快\n如果方程有一千个变量呢\n或者证明过程有一万步呢\n人脑会犯错，会疏忽，但机器不会",
+      "coq_code": null,
+      "formula": null,
+      "gif_path": null,
+      "audio_path": null,
+      "duration": null,
+      "section_title": "1. 课程引入：从《孙子算经》说起",
+      "estimated_duration": 19.4
+    },
+    {
+      "slide_id": 4,
+      "slide_type": "intro",
+      "title": "在像C或Python这样的语言里",
+      "text": "在像C或Python这样的语言里，整数是内置的，但在Coq的底层逻辑里，需要从零开始定义什么是'自然...",
+      "coq_code": null,
+      "formula": null,
+      "gif_path": null,
+      "audio_path": null,
+      "duration": null,
+      "section_title": "2. Coq中的自然数表达",
+      "estimated_duration": 11.8
+    },
+    {
+      "slide_id": 5,
+      "slide_type": "coq",
+      "title": "2. Coq中的自然数表达",
+      "text": "Coq标准库使用了皮亚诺（Peano）算术公理来定义自然数\n【代码】这看起来有点抽象，它只有两种情况\n第一种是`O`，代表数字0；第二种是`S`，代表后继（Successor），也就是'下一个数'\n在Coq眼中，1就是`S O`（0的下一个），2就是`S (S O)`，3就是`S (S (S O)...\n这就像是用乐高积木，一块一块叠出来的",
+      "coq_code": "Inductive nat : Type := | O : nat | S : nat -> nat.",
+      "formula": null,
+      "gif_path": null,
+      "audio_path": null,
+      "duration": null,
+      "section_title": "2. Coq中的自然数表达",
+      "estimated_duration": 30.0
+    },
+    {
+      "slide_id": 6,
+      "slide_type": "intro",
+      "title": "Coq中的自然数表达",
+      "text": "当然，如果写个100都要敲一百次S，那程序员要累死了\nCoq提供了强大的记号机制（Notation）\n当输入阿拉伯数字`35`时，Coq会自动把它解析成35个`S`套在`O`上；反之，当Coq输出结果时...\n可以在IDE里输入`Check 35.`试试看，系统会告诉你它的类型是`nat`",
+      "coq_code": null,
+      "formula": null,
+      "gif_path": null,
+      "audio_path": null,
+      "duration": null,
+      "section_title": "2. Coq中的自然数表达",
+      "estimated_duration": 27.6
+    }
+  ]
+}

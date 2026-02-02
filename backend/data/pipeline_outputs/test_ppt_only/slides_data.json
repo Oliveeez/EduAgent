@@ -1,0 +1,470 @@
+{
+  "source_file": "/wuhu_uni_ai/edu/shenao/EduAgent/backend/data/outlines/test.json",
+  "generated_at": "2026-01-26T01:48:50.963577",
+  "slide_count": 6,
+  "slides": [
+    {
+      "slide_id": 1,
+      "slide_type": "intro",
+      "title": "课程引入",
+      "text": "欢迎来到Coq验证入门的第一课\n在正式开始敲代码之前，自己写的程序绝对没有Bug\n习惯了写单元测试，但这就像是用网捞鱼，总会有漏网之鱼\n在航空航天、金融交易这些容不得半点差错的领域，需要一种'终极武器'——形式化验证\nCoq就是这样一把神兵利器，它能从数学逻辑的底层担保系统的绝对正确",
+      "blocks": [
+        {
+          "block_id": "slide_1_block_0",
+          "block_type": "text_line",
+          "content": "尽管开发者追求代码的完美，但传统的**单元测试**由于覆盖率局限，**难以穷尽**所有潜在缺陷。在航空航天与金融交易等对错误零容忍的领域，必须引入**形式化验证**。**Coq**作为该领域的强力工具，能够从**数学逻辑**的底层，为系统的**绝对正确性**提供严格担保。",
+          "semantic_role": "motivation",
+          "position_hint": "left",
+          "emphasis": {
+            "bold": [
+              "单元测试",
+              "难以穷尽",
+              "形式化验证",
+              "数学逻辑",
+              "绝对正确性"
+            ],
+            "color": {
+              "Coq": "red"
+            }
+          },
+          "estimated_duration": 4.0,
+          "start_time": 0.0,
+          "duration": 0.0,
+          "audio_path": null,
+          "subtitle_text": "尽管开发者追求代码的完美，但传统的**单元测试**由于覆盖率局限，**难以穷尽**所有潜在缺陷。在航空航天与金融交易等对错误零容忍的领域，必须引入**形式化验证**。**Coq**作为该领域的强力工具，能够从**数学逻辑**的底层，为系统的**绝对正确性**提供严格担保。",
+          "bbox": null
+        },
+        {
+          "block_id": "slide_1_block_1",
+          "block_type": "image",
+          "content": "https://images.unsplash.com/photo-1576278507280-e30971fcb377?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NjI3MDZ8MHwxfHNlYXJjaHwxfHxhZXJvc3BhY2UlMjBjb250cm9sJTIwc3lzdGVtJTIwY29ja3BpdCUyMHJlYWwlMjBwaG90b2dyYXBoeXxlbnwwfDB8fHwxNzY5MzYyNTQ1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+          "semantic_role": "example",
+          "position_hint": "right",
+          "emphasis": null,
+          "estimated_duration": 2.0,
+          "start_time": 0.0,
+          "duration": 0.0,
+          "audio_path": null,
+          "subtitle_text": "aerospace control system cockpit real photography",
+          "bbox": null
+        },
+        {
+          "block_id": "slide_1_block_2",
+          "block_type": "image",
+          "content": "https://images.unsplash.com/photo-1612178991541-b48cc8e92a4d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NjI3MDZ8MHwxfHNlYXJjaHwxfHxmaW5hbmNpYWwlMjBoaWdoJTIwZnJlcXVlbmN5JTIwdHJhZGluZyUyMHNjcmVlbnxlbnwwfDB8fHwxNzY5MzYyNTQ3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+          "semantic_role": "example",
+          "position_hint": "right",
+          "emphasis": null,
+          "estimated_duration": 2.0,
+          "start_time": 0.0,
+          "duration": 0.0,
+          "audio_path": null,
+          "subtitle_text": "financial high frequency trading screen",
+          "bbox": null
+        }
+      ],
+      "page_intent": "motivate_importance",
+      "page_atoms": [
+        "Conceptual Statement",
+        "Concept + Visual"
+      ],
+      "needs_split": false,
+      "manim_relation_config": null,
+      "image_search_queries": [
+        "aerospace control system cockpit real photography",
+        "financial high frequency trading screen"
+      ],
+      "original_text": "同学们大家好！欢迎来到Coq验证入门的第一课。在正式开始敲代码之前，我想先问大家一个扎心的问题：你们谁敢拍着胸脯保证，自己写的程序绝对没有Bug？（停顿）我们习惯了写单元测试，但这就像是用网捞鱼，总会有漏网之鱼。而在航空航天、金融交易这些容不得半点差错的领域，我们需要一种'终极武器'——形式化验证。Coq就是这样一把神兵利器，它能从数学逻辑的底层担保系统的绝对正确。听起来是不是很高冷？别担心，为了让大家轻松跨过门槛，今天我们不谈复杂的类型论，而是先穿越回1500年前，聊聊一本充满智慧的古书——《孙子算经》。",
+      "coq_code": null,
+      "formula": null,
+      "gif_path": null,
+      "audio_path": null,
+      "duration": null,
+      "section_title": "1. 课程引入：从《孙子算经》说起",
+      "estimated_duration": 30.0
+    },
+    {
+      "slide_id": 2,
+      "slide_type": "formula",
+      "title": "课程引入",
+      "text": "听过'鸡兔同笼'的故事\n书中记载：'今有雉兔同笼，上有三十五头，下有九十四足，问雉兔各几何\n在中学数学课上，通常会设未知数，比如设鸡为x，兔为y，然后列出方程组：，\n这就是一种最朴素的'数学建模'——把现实问题转化为数学符号\n在Coq这门课中，要做的，就是更进一步：把数学符号转化为机器可以理解并验证的形式化语言",
+      "blocks": [
+        {
+          "block_id": "slide_2_block_0",
+          "block_type": "text_line",
+          "content": "《孙子算经》中的鸡兔同笼问题通过构建代数方程组，实现了从现实实体到数学符号的抽象，体现了朴素的数学建模思想；而Coq旨在进一步将数学表达转化为机器可理解并验证的形式化语言。",
+          "semantic_role": "example",
+          "position_hint": "left",
+          "emphasis": {
+            "bold": [
+              "现实实体",
+              "数学符号",
+              "验证"
+            ],
+            "color": {
+              "数学建模": "red",
+              "形式化语言": "red"
+            }
+          },
+          "estimated_duration": 4.5,
+          "start_time": 0.0,
+          "duration": 0.0,
+          "audio_path": null,
+          "subtitle_text": "《孙子算经》中的鸡兔同笼问题通过构建代数方程组，实现了从现实实体到数学符号的抽象，体现了朴素的数学建模思想；而Coq旨在进一步将数学表达转化为机器可理解并验证的形式化语言。",
+          "bbox": null
+        },
+        {
+          "block_id": "slide_2_block_1",
+          "block_type": "formula",
+          "content": "x + y = 35\n2x + 4y = 94",
+          "semantic_role": "definition",
+          "position_hint": "right",
+          "emphasis": null,
+          "estimated_duration": 3.0,
+          "start_time": 0.0,
+          "duration": 0.0,
+          "audio_path": null,
+          "subtitle_text": "公式展示",
+          "bbox": null
+        },
+        {
+          "block_id": "slide_2_block_2",
+          "block_type": "image",
+          "content": "https://images.unsplash.com/photo-1765227719763-9058a0dd0dc0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NjI3MDZ8MHwxfHNlYXJjaHwxfHxTdW56aSUyMFN1YW5qaW5nJTIwYW5jaWVudCUyMGJvb2slMjBwYWdlfGVufDB8MHx8fDE3NjkzNDc5MjB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+          "semantic_role": "example",
+          "position_hint": "right",
+          "emphasis": null,
+          "estimated_duration": 2.0,
+          "start_time": 0.0,
+          "duration": 0.0,
+          "audio_path": null,
+          "subtitle_text": "Sunzi Suanjing ancient book page",
+          "bbox": null
+        }
+      ],
+      "page_intent": "show_relation",
+      "page_atoms": [
+        "Formula Focus",
+        "Conceptual Statement",
+        "Relational Visualization"
+      ],
+      "needs_split": false,
+      "manim_relation_config": {
+        "type": "flowchart",
+        "description": "建立三层递进关系图：左侧节点'现实世界(Reality)'指向中间节点'数学模型(Math Symbols)'，再指向右侧节点'形式化验证(Formal Logic)'。箭头下方标注'Abstraction'和'Formalization'。"
+      },
+      "image_search_queries": [
+        "孙子算经 书影 古籍",
+        "Sunzi Suanjing ancient book page"
+      ],
+      "original_text": "大家一定都听过'鸡兔同笼'的故事。书中记载：'今有雉兔同笼，上有三十五头，下有九十四足，问雉兔各几何？'。我们在中学数学课上，通常会设未知数，比如设鸡为x，兔为y，然后列出方程组：x + y = 35，2x + 4y = 94。这就是一种最朴素的'数学建模'——把现实问题转化为数学符号。而在Coq这门课中，我们要做的，就是更进一步：把数学符号转化为机器可以理解并验证的形式化语言。",
+      "coq_code": null,
+      "formula": "x + y = 35\n2x + 4y = 94",
+      "gif_path": null,
+      "audio_path": null,
+      "duration": null,
+      "section_title": "1. 课程引入：从《孙子算经》说起",
+      "estimated_duration": 30.0
+    },
+    {
+      "slide_id": 3,
+      "slide_type": "intro",
+      "title": "课程引入",
+      "text": "可能会问：'我都算出答案了，为什么还要用Coq\n' 确实，对于这种简单问题，人脑很快\n如果方程有一千个变量呢\n或者证明过程有一万步呢\n人脑会犯错，会疏忽，但机器不会",
+      "blocks": [
+        {
+          "block_id": "slide_3_block_0",
+          "block_type": "text_line",
+          "content": "尽管人脑在简单计算中具备直觉优势，但在处理涉及海量变量或长链路证明的复杂命题时，唯有引入机器验证机制，才能有效克服人为疏忽，确保逻辑推理的绝对严谨性。",
+          "semantic_role": "motivation",
+          "position_hint": "left",
+          "emphasis": {
+            "bold": [
+              "海量变量",
+              "长链路证明",
+              "人为疏忽",
+              "绝对严谨性"
+            ],
+            "color": {
+              "机器验证": "red"
+            }
+          },
+          "estimated_duration": 6.0,
+          "start_time": 0.0,
+          "duration": 0.0,
+          "audio_path": null,
+          "subtitle_text": "尽管人脑在简单计算中具备直觉优势，但在处理涉及海量变量或长链路证明的复杂命题时，唯有引入机器验证机制，才能有效克服人为疏忽，确保逻辑推理的绝对严谨性。",
+          "bbox": null
+        },
+        {
+          "block_id": "slide_3_block_1",
+          "block_type": "manim_relation",
+          "content": {
+            "type": "function_plot",
+            "description": "坐标系：X轴为'问题规模/步骤数'，Y轴为'可靠性/准确率'。绘制两条曲线：曲线A（人脑）在X轴初期很高，随X增加呈指数级下降；曲线B（机器）则始终保持在顶部水平直线的状态。强调高复杂度区域的巨大差距。",
+            "ppt_text": "随着问题规模（X轴）增加，人脑可靠性（Y轴）急剧下降，而机器始终维持高准确率，差距显著。"
+          },
+          "semantic_role": "relation",
+          "position_hint": "right",
+          "emphasis": null,
+          "estimated_duration": 5.0,
+          "start_time": 0.0,
+          "duration": 0.0,
+          "audio_path": null,
+          "subtitle_text": "随着问题规模（X轴）增加，人脑可靠性（Y轴）急剧下降，而机器始终维持高准确率，差距显著。",
+          "bbox": null
+        }
+      ],
+      "page_intent": "motivate_importance",
+      "page_atoms": [
+        "Conceptual Statement",
+        "Relational Visualization"
+      ],
+      "needs_split": false,
+      "manim_relation_config": {
+        "type": "function_plot",
+        "description": "坐标系：X轴为'问题规模/步骤数'，Y轴为'可靠性/准确率'。绘制两条曲线：曲线A（人脑）在X轴初期很高，随X增加呈指数级下降；曲线B（机器）则始终保持在顶部水平直线的状态。强调高复杂度区域的巨大差距。",
+        "ppt_text": "随着问题规模（X轴）增加，人脑可靠性（Y轴）急剧下降，而机器始终维持高准确率，差距显著。"
+      },
+      "image_search_queries": [],
+      "original_text": "大家可能会问：'我都算出答案了，为什么还要用Coq？' 确实，对于这种简单问题，人脑很快。但如果方程有一千个变量呢？或者证明过程有一万步呢？人脑会犯错，会疏忽，但机器不会。Coq就像是一个拿着放大镜的、极其严苛的老师，它提供了一个交互式的证明环境（IDE），用来检查你的每一步推理是否严丝合缝。我们学习Coq，就是为了追求这种逻辑上的'绝对严谨'。",
+      "coq_code": null,
+      "formula": null,
+      "gif_path": null,
+      "audio_path": null,
+      "duration": null,
+      "section_title": "1. 课程引入：从《孙子算经》说起",
+      "estimated_duration": 19.4
+    },
+    {
+      "slide_id": 4,
+      "slide_type": "intro",
+      "title": "Coq中的自然数表达",
+      "text": "在像C或Python这样的语言里，整数是内置的，但在Coq的底层逻辑里，需要从零开始定义什么是'自然...",
+      "blocks": [
+        {
+          "block_id": "slide_4_block_0",
+          "block_type": "text_line",
+          "content": "传统编程语言通常将整数作为内置原语，而在 Coq 的底层逻辑中，必须通过构造性定义从零开始构建自然数的概念。",
+          "semantic_role": "definition",
+          "position_hint": "left",
+          "emphasis": {
+            "bold": [
+              "内置原语",
+              "底层逻辑",
+              "构造性定义"
+            ],
+            "color": {
+              "自然数": "red"
+            }
+          },
+          "estimated_duration": 4.0,
+          "start_time": 0.0,
+          "duration": 0.0,
+          "audio_path": null,
+          "subtitle_text": "传统编程语言通常将整数作为内置原语，而在 Coq 的底层逻辑中，必须通过构造性定义从零开始构建自然数的概念。",
+          "bbox": null
+        },
+        {
+          "block_id": "slide_4_block_1",
+          "block_type": "manim_relation",
+          "content": {
+            "type": "directed_graph",
+            "description": "画面分为左右两部分。左侧标题'Imperative (C/Python)'，显示一个封装好的盒子标记为'int'；右侧标题'Constructive (Coq)'，显示从节点'Zero'指向'Next'的构建链，表达从无到有的过程。",
+            "ppt_text": "对比命令式语言将整数封装为黑盒，与构造性逻辑从零归纳构建数值的本质区别。"
+          },
+          "semantic_role": "relation",
+          "position_hint": "right",
+          "emphasis": null,
+          "estimated_duration": 5.0,
+          "start_time": 0.0,
+          "duration": 0.0,
+          "audio_path": null,
+          "subtitle_text": "对比命令式语言将整数封装为黑盒，与构造性逻辑从零归纳构建数值的本质区别。",
+          "bbox": null
+        }
+      ],
+      "page_intent": "introduce_concept",
+      "page_atoms": [
+        "Conceptual Statement",
+        "Relational Visualization"
+      ],
+      "needs_split": false,
+      "manim_relation_config": {
+        "type": "directed_graph",
+        "description": "画面分为左右两部分。左侧标题'Imperative (C/Python)'，显示一个封装好的盒子标记为'int'；右侧标题'Constructive (Coq)'，显示从节点'Zero'指向'Next'的构建链，表达从无到有的过程。",
+        "ppt_text": "对比命令式语言将整数封装为黑盒，与构造性逻辑从零归纳构建数值的本质区别。"
+      },
+      "image_search_queries": [],
+      "original_text": "在像C或Python这样的语言里，整数是内置的，但在Coq的底层逻辑里，我们需要从零开始定义什么是'自然数'。",
+      "coq_code": null,
+      "formula": null,
+      "gif_path": null,
+      "audio_path": null,
+      "duration": null,
+      "section_title": "2. Coq中的自然数表达",
+      "estimated_duration": 11.8
+    },
+    {
+      "slide_id": 5,
+      "slide_type": "coq",
+      "title": "Coq中的自然数表达",
+      "text": "Coq标准库使用了皮亚诺（Peano）算术公理来定义自然数\n【代码】这看起来有点抽象，它只有两种情况\n第一种是`O`，代表数字0；第二种是`S`，代表后继（Successor），也就是'下一个数'\n在Coq眼中，1就是`S O`（0的下一个），2就是`S (S O)`，3就是`S (S (S O)...\n这就像是用乐高积木，一块一块叠出来的",
+      "blocks": [
+        {
+          "block_id": "slide_5_block_0",
+          "block_type": "text_line",
+          "content": "Coq标准库依据皮亚诺公理，通过归纳类型定义自然数。该结构仅包含两个基本构造子：代表数值零的O与代表后继运算的S。在此定义下，任意自然数均通过递归构造生成，例如1表示为S O，2表示为S (S O)。",
+          "semantic_role": "definition",
+          "position_hint": "left",
+          "emphasis": {
+            "bold": [
+              "皮亚诺公理",
+              "归纳类型",
+              "构造子",
+              "递归构造"
+            ],
+            "color": {
+              "自然数": "red",
+              "后继": "red"
+            }
+          },
+          "estimated_duration": 4.0,
+          "start_time": 0.0,
+          "duration": 0.0,
+          "audio_path": null,
+          "subtitle_text": "Coq标准库依据皮亚诺公理，通过归纳类型定义自然数。该结构仅包含两个基本构造子：代表数值零的O与代表后继运算的S。在此定义下，任意自然数均通过递归构造生成，例如1表示为S O，2表示为S (S O)。",
+          "bbox": null
+        },
+        {
+          "block_id": "slide_5_block_1",
+          "block_type": "code",
+          "content": "Inductive nat : Type := | O : nat | S : nat -> nat.",
+          "semantic_role": "explanation",
+          "position_hint": "right",
+          "emphasis": null,
+          "estimated_duration": 2.0,
+          "start_time": 0.0,
+          "duration": 0.0,
+          "audio_path": null,
+          "subtitle_text": "代码示例",
+          "bbox": null
+        },
+        {
+          "block_id": "slide_5_block_3",
+          "block_type": "manim_relation",
+          "content": {
+            "type": "directed_graph",
+            "description": "展示自然数的构造链：从节点'0 (O)'出发，指向'1 (S O)'，再指向'2 (S (S O))'，强调'S'包裹前一个数的嵌套结构。",
+            "ppt_text": "自然数通过层层嵌套构造，每个数都是前一个数被“S”包裹的递归结构。",
+            "gif_path": "/wuhu_uni_ai/edu/shenao/EduAgent/backend/data/pipeline_outputs/test_ppt_only/gifs/slide_005_relation.gif"
+          },
+          "semantic_role": "relation",
+          "position_hint": "right",
+          "emphasis": null,
+          "estimated_duration": 5.0,
+          "start_time": 0.0,
+          "duration": 0.0,
+          "audio_path": null,
+          "subtitle_text": "自然数通过层层嵌套构造，每个数都是前一个数被“S”包裹的递归结构。",
+          "bbox": null
+        }
+      ],
+      "page_intent": "explain_mechanism",
+      "page_atoms": [
+        "Conceptual Statement",
+        "Code Walkthrough",
+        "Relational Visualization"
+      ],
+      "needs_split": false,
+      "manim_relation_config": {
+        "type": "directed_graph",
+        "description": "展示自然数的构造链：从节点'0 (O)'出发，指向'1 (S O)'，再指向'2 (S (S O))'，强调'S'包裹前一个数的嵌套结构。",
+        "ppt_text": "自然数通过层层嵌套构造，每个数都是前一个数被“S”包裹的递归结构。",
+        "gif_path": "/wuhu_uni_ai/edu/shenao/EduAgent/backend/data/pipeline_outputs/test_ppt_only/gifs/slide_005_relation.gif"
+      },
+      "image_search_queries": [],
+      "original_text": "Coq标准库使用了皮亚诺（Peano）算术公理来定义自然数。【代码】Inductive nat : Type := | O : nat | S : nat -> nat.这看起来有点抽象，我来翻译一下：我们定义了一个类型叫`nat`，它只有两种情况。第一种是`O`，代表数字0；第二种是`S`，代表后继（Successor），也就是'下一个数'。所以在Coq眼中，1就是`S O`（0的下一个），2就是`S (S O)`，3就是`S (S (S O))`。这就像是用乐高积木，一块一块叠出来的。",
+      "coq_code": "Inductive nat : Type := | O : nat | S : nat -> nat.",
+      "formula": null,
+      "gif_path": "/wuhu_uni_ai/edu/shenao/EduAgent/backend/data/pipeline_outputs/test_ppt_only/gifs/slide_005_coq.gif",
+      "audio_path": null,
+      "duration": null,
+      "section_title": "2. Coq中的自然数表达",
+      "estimated_duration": 30.0
+    },
+    {
+      "slide_id": 6,
+      "slide_type": "intro",
+      "title": "Coq中的自然数表达",
+      "text": "当然，如果写个100都要敲一百次S，那程序员要累死了\nCoq提供了强大的记号机制（Notation）\n当输入阿拉伯数字`35`时，Coq会自动把它解析成35个`S`套在`O`上；反之，当Coq输出结果时...\n可以在IDE里输入`Check 35.`试试看，系统会告诉你它的类型是`nat`",
+      "blocks": [
+        {
+          "block_id": "slide_6_block_0",
+          "block_type": "text_line",
+          "content": "Coq通过记号机制允许将阿拉伯数字自动解析为基于构造函数的嵌套序列，例如将数字转换为多层递归结构。该机制在保持底层结构为nat类型的同时，消除了手工输入大量符号的冗余，从而兼顾了形式化定义的严谨性与代码的可读性。",
+          "semantic_role": "definition",
+          "position_hint": "left",
+          "emphasis": {
+            "bold": [
+              "记号机制",
+              "阿拉伯数字",
+              "底层结构",
+              "可读性"
+            ],
+            "color": {
+              "构造函数": "red"
+            }
+          },
+          "estimated_duration": 4.5,
+          "start_time": 0.0,
+          "duration": 0.0,
+          "audio_path": null,
+          "subtitle_text": "Coq通过记号机制允许将阿拉伯数字自动解析为基于构造函数的嵌套序列，例如将数字转换为多层递归结构。该机制在保持底层结构为nat类型的同时，消除了手工输入大量符号的冗余，从而兼顾了形式化定义的严谨性与代码的可读性。",
+          "bbox": null
+        },
+        {
+          "block_id": "slide_6_block_1",
+          "block_type": "manim_relation",
+          "content": {
+            "type": "flowchart",
+            "description": "左侧节点显示'Arabic Numeral (35)'，右侧节点显示'Internal Representation (S ... O)'，中间通过双向箭头连接，箭头上方标记'Parsing'，下方标记'Printing'。",
+            "ppt_text": "",
+            "gif_path": "/wuhu_uni_ai/edu/shenao/EduAgent/backend/data/pipeline_outputs/test_ppt_only/gifs/slide_006_relation.gif"
+          },
+          "semantic_role": "relation",
+          "position_hint": "right",
+          "emphasis": null,
+          "estimated_duration": 5.0,
+          "start_time": 0.0,
+          "duration": 0.0,
+          "audio_path": null,
+          "subtitle_text": "",
+          "bbox": null
+        }
+      ],
+      "page_intent": "explain_mechanism",
+      "page_atoms": [
+        "Conceptual Statement",
+        "Relational Visualization",
+        "Code Walkthrough"
+      ],
+      "needs_split": false,
+      "manim_relation_config": {
+        "type": "flowchart",
+        "description": "左侧节点显示'Arabic Numeral (35)'，右侧节点显示'Internal Representation (S ... O)'，中间通过双向箭头连接，箭头上方标记'Parsing'，下方标记'Printing'。",
+        "ppt_text": "",
+        "gif_path": "/wuhu_uni_ai/edu/shenao/EduAgent/backend/data/pipeline_outputs/test_ppt_only/gifs/slide_006_relation.gif"
+      },
+      "image_search_queries": [],
+      "original_text": "当然，如果写个100都要敲一百次S，那程序员要累死了。所以Coq提供了强大的记号机制（Notation）。当我们输入阿拉伯数字`35`时，Coq会自动把它解析成35个`S`套在`O`上；反之，当Coq输出结果时，也会把那一大串内部结构显示为我们熟悉的数字。大家可以在IDE里输入`Check 35.`试试看，系统会告诉你它的类型是`nat`。",
+      "coq_code": null,
+      "formula": null,
+      "gif_path": null,
+      "audio_path": null,
+      "duration": null,
+      "section_title": "2. Coq中的自然数表达",
+      "estimated_duration": 27.6
+    }
+  ]
+}

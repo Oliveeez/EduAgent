@@ -1,0 +1,16 @@
+{
+  "status": "success",
+  "generated_at": "2026-01-24T07:52:25.965778",
+  "input_file": "data/outlines/test.json",
+  "output_dir": "data/pipeline_outputs/full_test",
+  "result": {
+    "success": true,
+    "video_path": "data/pipeline_outputs/full_test/videos/final_video.mp4",
+    "pptx_path": "data/pipeline_outputs/full_test/pptx/presentation_optimized.pptx",
+    "audio_path": "data/pipeline_outputs/full_test/audio/full_audio.mp3",
+    "subtitle_path": "data/pipeline_outputs/full_test/subtitles/subtitles.srt",
+    "total_duration": 210.23999999999998,
+    "slide_count": 7,
+    "error_message": ""
+  }
+}

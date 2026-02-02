@@ -37,7 +37,7 @@ class CustomLLM(LLM):
                 LLM_API_URL,
                 headers=headers,
                 json=payload,
-                timeout=60,
+                timeout=120,  # 增加到120秒
                 proxies={"http": None, "https": None}
             )
             response.raise_for_status()

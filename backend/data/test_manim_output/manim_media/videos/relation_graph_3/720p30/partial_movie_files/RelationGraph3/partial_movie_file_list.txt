@@ -1,0 +1,8 @@
+# This file is used internally by FFMPEG.
+file 'file:/wuhu_uni_ai/edu/shenao/EduAgent/backend/data/test_manim_output/manim_media/videos/relation_graph_3/720p30/partial_movie_files/RelationGraph3/uncached_00000.mp4'
+file 'file:/wuhu_uni_ai/edu/shenao/EduAgent/backend/data/test_manim_output/manim_media/videos/relation_graph_3/720p30/partial_movie_files/RelationGraph3/uncached_00001.mp4'
+file 'file:/wuhu_uni_ai/edu/shenao/EduAgent/backend/data/test_manim_output/manim_media/videos/relation_graph_3/720p30/partial_movie_files/RelationGraph3/uncached_00002.mp4'
+file 'file:/wuhu_uni_ai/edu/shenao/EduAgent/backend/data/test_manim_output/manim_media/videos/relation_graph_3/720p30/partial_movie_files/RelationGraph3/uncached_00003.mp4'
+file 'file:/wuhu_uni_ai/edu/shenao/EduAgent/backend/data/test_manim_output/manim_media/videos/relation_graph_3/720p30/partial_movie_files/RelationGraph3/uncached_00004.mp4'
+file 'file:/wuhu_uni_ai/edu/shenao/EduAgent/backend/data/test_manim_output/manim_media/videos/relation_graph_3/720p30/partial_movie_files/RelationGraph3/uncached_00005.mp4'
+file 'file:/wuhu_uni_ai/edu/shenao/EduAgent/backend/data/test_manim_output/manim_media/videos/relation_graph_3/720p30/partial_movie_files/RelationGraph3/uncached_00006.mp4'

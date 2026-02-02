@@ -1,0 +1,208 @@
+{
+  "pptx_file": "data/pipeline_outputs/full_test/pptx/presentation.pptx",
+  "adjustments": [
+    {
+      "slide_idx": 1,
+      "element_idx": 1,
+      "action": "resize",
+      "new_width": 5.9,
+      "new_height": 1.5
+    },
+    {
+      "slide_idx": 1,
+      "element_idx": 2,
+      "action": "resize",
+      "new_width": 5.9,
+      "new_height": 1.0
+    },
+    {
+      "slide_idx": 2,
+      "element_idx": 0,
+      "action": "resize",
+      "new_width": 6.66,
+      "new_height": 7.5
+    },
+    {
+      "slide_idx": 2,
+      "element_idx": 1,
+      "action": "resize",
+      "new_width": 5.9,
+      "new_height": 0.8
+    },
+    {
+      "slide_idx": 2,
+      "element_idx": 2,
+      "action": "resize",
+      "new_width": 5.9,
+      "new_height": 5.5
+    },
+    {
+      "slide_idx": 5,
+      "element_idx": 1,
+      "action": "resize",
+      "new_width": 5.6,
+      "new_height": 1.5
+    },
+    {
+      "slide_idx": 5,
+      "element_idx": 2,
+      "action": "move",
+      "new_left": 0.5,
+      "new_top": 2.0
+    },
+    {
+      "slide_idx": 5,
+      "element_idx": 2,
+      "action": "resize",
+      "new_width": 5.6,
+      "new_height": 5.0
+    },
+    {
+      "slide_idx": 6,
+      "element_idx": 1,
+      "action": "resize",
+      "new_width": 6.0,
+      "new_height": 1.0
+    },
+    {
+      "slide_idx": 6,
+      "element_idx": 2,
+      "action": "resize",
+      "new_width": 6.0,
+      "new_height": 5.3
+    },
+    {
+      "slide_idx": 7,
+      "element_idx": 2,
+      "action": "resize",
+      "new_width": 6.0,
+      "new_height": 5.5
+    },
+    {
+      "slide_idx": 3,
+      "element_idx": 2,
+      "action": "resize",
+      "new_width": 5.8,
+      "new_height": 5.5
+    },
+    {
+      "slide_idx": 5,
+      "element_idx": 2,
+      "action": "resize",
+      "new_width": 6.0,
+      "new_height": 5.5
+    },
+    {
+      "slide_idx": 6,
+      "element_idx": 1,
+      "action": "resize",
+      "new_width": 5.8,
+      "new_height": 0.8
+    },
+    {
+      "slide_idx": 6,
+      "element_idx": 2,
+      "action": "resize",
+      "new_width": 5.8,
+      "new_height": 5.5
+    },
+    {
+      "slide_idx": 7,
+      "element_idx": 2,
+      "action": "resize",
+      "new_width": 5.8,
+      "new_height": 5.5
+    },
+    {
+      "slide_idx": 7,
+      "element_idx": 3,
+      "action": "move",
+      "new_left": 7.0,
+      "new_top": 1.3
+    },
+    {
+      "slide_idx": 8,
+      "element_idx": 1,
+      "action": "resize",
+      "new_width": 5.9,
+      "new_height": 0.8
+    },
+    {
+      "slide_idx": 8,
+      "element_idx": 2,
+      "action": "resize",
+      "new_width": 5.9,
+      "new_height": 5.5
+    },
+    {
+      "slide_idx": 1,
+      "element_idx": 0,
+      "action": "resize",
+      "new_width": 1.0,
+      "new_height": 1.0
+    },
+    {
+      "slide_idx": 1,
+      "element_idx": 0,
+      "action": "move",
+      "new_left": 11.8,
+      "new_top": 6.0
+    },
+    {
+      "slide_idx": 2,
+      "element_idx": 1,
+      "action": "resize",
+      "new_width": 5.9,
+      "new_height": 0.8
+    },
+    {
+      "slide_idx": 2,
+      "element_idx": 2,
+      "action": "resize",
+      "new_width": 5.9,
+      "new_height": 5.5
+    },
+    {
+      "slide_idx": 3,
+      "element_idx": 2,
+      "action": "resize",
+      "new_width": 6.0,
+      "new_height": 5.5
+    },
+    {
+      "slide_idx": 3,
+      "element_idx": 0,
+      "action": "move",
+      "new_left": 7.0,
+      "new_top": 4.0
+    },
+    {
+      "slide_idx": 3,
+      "element_idx": 0,
+      "action": "resize",
+      "new_width": 5.5,
+      "new_height": 3.0
+    },
+    {
+      "slide_idx": 4,
+      "element_idx": 2,
+      "action": "resize",
+      "new_width": 5.9,
+      "new_height": 5.7
+    },
+    {
+      "slide_idx": 7,
+      "element_idx": 2,
+      "action": "resize",
+      "new_width": 5.8,
+      "new_height": 5.5
+    },
+    {
+      "slide_idx": 8,
+      "element_idx": 2,
+      "action": "resize",
+      "new_width": 6.0,
+      "new_height": 5.5
+    }
+  ]
+}

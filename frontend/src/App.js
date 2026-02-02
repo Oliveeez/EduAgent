@@ -9,12 +9,14 @@ import {
   NodeIndexOutlined,
   FileWordOutlined,
   EditOutlined,
+  VideoCameraOutlined,
 } from '@ant-design/icons';
 
 import Step1Upload from './pages/Step1Upload';
 import Step2Outline from './pages/Step2Outline';
 import Step3PPT from './pages/Step3PPT';
 import Step4Modify from './pages/Step4Modify';
+import Step5Video from './pages/Step5Video';
 
 import './styles/App.css';
 
@@ -51,6 +53,11 @@ function App() {
       title: 'Step 4',
       description: '修改PPT',
       icon: <EditOutlined />,
+    },
+    {
+      title: 'Step 5',
+      description: '生成视频',
+      icon: <VideoCameraOutlined />,
     },
   ];
 
@@ -99,7 +106,17 @@ function App() {
           <Step4Modify
             sessionData={sessionData}
             updateSessionData={updateSessionData}
+            onNext={next}
             onPrev={prev}
+          />
+        );
+      case 4:
+        return (
+          <Step5Video
+            sessionData={sessionData}
+            updateSessionData={updateSessionData}
+            onBack={prev}
+            onComplete={() => message.success('视频生成流程完成！')}
           />
         );
       default:

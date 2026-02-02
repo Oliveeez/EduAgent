@@ -1,0 +1,579 @@
+{
+  "pptx_file": "data/pipeline_outputs/full_test/pptx/presentation.pptx",
+  "slide_count": 9,
+  "slides": [
+    {
+      "slide_id": 0,
+      "elements": [
+        {
+          "type": "text",
+          "left": 1.169686132983377,
+          "top": 2.2049146981627294,
+          "width": 10.993962160979878,
+          "height": 1.160165135608049,
+          "content": "一级标题"
+        },
+        {
+          "type": "text",
+          "left": 5.079117454068242,
+          "top": 5.6834251968503935,
+          "width": 3.1750995188101485,
+          "height": 0.4965277777777778,
+          "content": "日期"
+        },
+        {
+          "type": "text",
+          "left": 4.412631233595801,
+          "top": 4.819994531933508,
+          "width": 4.50807195975503,
+          "height": 0.654514435695538,
+          "content": "二级标题"
+        }
+      ]
+    },
+    {
+      "slide_id": 1,
+      "elements": [
+        {
+          "type": "text",
+          "left": 6.666665573053368,
+          "top": 0.0,
+          "width": 6.666667760279965,
+          "height": 7.5,
+          "content": ""
+        },
+        {
+          "type": "text",
+          "left": 0.5,
+          "top": 2.5,
+          "width": 12.33,
+          "height": 1.5,
+          "content": "Coq验证入门：整数算术与大小比较"
+        },
+        {
+          "type": "text",
+          "left": 0.5,
+          "top": 4.5,
+          "width": 12.33,
+          "height": 1.0,
+          "content": "Coq形式化验证教程"
+        }
+      ]
+    },
+    {
+      "slide_id": 2,
+      "elements": [
+        {
+          "type": "text",
+          "left": 6.666665573053368,
+          "top": 0.0,
+          "width": 6.666667760279965,
+          "height": 7.5,
+          "content": ""
+        },
+        {
+          "type": "text",
+          "left": 0.5,
+          "top": 0.3,
+          "width": 12.33,
+          "height": 0.8,
+          "content": "从《孙子算经》说起"
+        },
+        {
+          "type": "text",
+          "left": 0.5,
+          "top": 1.3,
+          "width": 12.33,
+          "height": 5.5,
+          "content": "同学们大家好！欢迎来到Coq验证入门的第一课。在正式开始敲代码之前，我想先问大家一个扎心的问题：你们"
+        }
+      ]
+    },
+    {
+      "slide_id": 3,
+      "elements": [
+        {
+          "type": "text",
+          "left": 6.666665573053368,
+          "top": 0.0,
+          "width": 6.666667760279965,
+          "height": 7.5,
+          "content": ""
+        },
+        {
+          "type": "text",
+          "left": 0.5,
+          "top": 0.3,
+          "width": 12.33,
+          "height": 0.8,
+          "content": "大家一定都听过'鸡兔同笼'的故事"
+        },
+        {
+          "type": "text",
+          "left": 0.5,
+          "top": 1.3,
+          "width": 12.33,
+          "height": 5.5,
+          "content": "大家一定都听过'鸡兔同笼'的故事。书中记载：'今有雉兔同笼，上有三十五头，下有九十四足，问雉兔各几何"
+        },
+        {
+          "type": "text",
+          "left": 7.0,
+          "top": 1.5,
+          "width": 5.5,
+          "height": 2.0,
+          "content": "x + y = 35"
+        }
+      ]
+    },
+    {
+      "slide_id": 4,
+      "elements": [
+        {
+          "type": "text",
+          "left": 6.666665573053368,
+          "top": 0.0,
+          "width": 6.666667760279965,
+          "height": 7.5,
+          "content": ""
+        },
+        {
+          "type": "text",
+          "left": 0.5,
+          "top": 0.3,
+          "width": 12.33,
+          "height": 0.8,
+          "content": "，2x + 4y = 94"
+        },
+        {
+          "type": "text",
+          "left": 0.5,
+          "top": 1.3,
+          "width": 12.33,
+          "height": 5.5,
+          "content": "，2x + 4y = 94。这就是一种最朴素的'数学建模'——把现实问题转化为数学符号。而在Coq这"
+        },
+        {
+          "type": "text",
+          "left": 7.0,
+          "top": 1.5,
+          "width": 5.5,
+          "height": 2.0,
+          "content": "2x + 4y = 94"
+        }
+      ]
+    },
+    {
+      "slide_id": 5,
+      "elements": [
+        {
+          "type": "text",
+          "left": 6.666665573053368,
+          "top": 0.0,
+          "width": 6.666667760279965,
+          "height": 7.5,
+          "content": ""
+        },
+        {
+          "type": "text",
+          "left": 0.5,
+          "top": 0.3,
+          "width": 12.33,
+          "height": 0.8,
+          "content": "大家可能会问：'我都算出答案了"
+        },
+        {
+          "type": "text",
+          "left": 0.5,
+          "top": 1.3,
+          "width": 12.33,
+          "height": 5.5,
+          "content": "大家可能会问：'我都算出答案了，为什么还要用Coq？' 确实，对于这种简单问题，人脑很快。但如果方程"
+        }
+      ]
+    },
+    {
+      "slide_id": 6,
+      "elements": [
+        {
+          "type": "text",
+          "left": 6.666665573053368,
+          "top": 0.0,
+          "width": 6.666667760279965,
+          "height": 7.5,
+          "content": ""
+        },
+        {
+          "type": "text",
+          "left": 0.5,
+          "top": 0.3,
+          "width": 12.33,
+          "height": 0.8,
+          "content": "在像C或Python这样的语言里"
+        },
+        {
+          "type": "text",
+          "left": 0.5,
+          "top": 1.3,
+          "width": 12.33,
+          "height": 5.5,
+          "content": "在像C或Python这样的语言里，整数是内置的，但在Coq的底层逻辑里，我们需要从零开始定义什么是'"
+        }
+      ]
+    },
+    {
+      "slide_id": 7,
+      "elements": [
+        {
+          "type": "text",
+          "left": 6.666665573053368,
+          "top": 0.0,
+          "width": 6.666667760279965,
+          "height": 7.5,
+          "content": ""
+        },
+        {
+          "type": "text",
+          "left": 0.5,
+          "top": 0.3,
+          "width": 12.33,
+          "height": 0.8,
+          "content": "Coq中的自然数表达"
+        },
+        {
+          "type": "text",
+          "left": 0.5,
+          "top": 1.3,
+          "width": 12.33,
+          "height": 5.5,
+          "content": "Coq标准库使用了皮亚诺（Peano）算术公理来定义自然数。Inductive nat : Type"
+        },
+        {
+          "type": "text",
+          "left": 7.0,
+          "top": 1.5,
+          "width": 5.5,
+          "height": 5.0,
+          "content": "Inductive nat : Type := | O : nat | S : nat -> nat"
+        }
+      ]
+    },
+    {
+      "slide_id": 8,
+      "elements": [
+        {
+          "type": "text",
+          "left": 6.666665573053368,
+          "top": 0.0,
+          "width": 6.666667760279965,
+          "height": 7.5,
+          "content": ""
+        },
+        {
+          "type": "text",
+          "left": 0.5,
+          "top": 0.3,
+          "width": 12.33,
+          "height": 0.8,
+          "content": "Coq中的自然数表达"
+        },
+        {
+          "type": "text",
+          "left": 0.5,
+          "top": 1.3,
+          "width": 12.33,
+          "height": 5.5,
+          "content": "当然，如果写个100都要敲一百次S，那程序员要累死了。所以Coq提供了强大的记号机制（Notatio"
+        }
+      ]
+    }
+  ],
+  "analysis": {
+    "overlaps": [
+      {
+        "slide_id": 1,
+        "element1_index": 0,
+        "element1_type": "text",
+        "element2_index": 1,
+        "element2_type": "text"
+      },
+      {
+        "slide_id": 1,
+        "element1_index": 0,
+        "element1_type": "text",
+        "element2_index": 2,
+        "element2_type": "text"
+      },
+      {
+        "slide_id": 2,
+        "element1_index": 0,
+        "element1_type": "text",
+        "element2_index": 1,
+        "element2_type": "text"
+      },
+      {
+        "slide_id": 2,
+        "element1_index": 0,
+        "element1_type": "text",
+        "element2_index": 2,
+        "element2_type": "text"
+      },
+      {
+        "slide_id": 3,
+        "element1_index": 0,
+        "element1_type": "text",
+        "element2_index": 1,
+        "element2_type": "text"
+      },
+      {
+        "slide_id": 3,
+        "element1_index": 0,
+        "element1_type": "text",
+        "element2_index": 2,
+        "element2_type": "text"
+      },
+      {
+        "slide_id": 3,
+        "element1_index": 0,
+        "element1_type": "text",
+        "element2_index": 3,
+        "element2_type": "text"
+      },
+      {
+        "slide_id": 3,
+        "element1_index": 2,
+        "element1_type": "text",
+        "element2_index": 3,
+        "element2_type": "text"
+      },
+      {
+        "slide_id": 4,
+        "element1_index": 0,
+        "element1_type": "text",
+        "element2_index": 1,
+        "element2_type": "text"
+      },
+      {
+        "slide_id": 4,
+        "element1_index": 0,
+        "element1_type": "text",
+        "element2_index": 2,
+        "element2_type": "text"
+      },
+      {
+        "slide_id": 4,
+        "element1_index": 0,
+        "element1_type": "text",
+        "element2_index": 3,
+        "element2_type": "text"
+      },
+      {
+        "slide_id": 4,
+        "element1_index": 2,
+        "element1_type": "text",
+        "element2_index": 3,
+        "element2_type": "text"
+      },
+      {
+        "slide_id": 5,
+        "element1_index": 0,
+        "element1_type": "text",
+        "element2_index": 1,
+        "element2_type": "text"
+      },
+      {
+        "slide_id": 5,
+        "element1_index": 0,
+        "element1_type": "text",
+        "element2_index": 2,
+        "element2_type": "text"
+      },
+      {
+        "slide_id": 6,
+        "element1_index": 0,
+        "element1_type": "text",
+        "element2_index": 1,
+        "element2_type": "text"
+      },
+      {
+        "slide_id": 6,
+        "element1_index": 0,
+        "element1_type": "text",
+        "element2_index": 2,
+        "element2_type": "text"
+      },
+      {
+        "slide_id": 7,
+        "element1_index": 0,
+        "element1_type": "text",
+        "element2_index": 1,
+        "element2_type": "text"
+      },
+      {
+        "slide_id": 7,
+        "element1_index": 0,
+        "element1_type": "text",
+        "element2_index": 2,
+        "element2_type": "text"
+      },
+      {
+        "slide_id": 7,
+        "element1_index": 0,
+        "element1_type": "text",
+        "element2_index": 3,
+        "element2_type": "text"
+      },
+      {
+        "slide_id": 7,
+        "element1_index": 2,
+        "element1_type": "text",
+        "element2_index": 3,
+        "element2_type": "text"
+      },
+      {
+        "slide_id": 8,
+        "element1_index": 0,
+        "element1_type": "text",
+        "element2_index": 1,
+        "element2_type": "text"
+      },
+      {
+        "slide_id": 8,
+        "element1_index": 0,
+        "element1_type": "text",
+        "element2_index": 2,
+        "element2_type": "text"
+      }
+    ],
+    "out_of_bounds": [
+      {
+        "slide_id": 1,
+        "element_index": 0,
+        "element_type": "text",
+        "issues": [
+          "right > 13.33"
+        ],
+        "bbox": {
+          "type": "text",
+          "left": 6.666665573053368,
+          "top": 0.0,
+          "width": 6.666667760279965,
+          "height": 7.5,
+          "content": ""
+        }
+      },
+      {
+        "slide_id": 2,
+        "element_index": 0,
+        "element_type": "text",
+        "issues": [
+          "right > 13.33"
+        ],
+        "bbox": {
+          "type": "text",
+          "left": 6.666665573053368,
+          "top": 0.0,
+          "width": 6.666667760279965,
+          "height": 7.5,
+          "content": ""
+        }
+      },
+      {
+        "slide_id": 3,
+        "element_index": 0,
+        "element_type": "text",
+        "issues": [
+          "right > 13.33"
+        ],
+        "bbox": {
+          "type": "text",
+          "left": 6.666665573053368,
+          "top": 0.0,
+          "width": 6.666667760279965,
+          "height": 7.5,
+          "content": ""
+        }
+      },
+      {
+        "slide_id": 4,
+        "element_index": 0,
+        "element_type": "text",
+        "issues": [
+          "right > 13.33"
+        ],
+        "bbox": {
+          "type": "text",
+          "left": 6.666665573053368,
+          "top": 0.0,
+          "width": 6.666667760279965,
+          "height": 7.5,
+          "content": ""
+        }
+      },
+      {
+        "slide_id": 5,
+        "element_index": 0,
+        "element_type": "text",
+        "issues": [
+          "right > 13.33"
+        ],
+        "bbox": {
+          "type": "text",
+          "left": 6.666665573053368,
+          "top": 0.0,
+          "width": 6.666667760279965,
+          "height": 7.5,
+          "content": ""
+        }
+      },
+      {
+        "slide_id": 6,
+        "element_index": 0,
+        "element_type": "text",
+        "issues": [
+          "right > 13.33"
+        ],
+        "bbox": {
+          "type": "text",
+          "left": 6.666665573053368,
+          "top": 0.0,
+          "width": 6.666667760279965,
+          "height": 7.5,
+          "content": ""
+        }
+      },
+      {
+        "slide_id": 7,
+        "element_index": 0,
+        "element_type": "text",
+        "issues": [
+          "right > 13.33"
+        ],
+        "bbox": {
+          "type": "text",
+          "left": 6.666665573053368,
+          "top": 0.0,
+          "width": 6.666667760279965,
+          "height": 7.5,
+          "content": ""
+        }
+      },
+      {
+        "slide_id": 8,
+        "element_index": 0,
+        "element_type": "text",
+        "issues": [
+          "right > 13.33"
+        ],
+        "bbox": {
+          "type": "text",
+          "left": 6.666665573053368,
+          "top": 0.0,
+          "width": 6.666667760279965,
+          "height": 7.5,
+          "content": ""
+        }
+      }
+    ]
+  }
+}

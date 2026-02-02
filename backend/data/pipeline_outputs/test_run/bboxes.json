@@ -1,0 +1,165 @@
+{
+  "pptx_file": "/wuhu_uni_ai/edu/shenao/EduAgent/backend/data/pipeline_outputs/test_run/pptx/presentation.pptx",
+  "slide_count": 7,
+  "slides": [
+    {
+      "slide_id": 0,
+      "elements": [
+        {
+          "type": "text",
+          "left": 1.169686132983377,
+          "top": 2.2049146981627294,
+          "width": 10.993962160979878,
+          "height": 1.160165135608049,
+          "content": "Coq验证入门：整数算术与大小比较"
+        }
+      ]
+    },
+    {
+      "slide_id": 1,
+      "elements": [
+        {
+          "type": "text",
+          "left": 0.5,
+          "top": 0.3,
+          "width": 12.33,
+          "height": 0.8,
+          "content": "1. 课程引入：从《孙子算经》说起"
+        },
+        {
+          "type": "text",
+          "left": 0.5,
+          "top": 1.3,
+          "width": 12.33,
+          "height": 5.5,
+          "content": "• 软件开发中传统单元测试的覆盖率局限与潜在风险\n• 航空航天及金融等关键领域对形式化验证的刚性需求"
+        }
+      ]
+    },
+    {
+      "slide_id": 2,
+      "elements": [
+        {
+          "type": "text",
+          "left": 0.5,
+          "top": 0.3,
+          "width": 12.33,
+          "height": 0.8,
+          "content": "1. 课程引入：从《孙子算经》说起"
+        },
+        {
+          "type": "text",
+          "left": 0.5,
+          "top": 1.3,
+          "width": 6.0,
+          "height": 5.5,
+          "content": "• 案例引入：鸡兔同笼问题的数学描述\n• 传统建模：构建线性方程组实现从现实问题到数学符号的转化\n•"
+        },
+        {
+          "type": "text",
+          "left": 7.0,
+          "top": 1.5,
+          "width": 5.5,
+          "height": 2.0,
+          "content": "x + y = 35\n2x + 4y = 94"
+        }
+      ]
+    },
+    {
+      "slide_id": 3,
+      "elements": [
+        {
+          "type": "text",
+          "left": 0.5,
+          "top": 0.3,
+          "width": 12.33,
+          "height": 0.8,
+          "content": "1. 课程引入：从《孙子算经》说起"
+        },
+        {
+          "type": "text",
+          "left": 0.5,
+          "top": 1.3,
+          "width": 12.33,
+          "height": 5.5,
+          "content": "• 应对高复杂度场景，突破人脑处理大规模变量与步骤的局限\n• 利用机器验证优势，彻底消除人为逻辑疏忽"
+        }
+      ]
+    },
+    {
+      "slide_id": 4,
+      "elements": [
+        {
+          "type": "text",
+          "left": 0.5,
+          "top": 0.3,
+          "width": 12.33,
+          "height": 0.8,
+          "content": "2. Coq中的自然数表达"
+        },
+        {
+          "type": "text",
+          "left": 0.5,
+          "top": 1.3,
+          "width": 12.33,
+          "height": 5.5,
+          "content": "• C与Python等语言提供内置整数类型\n• Coq底层逻辑不包含预置自然数定义\n• 需从零开始构"
+        }
+      ]
+    },
+    {
+      "slide_id": 5,
+      "elements": [
+        {
+          "type": "text",
+          "left": 0.5,
+          "top": 0.3,
+          "width": 12.33,
+          "height": 0.8,
+          "content": "2. Coq中的自然数表达"
+        },
+        {
+          "type": "text",
+          "left": 0.5,
+          "top": 1.3,
+          "width": 6.0,
+          "height": 5.5,
+          "content": "• Coq标准库基于皮亚诺算术公理定义自然数\n• 采用归纳类型定义包含构造子O与S\n• 构造子O代表"
+        },
+        {
+          "type": "image",
+          "left": 7.0,
+          "top": 1.5,
+          "width": 5.5,
+          "height": 5.0,
+          "content": "GIF/图片"
+        }
+      ]
+    },
+    {
+      "slide_id": 6,
+      "elements": [
+        {
+          "type": "text",
+          "left": 0.5,
+          "top": 0.3,
+          "width": 12.33,
+          "height": 0.8,
+          "content": "2. Coq中的自然数表达"
+        },
+        {
+          "type": "text",
+          "left": 0.5,
+          "top": 1.3,
+          "width": 12.33,
+          "height": 5.5,
+          "content": "• Coq提供记号机制解决递归构造书写繁琐问题\n• 输入时自动将阿拉伯数字解析为底层递归结构\n• 输"
+        }
+      ]
+    }
+  ],
+  "analysis": {
+    "overlaps": [],
+    "out_of_bounds": []
+  }
+}

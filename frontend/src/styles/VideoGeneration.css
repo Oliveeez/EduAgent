@@ -1,0 +1,221 @@
+/* 视频生成页面样式 */
+
+.video-generation-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 24px;
+}
+
+.video-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.page-header h2 {
+  margin: 0;
+  color: #1890ff;
+}
+
+/* 开始卡片 */
+.start-card {
+  text-align: center;
+  padding: 60px 40px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 12px;
+  border: none;
+}
+
+.start-content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.start-icon {
+  font-size: 80px;
+  color: #1890ff;
+  margin-bottom: 24px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.start-content h3 {
+  margin-bottom: 16px;
+  color: #262626;
+}
+
+.feature-list {
+  text-align: left;
+  max-width: 400px;
+  margin: 24px auto;
+  font-size: 16px;
+  line-height: 2;
+  color: #595959;
+}
+
+.feature-list li {
+  margin-bottom: 8px;
+}
+
+.start-button {
+  margin-top: 32px;
+  height: 50px;
+  font-size: 16px;
+  padding: 0 40px;
+}
+
+.estimate-time {
+  display: block;
+  margin-top: 16px;
+  font-size: 14px;
+}
+
+/* 进度卡片 */
+.progress-card {
+  margin-bottom: 24px;
+  border-radius: 8px;
+  border: 1px solid #e8e8e8;
+}
+
+.progress-card h4 {
+  margin-bottom: 24px;
+  color: #262626;
+}
+
+.generation-steps {
+  margin-top: 32px;
+}
+
+/* 视频播放器卡片 */
+.video-player-card {
+  margin-bottom: 24px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.video-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  background: #000;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.video-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* 下载卡片 */
+.download-card {
+  border-radius: 8px;
+}
+
+.download-item {
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  border-radius: 8px;
+  height: 100%;
+}
+
+.download-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-color: #1890ff;
+}
+
+.download-icon {
+  font-size: 48px;
+  color: #1890ff;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.download-item h5 {
+  margin: 8px 0;
+  color: #262626;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .video-generation-container {
+    padding: 12px;
+  }
+
+  .video-content {
+    padding: 20px;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .start-card {
+    padding: 40px 20px;
+  }
+
+  .start-icon {
+    font-size: 60px;
+  }
+
+  .generation-steps {
+    font-size: 12px;
+  }
+}
+
+/* 加载动画 */
+.ant-spin-nested-loading {
+  min-height: 200px;
+}
+
+/* 成功状态 */
+.ant-steps-item-finish .ant-steps-item-icon {
+  background-color: #52c41a;
+  border-color: #52c41a;
+}
+
+/* 自定义滚动条 */
+.video-generation-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.video-generation-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.video-generation-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.video-generation-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+

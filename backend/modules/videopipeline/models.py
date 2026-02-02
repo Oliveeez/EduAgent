@@ -14,6 +14,96 @@ class SlideType(Enum):
     INTRO = "intro"       # 引言/过渡页（无代码/公式）
 
 
+class BlockType(Enum):
+    """Block类型枚举"""
+    TEXT_LINE = "text_line"                       # 单行文本
+    CONCEPTUAL_STATEMENT = "conceptual_statement"  # 概念陈述
+    FORMULA = "formula"                           # 公式
+    CODE = "code"                                 # 代码块
+    MANIM_RELATION = "manim_relation"             # Manim关系图/函数图
+    IMAGE = "image"                               # 图片/GIF
+    TITLE = "title"                               # 标题
+
+
+class PageIntent(Enum):
+    """页面意图枚举（Intent Layer）- 教学叙事中的作用"""
+    INTRODUCE_CONCEPT = "introduce_concept"       # 引入新概念
+    EXPLAIN_MECHANISM = "explain_mechanism"       # 解释原理或机制
+    SHOW_RELATION = "show_relation"               # 展示概念之间的关系
+    WALK_THROUGH_PROOF = "walk_through_proof"     # 逐步讲解公式或代码
+    MOTIVATE_IMPORTANCE = "motivate_importance"   # 说明为什么重要
+
+
+class PageAtom(Enum):
+    """页面表现原子枚举"""
+    CONCEPTUAL_STATEMENT = "conceptual_statement"
+    FORMULA_FOCUS = "formula_focus"
+    CODE_WALKTHROUGH = "code_walkthrough"
+    RELATIONAL_VISUALIZATION = "relational_visualization"
+    CONCEPT_WITH_VISUAL = "concept_with_visual"
+
+
+class SemanticRole(Enum):
+    """Block的语义角色"""
+    DEFINITION = "definition"         # 定义
+    MOTIVATION = "motivation"         # 动机/重要性说明
+    EXAMPLE = "example"              # 举例
+    RELATION = "relation"            # 关系展示
+    TRANSITION = "transition"        # 过渡
+    EXPLANATION = "explanation"      # 解释
+    PROOF_STEP = "proof_step"        # 证明步骤
+
+
+@dataclass
+class SlideBlock:
+    """
+    Slide内容块（升级版）
+    
+    每个Block是一个"认知+时序"单位：
+    - 认知单位：一个完整的教学信息片段
+    - 时序单位：一个独立的时间片段（可配音、可字幕、可控制出现）
+    """
+    block_id: str                              # 唯一ID，格式: "slide_{slide_id}_block_{idx}"
+    block_type: str                            # BlockType的值
+    content: Any                               # 文本、LaTeX、代码、Manim配置或图片URL
+    
+    # 语义信息
+    semantic_role: str = "explanation"         # SemanticRole的值
+    position_hint: str = "left"                # 布局提示：left/right/center
+    
+    # 样式信息（文本block专用）
+    emphasis: Optional[Dict[str, Any]] = None  # {"bold": [...], "color": {"word": "red"}}
+    
+    # 时序信息（两阶段估计）
+    estimated_duration: float = 0.0            # Stage 1.5认知时长估计（秒）
+    start_time: float = 0.0                    # 相对于slide开始的时间（秒）
+    duration: float = 0.0                      # Stage 6物理时长修正后（秒）
+    
+    # 音频和字幕
+    audio_path: Optional[str] = None           # 该block的音频文件路径
+    subtitle_text: str = ""                    # 对应的字幕文本
+    
+    # 布局信息（由Stage 4/5填充）
+    bbox: Optional[Dict[str, float]] = None    # {"left": 0, "top": 0, "width": 0, "height": 0}
+    
+    def to_dict(self) -> Dict[str, Any]:
+        """转换为字典"""
+        return {
+            "block_id": self.block_id,
+            "block_type": self.block_type,
+            "content": str(self.content) if not isinstance(self.content, (dict, list)) else self.content,
+            "semantic_role": self.semantic_role,
+            "position_hint": self.position_hint,
+            "emphasis": self.emphasis,
+            "estimated_duration": self.estimated_duration,
+            "start_time": self.start_time,
+            "duration": self.duration,
+            "audio_path": self.audio_path,
+            "subtitle_text": self.subtitle_text,
+            "bbox": self.bbox
+        }
+
+
 @dataclass
 class SlideStructure:
     """
@@ -26,7 +116,21 @@ class SlideStructure:
     title: str                              # 页面标题
     text: str                               # PPT显示文本（结构化要点）
     
-    # 内容字段（根据type填充）
+    # 块级内容（Stage 1.5生成）
+    blocks: List[SlideBlock] = field(default_factory=list)
+    
+    # Stage 1.5决策信息
+    page_intent: Optional[str] = None           # PageIntent的值
+    page_atoms: List[str] = field(default_factory=list)  # PageAtom的值列表
+    needs_split: bool = False                   # 是否需要分页
+    
+    # Manim关系图配置
+    manim_relation_config: Optional[Dict[str, Any]] = None
+    
+    # 图片搜索关键词
+    image_search_queries: List[str] = field(default_factory=list)
+    
+    # 内容字段（保留兼容性）
     coq_code: Optional[str] = None          # Coq代码（type=coq时）
     formula: Optional[str] = None           # LaTeX公式（type=formula时）
     
@@ -47,6 +151,12 @@ class SlideStructure:
             "slide_type": self.slide_type.value,
             "title": self.title,
             "text": self.text,
+            "blocks": [b.to_dict() for b in self.blocks] if self.blocks else [],
+            "page_intent": self.page_intent,
+            "page_atoms": self.page_atoms,
+            "needs_split": self.needs_split,
+            "manim_relation_config": self.manim_relation_config,
+            "image_search_queries": self.image_search_queries,
             "original_text": self.original_text,
             "coq_code": self.coq_code,
             "formula": self.formula,
@@ -60,11 +170,35 @@ class SlideStructure:
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> 'SlideStructure':
         """从字典创建实例"""
+        blocks_data = data.get("blocks", [])
+        blocks = [
+            SlideBlock(
+                block_id=b.get("block_id", ""),
+                block_type=b["block_type"],
+                content=b["content"],
+                semantic_role=b.get("semantic_role", "explanation"),
+                position_hint=b.get("position_hint", "left"),
+                emphasis=b.get("emphasis"),
+                estimated_duration=b.get("estimated_duration", 0.0),
+                start_time=b.get("start_time", 0.0),
+                duration=b.get("duration", 0.0),
+                audio_path=b.get("audio_path"),
+                subtitle_text=b.get("subtitle_text", ""),
+                bbox=b.get("bbox")
+            ) for b in blocks_data
+        ]
+        
         return cls(
             slide_id=data["slide_id"],
             slide_type=SlideType(data["slide_type"]),
             title=data["title"],
             text=data["text"],
+            blocks=blocks,
+            page_intent=data.get("page_intent"),
+            page_atoms=data.get("page_atoms", []),
+            needs_split=data.get("needs_split", False),
+            manim_relation_config=data.get("manim_relation_config"),
+            image_search_queries=data.get("image_search_queries", []),
             coq_code=data.get("coq_code"),
             formula=data.get("formula"),
             gif_path=Path(data["gif_path"]) if data.get("gif_path") else None,
@@ -78,16 +212,20 @@ class SlideStructure:
 
 @dataclass
 class BoundingBox:
-    """元素边界框"""
+    """元素边界框（增强版：支持block关联）"""
     element_type: str      # "text" 或 "image"
     left: float           # 左边距（英寸）
     top: float            # 上边距（英寸）
     width: float          # 宽度（英寸）
     height: float         # 高度（英寸）
     content: str = ""     # 内容（用于调试）
+    block_id: Optional[str] = None  # 关联的block ID
+    block_type: Optional[str] = None  # block类型（用于VLM理解）
+    semantic_role: Optional[str] = None  # 语义角色（用于VLM理解）
+    shape_index: Optional[int] = None  # PPT中的实际shape索引（用于调整）
     
     def to_dict(self) -> Dict[str, Any]:
-        return {
+        result = {
             "type": self.element_type,
             "left": self.left,
             "top": self.top,
@@ -95,6 +233,13 @@ class BoundingBox:
             "height": self.height,
             "content": self.content[:50] if self.content else ""
         }
+        if self.block_id:
+            result["block_id"] = self.block_id
+        if self.block_type:
+            result["block_type"] = self.block_type
+        if self.semantic_role:
+            result["semantic_role"] = self.semantic_role
+        return result
     
     def overlaps_with(self, other: 'BoundingBox') -> bool:
         """检测是否与另一个边界框重叠"""

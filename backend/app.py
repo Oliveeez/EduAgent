@@ -26,6 +26,7 @@ from modules.knowledge_extractor import KnowledgeExtractor
 from modules.outline_generator import OutlineGenerator
 from modules.ppt_creator import PPTCreator
 from modules.script_editor import ScriptEditor
+from modules.videopipeline.main_pipeline import VideoPipeline
 
 # 配置日志
 logging.basicConfig(
@@ -90,6 +91,12 @@ class ScriptSaveRequest(BaseModel):
     """讲稿保存请求"""
     outline_id: str  # 大纲ID
     updated_script: Dict  # 更新后的讲稿
+
+
+class VideoGenerateRequest(BaseModel):
+    """视频生成请求"""
+    outline_id: str  # 大纲ID
+    use_llm: bool = True  # 是否使用LLM优化
 
 
 # ==================== 全局状态 ====================
@@ -887,6 +894,193 @@ async def delete_session(session_id: str):
         return {"success": True, "message": "会话已删除"}
     else:
         raise HTTPException(status_code=404, detail="会话不存在")
+
+
+# ==================== Step 5: 视频生成 ====================
+
+@app.post("/api/step5/generate-video")
+async def generate_video(request: VideoGenerateRequest, background_tasks: BackgroundTasks):
+    """
+    生成视频（Step 5）
+    
+    从最终修改后的讲稿生成完整视频（PPTX + 动画 + 语音 + 字幕）
+    
+    Args:
+        request: 视频生成请求
+        
+    Returns:
+        视频生成任务信息
+    """
+    try:
+        # 加载大纲和讲稿
+        outline_path = OUTLINES_DIR / f"{request.outline_id}.json"
+        if not outline_path.exists():
+            raise HTTPException(status_code=404, detail="大纲不存在")
+        
+        import json
+        with open(outline_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        
+        outline = data.get('outline', {})
+        script = data.get('script', {})
+        
+        if not script:
+            raise HTTPException(status_code=400, detail="讲稿不存在，请先生成讲稿")
+        
+        # 将script转换为videopipeline需要的JSON格式
+        pipeline_json = _convert_script_to_pipeline_format(outline, script)
+        
+        # 保存临时JSON文件
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        temp_json_path = OUTLINES_DIR / f"video_input_{timestamp}.json"
+        with open(temp_json_path, 'w', encoding='utf-8') as f:
+            json.dump(pipeline_json, f, ensure_ascii=False, indent=2)
+        
+        # 设置输出目录
+        output_dir = DATA_DIR / "pipeline_outputs" / f"video_{request.outline_id}_{timestamp}"
+        output_dir.mkdir(parents=True, exist_ok=True)
+        
+        # 模板路径
+        template_path = Path(__file__).parent / "modules" / "videopipeline" / "template" / "template.pptx"
+        
+        # 创建Pipeline实例
+        pipeline = VideoPipeline(
+            json_path=str(temp_json_path),
+            template_path=str(template_path),
+            output_dir=str(output_dir)
+        )
+        
+        # 在后台任务中执行Pipeline（因为耗时较长）
+        task_id = f"video_{request.outline_id}_{timestamp}"
+        
+        def run_pipeline():
+            try:
+                result = pipeline.run()
+                logger.info(f"✅ 视频生成完成: {task_id}")
+            except Exception as e:
+                logger.error(f"❌ 视频生成失败: {e}")
+                import traceback
+                traceback.print_exc()
+        
+        # 启动后台任务
+        background_tasks.add_task(run_pipeline)
+        
+        return {
+            "success": True,
+            "task_id": task_id,
+            "outline_id": request.outline_id,
+            "status": "processing",
+            "message": "视频生成任务已启动，请使用task_id查询进度",
+            "estimated_time": "5-10分钟"
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"❌ 启动视频生成失败: {e}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/step5/video-status/{task_id}")
+async def get_video_status(task_id: str):
+    """
+    查询视频生成状态
+    
+    Args:
+        task_id: 任务ID
+        
+    Returns:
+        视频生成状态和结果
+    """
+    try:
+        # 从task_id解析outline_id和timestamp
+        # task_id格式: video_{outline_id}_{timestamp}
+        parts = task_id.split('_', 2)
+        if len(parts) < 3:
+            raise HTTPException(status_code=400, detail="无效的任务ID")
+        
+        outline_id = parts[1]
+        timestamp = parts[2]
+        
+        # 查找输出目录
+        output_dir = DATA_DIR / "pipeline_outputs" / f"video_{outline_id}_{timestamp}"
+        
+        if not output_dir.exists():
+            return {
+                "success": False,
+                "status": "not_found",
+                "message": "任务不存在"
+            }
+        
+        # 检查是否完成（存在final_video.mp4）
+        video_path = output_dir / "videos" / "final_video.mp4"
+        pptx_path = output_dir / "pptx" / "presentation_optimized.pptx"
+        audio_path = output_dir / "audio" / "full_audio.mp3"
+        subtitle_path = output_dir / "subtitles" / "subtitles.srt"
+        
+        if video_path.exists():
+            # 生成下载URL
+            video_relative = video_path.relative_to(DATA_DIR)
+            pptx_relative = pptx_path.relative_to(DATA_DIR) if pptx_path.exists() else None
+            audio_relative = audio_path.relative_to(DATA_DIR) if audio_path.exists() else None
+            subtitle_relative = subtitle_path.relative_to(DATA_DIR) if subtitle_path.exists() else None
+            
+            return {
+                "success": True,
+                "status": "completed",
+                "task_id": task_id,
+                "video_url": f"/static/{video_relative}",
+                "pptx_url": f"/static/{pptx_relative}" if pptx_relative else None,
+                "audio_url": f"/static/{audio_relative}" if audio_relative else None,
+                "subtitle_url": f"/static/{subtitle_relative}" if subtitle_relative else None,
+                "video_path": str(video_path),
+                "message": "视频生成完成"
+            }
+        else:
+            # 检查是否在生成中（存在slides_data.json表示至少开始了）
+            slides_data = output_dir / "slides_data.json"
+            if slides_data.exists():
+                return {
+                    "success": True,
+                    "status": "processing",
+                    "message": "视频正在生成中，请稍候..."
+                }
+            else:
+                return {
+                    "success": True,
+                    "status": "queued",
+                    "message": "任务已排队，等待处理..."
+                }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"❌ 查询视频状态失败: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+def _convert_script_to_pipeline_format(outline: Dict, script: Dict) -> Dict:
+    """
+    将outline和script转换为videopipeline需要的JSON格式
+    
+    Args:
+        outline: 大纲数据
+        script: 讲稿数据
+        
+    Returns:
+        videopipeline格式的JSON
+    """
+    return {
+        "success": True,
+        "outline": outline,
+        "script": script,
+        "metadata": {
+            "generated_at": datetime.now().isoformat(),
+            "source": "api"
+        }
+    }
 
 
 # ==================== 文件下载 ====================

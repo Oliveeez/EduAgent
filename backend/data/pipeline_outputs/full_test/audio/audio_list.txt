@@ -1,0 +1,7 @@
+file '/wuhu_uni_ai/edu/shenao/EduAgent/backend/data/pipeline_outputs/full_test/audio/slide_001.mp3'
+file '/wuhu_uni_ai/edu/shenao/EduAgent/backend/data/pipeline_outputs/full_test/audio/slide_002.mp3'
+file '/wuhu_uni_ai/edu/shenao/EduAgent/backend/data/pipeline_outputs/full_test/audio/slide_003.mp3'
+file '/wuhu_uni_ai/edu/shenao/EduAgent/backend/data/pipeline_outputs/full_test/audio/slide_004.mp3'
+file '/wuhu_uni_ai/edu/shenao/EduAgent/backend/data/pipeline_outputs/full_test/audio/slide_005.mp3'
+file '/wuhu_uni_ai/edu/shenao/EduAgent/backend/data/pipeline_outputs/full_test/audio/slide_006.mp3'
+file '/wuhu_uni_ai/edu/shenao/EduAgent/backend/data/pipeline_outputs/full_test/audio/slide_007.mp3'

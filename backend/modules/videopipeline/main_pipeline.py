@@ -10,6 +10,7 @@ from pathlib import Path
 from .models import SlideStructure, PipelineResult
 from .stage0_parser import ScriptParser
 from .stage1_slide_builder import SlideBuilder
+from .stage1_5_page_director import PageDirectorAgent  # 新增
 from .stage2_manim_renderer import ManimRenderer
 from .stage3_pptx_generator import PPTXGenerator
 from .stage4_bbox_extractor import BBoxExtractor
@@ -86,6 +87,12 @@ class VideoPipeline:
             print("\n🔧 Stage 1: 构建Slide结构...")
             self.slides = self._run_stage1()
             print(f"   ✅ 结构构建完成")
+            
+            # Stage 1.5: PageDirector Agent决策（新增）
+            print("\n🎯 Stage 1.5: PageDirector Agent决策...")
+            self.slides = self._run_stage1_5()
+            total_blocks = sum(len(s.blocks) for s in self.slides)
+            print(f"   ✅ 决策完成，共生成 {total_blocks} 个blocks")
             
             # Stage 2: 渲染Manim动画
             print("\n🎨 Stage 2: 渲染Manim动画...")
@@ -175,6 +182,11 @@ class VideoPipeline:
         builder = SlideBuilder(self.slides, use_llm=True)
         return builder.build()
     
+    def _run_stage1_5(self):
+        """Stage 1.5: PageDirector Agent决策（新增）"""
+        agent = PageDirectorAgent()
+        return agent.process_slides(self.slides)
+    
     def _run_stage2(self):
         """Stage 2: 渲染Manim动画"""
         renderer = ManimRenderer(str(self.output_dir))
@@ -192,8 +204,9 @@ class VideoPipeline:
         return generator.generate(self.slides, title)
     
     def _run_stage4(self, pptx_path):
-        """Stage 4: 提取Bounding Box"""
-        extractor = BBoxExtractor(str(pptx_path))
+        """Stage 4: 提取Bounding Box（块级别）"""
+        # 传递slides_data以支持块级别的bbox提取
+        extractor = BBoxExtractor(str(pptx_path), slides_data=self.slides)
         bboxes = extractor.extract()
         
         # 保存bbox数据
@@ -204,7 +217,7 @@ class VideoPipeline:
     def _run_stage5(self, pptx_path, bboxes):
         """Stage 5: VLM布局优化"""
         optimizer = VLMLayoutOptimizer(str(pptx_path), str(self.output_dir))
-        return optimizer.optimize(bboxes)
+        return optimizer.optimize(bboxes, slides_data=self.slides)
     
     def _run_stage6(self):
         """Stage 6: 生成TTS语音"""

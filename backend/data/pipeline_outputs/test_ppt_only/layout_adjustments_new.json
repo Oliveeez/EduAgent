@@ -1,0 +1,246 @@
+{
+  "input_pptx": "/wuhu_uni_ai/edu/shenao/EduAgent/backend/data/pipeline_outputs/test_ppt_only/pptx/presentation.pptx",
+  "output_pptx": "/wuhu_uni_ai/edu/shenao/EduAgent/backend/data/pipeline_outputs/test_ppt_only/pptx/presentation_optimized.pptx",
+  "adjustments": [
+    {
+      "slide_idx": 4,
+      "element_idx": 0,
+      "shape_idx": 0,
+      "block_id": "unknown",
+      "action": "move",
+      "reason": "将标题移入安全区域，保持左对齐以确立阅读起点",
+      "new_left": 0.5,
+      "new_top": 0.5
+    },
+    {
+      "slide_idx": 4,
+      "element_idx": 1,
+      "shape_idx": 1,
+      "block_id": "unknown",
+      "action": "move",
+      "reason": "下移以避开标题，同时水平居中（基于页面宽度13.33和文本宽度6.0计算）以突出核心概念定义，增加页面呼吸感",
+      "new_left": 3.665,
+      "new_top": 1.5
+    },
+    {
+      "slide_idx": 4,
+      "element_idx": 2,
+      "shape_idx": 2,
+      "block_id": "unknown",
+      "action": "move",
+      "reason": "消除与文本的重叠；大幅增加尺寸以提升可读性；水平居中布局；保留底部留白。设置宽度为8.0，高度为4.0",
+      "new_left": 2.665,
+      "new_top": 2.85
+    },
+    {
+      "slide_idx": 4,
+      "element_idx": 2,
+      "shape_idx": 2,
+      "block_id": "unknown",
+      "action": "resize",
+      "reason": "消除与文本的重叠；大幅增加尺寸以提升可读性；水平居中布局；保留底部留白。设置宽度为8.0，高度为4.0",
+      "new_width": 8.0,
+      "new_height": 4.0
+    },
+    {
+      "slide_idx": 2,
+      "element_idx": 0,
+      "shape_idx": 0,
+      "block_id": "unknown",
+      "action": "move",
+      "reason": "将标题移入安全区域，并保持左对齐",
+      "new_left": 0.5,
+      "new_top": 0.5
+    },
+    {
+      "slide_idx": 2,
+      "element_idx": 1,
+      "shape_idx": 1,
+      "block_id": "unknown",
+      "action": "move",
+      "reason": "移动至标题下方，留出呼吸感，形成左侧说明区域",
+      "new_left": 0.5,
+      "new_top": 1.8
+    },
+    {
+      "slide_idx": 2,
+      "element_idx": 3,
+      "shape_idx": 3,
+      "block_id": "unknown",
+      "action": "move",
+      "reason": "将图片移至右侧黄金分割位置，与左侧文本顶部对齐，形成左右分栏结构",
+      "new_left": 7.33,
+      "new_top": 1.8
+    },
+    {
+      "slide_idx": 2,
+      "element_idx": 3,
+      "shape_idx": 3,
+      "block_id": "unknown",
+      "action": "resize",
+      "reason": "将图片移至右侧黄金分割位置，与左侧文本顶部对齐，形成左右分栏结构",
+      "new_width": 5.0,
+      "new_height": 3.5
+    },
+    {
+      "slide_idx": 2,
+      "element_idx": 2,
+      "shape_idx": 2,
+      "block_id": "unknown",
+      "action": "move",
+      "reason": "鉴于公式bbox极宽，将其置于页面底部居中，作为总结性抽象，避免与图片重叠",
+      "new_left": 1.0,
+      "new_top": 5.6
+    },
+    {
+      "slide_idx": 3,
+      "element_idx": 0,
+      "shape_idx": 0,
+      "block_id": "unknown",
+      "action": "move",
+      "reason": "将标题移入安全区域，并保持顶部边缘留白。",
+      "new_left": 0.5,
+      "new_top": 0.5
+    },
+    {
+      "slide_idx": 3,
+      "element_idx": 1,
+      "shape_idx": 1,
+      "block_id": "unknown",
+      "action": "move",
+      "reason": "下移以避开标题并留出呼吸感；调整为Manim动画/文本容器，增加高度以容纳多行文本，保持左侧布局。",
+      "new_left": 0.5,
+      "new_top": 2.0
+    },
+    {
+      "slide_idx": 3,
+      "element_idx": 1,
+      "shape_idx": 1,
+      "block_id": "unknown",
+      "action": "resize",
+      "reason": "下移以避开标题并留出呼吸感；调整为Manim动画/文本容器，增加高度以容纳多行文本，保持左侧布局。",
+      "new_width": 6.0,
+      "new_height": 3.0
+    },
+    {
+      "slide_idx": 3,
+      "element_idx": 2,
+      "shape_idx": 2,
+      "block_id": "unknown",
+      "action": "move",
+      "reason": "移动至右侧空白区域，形成左右分栏的平衡布局；垂直居中对齐于左侧文本块，消除重叠。",
+      "new_left": 7.5,
+      "new_top": 3.0
+    },
+    {
+      "slide_idx": 6,
+      "element_idx": 0,
+      "shape_idx": 0,
+      "block_id": "unknown",
+      "action": "move",
+      "reason": "将标题移入安全区域，并保持顶部边缘留白",
+      "new_left": 0.5,
+      "new_top": 0.5
+    },
+    {
+      "slide_idx": 6,
+      "element_idx": 1,
+      "shape_idx": 1,
+      "block_id": "unknown",
+      "action": "move",
+      "reason": "将说明文本移动到标题下方，采用水平居中布局以提升平衡感，并解决与图片的重叠",
+      "new_left": 3.665,
+      "new_top": 1.6
+    },
+    {
+      "slide_idx": 6,
+      "element_idx": 2,
+      "shape_idx": 2,
+      "block_id": "unknown",
+      "action": "move",
+      "reason": "调整图片尺寸以适应剩余空间，居中放置于文本下方，保持底部呼吸感",
+      "new_left": 2.865,
+      "new_top": 3.1
+    },
+    {
+      "slide_idx": 6,
+      "element_idx": 2,
+      "shape_idx": 2,
+      "block_id": "unknown",
+      "action": "resize",
+      "reason": "调整图片尺寸以适应剩余空间，居中放置于文本下方，保持底部呼吸感",
+      "new_width": 7.6,
+      "new_height": 3.8
+    },
+    {
+      "slide_idx": 5,
+      "element_idx": 0,
+      "shape_idx": 0,
+      "block_id": "unknown",
+      "action": "move",
+      "reason": "将标题移入安全区域，保持顶部留白",
+      "new_left": 0.5,
+      "new_top": 0.5
+    },
+    {
+      "slide_idx": 5,
+      "element_idx": 1,
+      "shape_idx": 1,
+      "block_id": "unknown",
+      "action": "move",
+      "reason": "调整说明文字位置，为右侧图片留出空间，形成上方内容区",
+      "new_left": 1.5,
+      "new_top": 1.5
+    },
+    {
+      "slide_idx": 5,
+      "element_idx": 2,
+      "shape_idx": 2,
+      "block_id": "unknown",
+      "action": "move",
+      "reason": "缩小图片尺寸以适配版面，并与左侧说明文字（元素1）对齐，形成图文对照",
+      "new_left": 8.0,
+      "new_top": 1.5
+    },
+    {
+      "slide_idx": 5,
+      "element_idx": 2,
+      "shape_idx": 2,
+      "block_id": "unknown",
+      "action": "resize",
+      "reason": "缩小图片尺寸以适配版面，并与左侧说明文字（元素1）对齐，形成图文对照",
+      "new_width": 3.2,
+      "new_height": 1.8
+    },
+    {
+      "slide_idx": 5,
+      "element_idx": 3,
+      "shape_idx": 3,
+      "block_id": "unknown",
+      "action": "move",
+      "reason": "大幅缩小尺寸以符合边界约束，居中放置作为核心视觉展示",
+      "new_left": 4.165,
+      "new_top": 3.5
+    },
+    {
+      "slide_idx": 5,
+      "element_idx": 3,
+      "shape_idx": 3,
+      "block_id": "unknown",
+      "action": "resize",
+      "reason": "大幅缩小尺寸以符合边界约束，居中放置作为核心视觉展示",
+      "new_width": 5.0,
+      "new_height": 2.5
+    },
+    {
+      "slide_idx": 5,
+      "element_idx": 4,
+      "shape_idx": 4,
+      "block_id": "unknown",
+      "action": "move",
+      "reason": "将底部说明文字拉回安全区域内，紧贴核心视觉图下方",
+      "new_left": 2.0,
+      "new_top": 6.0
+    }
+  ]
+}

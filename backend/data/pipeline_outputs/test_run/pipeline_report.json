@@ -1,0 +1,16 @@
+{
+  "status": "success",
+  "generated_at": "2026-01-24T18:45:11.626016",
+  "input_file": "/wuhu_uni_ai/edu/shenao/EduAgent/backend/data/outlines/test.json",
+  "output_dir": "/wuhu_uni_ai/edu/shenao/EduAgent/backend/data/pipeline_outputs/test_run",
+  "result": {
+    "success": true,
+    "video_path": "/wuhu_uni_ai/edu/shenao/EduAgent/backend/data/pipeline_outputs/test_run/videos/final_video.mp4",
+    "pptx_path": "/wuhu_uni_ai/edu/shenao/EduAgent/backend/data/pipeline_outputs/test_run/pptx/presentation_optimized.pptx",
+    "audio_path": "/wuhu_uni_ai/edu/shenao/EduAgent/backend/data/pipeline_outputs/test_run/audio/full_audio.mp3",
+    "subtitle_path": "/wuhu_uni_ai/edu/shenao/EduAgent/backend/data/pipeline_outputs/test_run/subtitles/subtitles.srt",
+    "total_duration": 177.024,
+    "slide_count": 6,
+    "error_message": ""
+  }
+}

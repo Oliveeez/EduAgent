@@ -76,11 +76,9 @@ class SlideBuilder:
         if slide.formula:
             slide.formula = self._clean_formula(slide.formula)
         
-        # 3. 将演讲稿转换为PPT结构化要点（只用于PPT显示）
-        if self.use_llm and self.llm:
-            slide.text = self._convert_to_bullet_points(slide)
-        else:
-            slide.text = self._rule_based_convert(slide)
+        # 3. 基础文本处理（Stage 1.5 的 PageDirector 会重新规划 blocks）
+        # 注意：不再调用 _plan_pedagogical_visuals，避免与 Stage 1.5 冲突
+        slide.text = self._rule_based_convert(slide)
         
         # 4. 优化标题
         slide.title = self._optimize_title(slide.title, slide.text, slide.section_title)
@@ -90,52 +88,107 @@ class SlideBuilder:
         
         return slide
     
-    def _convert_to_bullet_points(self, slide: SlideStructure) -> str:
+    def _plan_pedagogical_visuals(self, slide: SlideStructure):
         """
-        使用LLM将演讲稿口语化内容转换为PPT结构化要点
+        Agent3: 教学型页面导演 (Pedagogical Visual Planner)
         
-        Args:
-            slide: slide结构体
-        
-        Returns:
-            结构化的PPT要点内容
+        规划每一页的表现原子组合，包括概念陈述、公式展示、代码讲解和关系图。
         """
         original_text = slide.text
         
-        # 构建prompt
-        prompt = f"""请将以下演讲稿内容转换为PPT的结构化要点。
+        prompt = f"""你是一个教学型 PPT 页面设计导演，你的目标是为每一页选择最合适的知识表达形式。
+你必须保证页面内容具有学术严谨性、视觉多样性和教学有效性。
 
-要求：
-1. 提取关键信息，去除口语化表达（如"大家"、"我们"、"你们"等）
-2. 使用简洁的要点形式，每个要点一行
-3. 不要使用符号开头（不要用•、-、*等），直接写内容
-4. 如果内容涉及代码或公式，不要重复代码/公式本身，只说明其含义
-5. 保持专业性，适合PPT展示
-6. 限制在3-5个要点
+你可以使用的页面表现原子包括：
+1. **Conceptual Statement（概念陈述文本）**
+   - 必须是书面化、完整、可独立成立的陈述。
+   - 禁止使用口语化引导语（如“我们先看”、“接下来我们可以看到”、“这个例子能帮助理解”）。
+   - 功能：直接承载“知识本体”。
+   - 支持关键词强调（加粗/着色）。
 
-原始演讲稿：
+2. **Formula Focus（公式展示）**
+   - 公式必须完整。
+   - 若涉及“方程组 / 系统 / 联立”，需明确表达系统关系。
+
+3. **Code Walkthrough（代码讲解）**
+   - 代码页必须至少搭配一条 Conceptual Statement。
+
+4. **Relational / Structural Visualization（关系 / 结构可视化）**
+   - 使用 Manim 原生图形元素（箭头、集合、函数图像、流程框）表达逻辑关系。
+   - 禁止使用网络图片。
+
+5. **Concept + Visual（概念 + 图示）**
+   - 寻找合适的在线图片（如具体的历史对象、举例应用领域）。
+
+页面设计硬约束：
+- 每页至少包含 2 种不同表现原子。
+- 禁止 bullet point 风格主导页面。
+- 禁止只有文本或只有公式的页面。
+
+当前输入信息：
+演讲稿文本：
 {original_text}
 
-{"该页包含公式: " + slide.formula if slide.formula else ""}
-{"该页包含代码: " + slide.coq_code if slide.coq_code else ""}
+{f"该页包含 LaTeX 公式: {slide.formula}" if slide.formula else ""}
+{f"该页包含代码块: {slide.coq_code}" if slide.coq_code else ""}
 
-请直接输出转换后的PPT要点内容，每行一个要点："""
-
+请输出 JSON 格式（不要输出任何其他文字）：
+{{
+  "atoms": [
+    {{
+      "type": "conceptual_statement",
+      "content": "完整的书面化陈述内容",
+      "emphasis": {{
+        "bold": ["关键术语1", "关键术语2"],
+        "color": {{"关键术语1": "red"}}
+      }}
+    }},
+    {{
+      "type": "relational_visualization",
+      "content": "描述需要展现的逻辑关系或函数行为",
+      "manim_type": "function_plot/arrow_flow/dependency_map"
+    }},
+    {{
+      "type": "formula",
+      "content": "公式内容"
+    }}
+  ]
+}}
+"""
         try:
+            from .models import SlideBlock
             response = self.llm(prompt)
-            # 清理响应
-            response = response.strip()
-            # 替换<br>为换行
-            response = response.replace('<br>', '\n')
-            # 去除bullet符号
-            response = re.sub(r'^[•\-\*\d\.]+\s*', '', response, flags=re.MULTILINE)
-            # 清理多余空行
-            response = re.sub(r'\n\s*\n+', '\n', response)
-            return response.strip()
+            # 提取 JSON 部分
+            match = re.search(r'\{.*\}', response, re.DOTALL)
+            if match:
+                data = json.loads(match.group())
+                slide.blocks = []
+                # 重新组合文本用于 PPT 显示
+                text_parts = []
+                
+                for atom in data.get("atoms", []):
+                    block = SlideBlock(
+                        block_type=atom["type"],
+                        content=atom["content"],
+                        emphasis=atom.get("emphasis")
+                    )
+                    slide.blocks.append(block)
+                    
+                    if atom["type"] == "conceptual_statement":
+                        text_parts.append(atom["content"])
+                
+                slide.text = "\n".join(text_parts)
+            else:
+                # 回退
+                slide.text = self._rule_based_convert(slide)
         except Exception as e:
-            print(f"    ⚠️ LLM调用失败: {e}")
-            return self._rule_based_convert(slide)
-    
+            print(f"    ⚠️ Agent3 规划失败: {e}")
+            slide.text = self._rule_based_convert(slide)
+
+    def _convert_to_bullet_points(self, slide: SlideStructure) -> str:
+        # 该方法已在 _process_slide 中被 _plan_pedagogical_visuals 替代，保留以防万一
+        return self._rule_based_convert(slide)
+
     def _rule_based_convert(self, slide: SlideStructure) -> str:
         """
         基于规则将演讲稿转换为PPT要点（不使用LLM时的备选方案）

@@ -1,156 +1,173 @@
 # formula_scene.py
 # Manim场景：数学公式动画
 
-from manim import *
 import os
 
+# 延迟导入 manim（只在需要时导入，避免导入错误）
+try:
+    from manim import *
+    MANIM_AVAILABLE = True
+except ImportError:
+    MANIM_AVAILABLE = False
+    # 定义占位符类，避免导入错误
+    class Scene:
+        pass
 
-class FormulaScene(Scene):
-    """
-    数学公式书写动画场景
-    
-    特点：
-    - 白色背景，黑色公式（适合PPT嵌入）
-    - Write动画效果
-    - 支持多行公式
-    """
-    
-    def __init__(self, latex_formula: str = "", **kwargs):
+
+# 只有在 manim 可用时才定义这些类
+if MANIM_AVAILABLE:
+    class FormulaScene(Scene):
         """
-        初始化场景
+        数学公式书写动画场景
         
-        Args:
-            latex_formula: LaTeX公式字符串
+        特点：
+        - 白色背景，黑色公式（适合PPT嵌入）
+        - Write动画效果
+        - 支持多行公式
         """
-        super().__init__(**kwargs)
-        self.latex_formula = latex_formula
-    
-    def construct(self):
-        """构建动画"""
-        # 白色背景（适合PPT）
-        self.camera.background_color = WHITE
         
-        # 创建公式
-        formula = self._create_formula()
+        def __init__(self, latex_formula: str = "", **kwargs):
+            """
+            初始化场景
+            
+            Args:
+                latex_formula: LaTeX公式字符串
+            """
+            super().__init__(**kwargs)
+            self.latex_formula = latex_formula
         
-        # 书写动画
-        self.play(Write(formula), run_time=3)
+        def construct(self):
+            """构建动画"""
+            # 白色背景（适合PPT）
+            self.camera.background_color = WHITE
+            
+            # 创建公式
+            formula = self._create_formula()
+            
+            # 书写动画
+            self.play(Write(formula), run_time=3)
+            
+            # 停留展示
+            self.wait(2)
         
-        # 停留展示
-        self.wait(2)
-    
-    def _create_formula(self) -> MathTex:
-        """创建公式对象"""
-        # 清理公式字符串
-        formula_str = self.latex_formula.strip()
-        
-        # 如果不是LaTeX格式，尝试转换
-        if not formula_str.startswith('\\') and '=' in formula_str:
-            # 简单公式，直接使用
-            pass
-        
-        # 创建MathTex对象
-        formula = MathTex(
-            formula_str,
-            font_size=48,
-            color=BLACK
-        )
-        
-        # 如果公式太大，缩放
-        if formula.width > 10:
-            formula.scale(10 / formula.width)
-        if formula.height > 5:
-            formula.scale(5 / formula.height)
-        
-        return formula
-
-
-class FormulaSceneWithBox(Scene):
-    """
-    带装饰框的公式场景
-    """
-    
-    def __init__(self, latex_formula: str = "", title: str = "", **kwargs):
-        super().__init__(**kwargs)
-        self.latex_formula = latex_formula
-        self.title = title
-    
-    def construct(self):
-        self.camera.background_color = WHITE
-        
-        # 创建标题（如果有）
-        if self.title:
-            title_text = Text(
-                self.title,
-                font_size=32,
-                color=BLACK,
-                weight=BOLD
-            ).to_edge(UP, buff=0.5)
-            self.play(FadeIn(title_text))
-        
-        # 创建公式
-        formula = MathTex(
-            self.latex_formula.strip(),
-            font_size=48,
-            color=BLACK
-        )
-        
-        # 缩放处理
-        if formula.width > 10:
-            formula.scale(10 / formula.width)
-        
-        # 创建装饰框
-        box = SurroundingRectangle(
-            formula,
-            color="#2196F3",  # 蓝色边框
-            buff=0.3,
-            corner_radius=0.1,
-            stroke_width=2
-        )
-        
-        # 动画
-        self.play(Write(formula), run_time=3)
-        self.play(Create(box), run_time=0.5)
-        
-        self.wait(2)
-
-
-class MultiFormulaScene(Scene):
-    """
-    多公式逐步推导场景
-    """
-    
-    def __init__(self, formulas: list = None, **kwargs):
-        super().__init__(**kwargs)
-        self.formulas = formulas or []
-    
-    def construct(self):
-        self.camera.background_color = WHITE
-        
-        formula_objs = VGroup()
-        
-        for i, formula_str in enumerate(self.formulas):
+        def _create_formula(self) -> MathTex:
+            """创建公式对象"""
+            # 清理公式字符串
+            formula_str = self.latex_formula.strip()
+            
+            # 如果不是LaTeX格式，尝试转换
+            if not formula_str.startswith('\\') and '=' in formula_str:
+                # 简单公式，直接使用
+                pass
+            
+            # 创建MathTex对象
             formula = MathTex(
-                formula_str.strip(),
-                font_size=40,
+                formula_str,
+                font_size=48,
                 color=BLACK
             )
-            formula_objs.add(formula)
+            
+            # 如果公式太大，缩放
+            if formula.width > 10:
+                formula.scale(10 / formula.width)
+            if formula.height > 5:
+                formula.scale(5 / formula.height)
+            
+            return formula
+
+    class FormulaSceneWithBox(Scene):
+        """
+        带装饰框的公式场景
+        """
         
-        # 垂直排列
-        formula_objs.arrange(DOWN, buff=0.5)
+        def __init__(self, latex_formula: str = "", title: str = "", **kwargs):
+            super().__init__(**kwargs)
+            self.latex_formula = latex_formula
+            self.title = title
         
-        # 缩放以适应画面
-        if formula_objs.width > 10:
-            formula_objs.scale(10 / formula_objs.width)
-        if formula_objs.height > 5:
-            formula_objs.scale(5 / formula_objs.height)
+        def construct(self):
+            self.camera.background_color = WHITE
+            
+            # 创建标题（如果有）
+            if self.title:
+                title_text = Text(
+                    self.title,
+                    font_size=32,
+                    color=BLACK,
+                    weight=BOLD
+                ).to_edge(UP, buff=0.5)
+                self.play(FadeIn(title_text))
+            
+            # 创建公式
+            formula = MathTex(
+                self.latex_formula.strip(),
+                font_size=48,
+                color=BLACK
+            )
+            
+            # 缩放处理
+            if formula.width > 10:
+                formula.scale(10 / formula.width)
+            
+            # 创建装饰框
+            box = SurroundingRectangle(
+                formula,
+                color="#2196F3",  # 蓝色边框
+                buff=0.3,
+                corner_radius=0.1,
+                stroke_width=2
+            )
+            
+            # 动画
+            self.play(Write(formula), run_time=3)
+            self.play(Create(box), run_time=0.5)
+            
+            self.wait(2)
+
+    class MultiFormulaScene(Scene):
+        """
+        多公式逐步推导场景
+        """
         
-        # 逐个显示
-        for formula in formula_objs:
-            self.play(Write(formula), run_time=2)
+        def __init__(self, formulas: list = None, **kwargs):
+            super().__init__(**kwargs)
+            self.formulas = formulas or []
         
-        self.wait(2)
+        def construct(self):
+            self.camera.background_color = WHITE
+            
+            formula_objs = VGroup()
+            
+            for i, formula_str in enumerate(self.formulas):
+                formula = MathTex(
+                    formula_str.strip(),
+                    font_size=40,
+                    color=BLACK
+                )
+                formula_objs.add(formula)
+            
+            # 垂直排列
+            formula_objs.arrange(DOWN, buff=0.5)
+            
+            # 缩放以适应画面
+            if formula_objs.width > 10:
+                formula_objs.scale(10 / formula_objs.width)
+            if formula_objs.height > 5:
+                formula_objs.scale(5 / formula_objs.height)
+            
+            # 逐个显示
+            for formula in formula_objs:
+                self.play(Write(formula), run_time=2)
+            
+            self.wait(2)
+else:
+    # manim 不可用时，定义占位符类
+    class FormulaScene:
+        pass
+    class FormulaSceneWithBox:
+        pass
+    class MultiFormulaScene:
+        pass
 
 
 def create_formula_scene_file(

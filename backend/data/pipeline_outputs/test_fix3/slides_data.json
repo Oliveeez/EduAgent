@@ -1,0 +1,82 @@
+{
+  "slides": [
+    {
+      "slide_id": 1,
+      "slide_type": "intro",
+      "title": "从《孙子算经》说起",
+      "text": "传统测试方法的局限性与软件缺陷遗留风险\n形式化验证在航空航天与金融交易等高可靠性领域的应用\nCoq基于数学逻辑底层保障系统绝对正确性的机制\n课程教学路径：从《孙子算经》案例切入降低学习门槛",
+      "coq_code": null,
+      "formula": null,
+      "gif_path": null,
+      "audio_path": null,
+      "duration": null,
+      "section_title": "1. 课程引入：从《孙子算经》说起",
+      "estimated_duration": 24.8
+    },
+    {
+      "slide_id": 2,
+      "slide_type": "formula",
+      "title": "1. 课程引入：从《孙子算经》说起",
+      "text": "经典案例分析：以“鸡兔同笼”问题为例\n传统数学建模：利用线性方程组将现实问题符号化\nCoq课程目标：将数学符号转化为机器可验证的形式化语言",
+      "coq_code": null,
+      "formula": "x + y = 35\n2x + 4y = 94",
+      "gif_path": null,
+      "audio_path": null,
+      "duration": null,
+      "section_title": "1. 课程引入：从《孙子算经》说起",
+      "estimated_duration": 19.7
+    },
+    {
+      "slide_id": 3,
+      "slide_type": "intro",
+      "title": "大家可能会问：'我都算出答案了",
+      "text": "解决海量变量与超长步骤的证明难题\n利用机器验证消除人为疏忽与错误\n提供交互式环境（IDE）保障推理严密性\n追求逻辑推导的绝对严谨",
+      "coq_code": null,
+      "formula": null,
+      "gif_path": null,
+      "audio_path": null,
+      "duration": null,
+      "section_title": "1. 课程引入：从《孙子算经》说起",
+      "estimated_duration": 16.5
+    },
+    {
+      "slide_id": 4,
+      "slide_type": "intro",
+      "title": "在像C或Python这样的语言里",
+      "text": "通用编程语言（如C/Python）内置整数类型\nCoq底层逻辑缺乏预置数值类型\n需从零开始形式化定义自然数",
+      "coq_code": null,
+      "formula": null,
+      "gif_path": null,
+      "audio_path": null,
+      "duration": null,
+      "section_title": "2. Coq中的自然数表达",
+      "estimated_duration": 12.4
+    },
+    {
+      "slide_id": 5,
+      "slide_type": "coq",
+      "title": "2. Coq中的自然数表达",
+      "text": "基于皮亚诺算术公理定义自然数类型\n构造函数O代表基数0\n构造函数S代表后继操作\n通过递归形式表示数值（如2表示为S (S O)）",
+      "coq_code": "Inductive nat : Type := | O : nat | S : nat -> nat.",
+      "formula": null,
+      "gif_path": null,
+      "audio_path": null,
+      "duration": null,
+      "section_title": "2. Coq中的自然数表达",
+      "estimated_duration": 16.7
+    },
+    {
+      "slide_id": 6,
+      "slide_type": "intro",
+      "title": "Coq中的自然数表达",
+      "text": "Coq提供记号机制（Notation）简化代码书写\n输入阿拉伯数字自动解析为内部递归构造形式\n输出结果自动转换为常规数字格式显示\nIDE支持验证数值常量的自然数类型属性",
+      "coq_code": null,
+      "formula": null,
+      "gif_path": null,
+      "audio_path": null,
+      "duration": null,
+      "section_title": "2. Coq中的自然数表达",
+      "estimated_duration": 20.1
+    }
+  ]
+}
